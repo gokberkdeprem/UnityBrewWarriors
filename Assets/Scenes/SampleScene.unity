@@ -597,7 +597,7 @@ MonoBehaviour:
   - {fileID: 1682496497904325620, guid: 1d1e851f48f7241c0a3a516c2897585e, type: 3}
   playerBase: {fileID: 1598846871}
   enemyBase: {fileID: 1331342621}
-  spawnDelay: 30
+  enemySpawnDelay: 10
   canSpawnEnemy: 1
 --- !u!4 &982143751
 Transform:
@@ -1043,7 +1043,7 @@ GameObject:
   - component: {fileID: 1331342622}
   m_Layer: 0
   m_Name: EnemyBaseFront
-  m_TagString: Untagged
+  m_TagString: EnemyBaseFront
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -1090,7 +1090,7 @@ GameObject:
   - component: {fileID: 1598846872}
   m_Layer: 0
   m_Name: AllyBaseFront
-  m_TagString: Untagged
+  m_TagString: AllyBaseFront
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -1146,7 +1146,7 @@ RectTransform:
   m_AnchorMin: {x: 0.5, y: 0}
   m_AnchorMax: {x: 0.5, y: 0}
   m_AnchoredPosition: {x: 0, y: 74.2}
-  m_SizeDelta: {x: 814.9, y: 140}
+  m_SizeDelta: {x: 814.9, y: 74.6}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &1668161617
 MonoBehaviour:

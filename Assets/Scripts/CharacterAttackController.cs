@@ -27,9 +27,9 @@ public class CharacterAttackController : MonoBehaviour
 
     public void OnTriggerEnter(Collider other)
     {
-        if (_characterFeature.isEnemy && (other.CompareTag("Ally") || other.CompareTag("AllyBase")))
+        if (_characterFeature.isEnemy && other.CompareTag("Ally"))
             activeOpponents.Add(other.gameObject);
-        else if (!_characterFeature.isEnemy && (other.CompareTag("Enemy") || other.CompareTag("EnemyBase")))
+        else if (!_characterFeature.isEnemy && other.CompareTag("Enemy"))
             activeOpponents.Add(other.gameObject);
     }
 
@@ -45,23 +45,23 @@ public class CharacterAttackController : MonoBehaviour
     {
         if (other.CompareTag("Enemy") || other.CompareTag("Ally"))
         {
-            var otherCharFeature = other.gameObject.GetComponent<CharacterFeature>();
+            var opponentCharFeature = other.gameObject.GetComponent<CharacterFeature>();
             if (_canAttack)
             {
-                otherCharFeature.currentHealth -= _characterFeature.power;
-                otherCharFeature.UpdateHealthBar();
-                otherCharFeature.onCharacterDeath.AddListener(RemoveFromActiveOpponents);
+                opponentCharFeature.currentHealth -= _characterFeature.power;
+                opponentCharFeature.UpdateHealthBar();
+                opponentCharFeature.onCharacterDeath.AddListener(RemoveFromActiveOpponents);
                 StartCoroutine(AttackCoolDown());
             }
         }
         else if (other.CompareTag("EnemyBase") || other.CompareTag("AllyBase"))
         {
-            var otherCharFeature = other.gameObject.GetComponent<BaseFeature>();
+            var opponentCharFeature = other.gameObject.GetComponent<BaseFeature>();
             if (_canAttack)
             {
-                otherCharFeature.currentHealth -= _characterFeature.power;
-                otherCharFeature.UpdateHealthBar();
-                otherCharFeature.onBaseDeath.AddListener(RemoveFromActiveOpponents);
+                opponentCharFeature.currentHealth -= _characterFeature.power;
+                opponentCharFeature.UpdateHealthBar();
+                opponentCharFeature.onBaseDeath.AddListener(RemoveFromActiveOpponents);
                 StartCoroutine(AttackCoolDown());
             }
         }

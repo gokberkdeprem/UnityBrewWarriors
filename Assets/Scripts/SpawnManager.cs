@@ -6,7 +6,7 @@ public class SpawnManager : MonoBehaviour
     public GameObject[] warriors;
     public GameObject playerBase;
     public GameObject enemyBase;
-    public float spawnDelay;
+    public float enemySpawnDelay;
     public bool canSpawnEnemy = true;
 
     // Start is called before the first frame update
@@ -26,22 +26,26 @@ public class SpawnManager : MonoBehaviour
 
     public void InstantiateAlly()
     {
-        var ally = Instantiate(warriors[0], playerBase.transform.position, warriors[0].transform.rotation);
+        float randomZPos = Random.Range(-1, 2);
+        var spawnPos = new Vector3(playerBase.transform.position.x, playerBase.transform.position.y,
+            playerBase.transform.position.z + randomZPos);
+        var ally = Instantiate(warriors[0], spawnPos, warriors[0].transform.rotation);
         ally.tag = "Ally";
-        ally.transform.LookAt(enemyBase.transform.position);
     }
 
     private void InstantiateEnemy()
     {
-        var enemy = Instantiate(warriors[0], enemyBase.transform.position, warriors[0].transform.rotation);
+        float randomZPos = Random.Range(-1, 2);
+        var spawnPos = new Vector3(enemyBase.transform.position.x, enemyBase.transform.position.y,
+            enemyBase.transform.position.z + randomZPos);
+        var enemy = Instantiate(warriors[0], spawnPos, warriors[0].transform.rotation);
         enemy.tag = "Enemy";
-        enemy.transform.LookAt(playerBase.transform);
     }
 
     private IEnumerator SpawnCooldown()
     {
         canSpawnEnemy = false;
-        yield return new WaitForSeconds(spawnDelay);
+        yield return new WaitForSeconds(enemySpawnDelay);
         canSpawnEnemy = true;
     }
 }

@@ -9,6 +9,8 @@ TagManager:
   - Ally
   - AllyBase
   - EnemyBase
+  - AllyBaseFront
+  - EnemyBaseFront
   layers:
   - Default
   - TransparentFX
