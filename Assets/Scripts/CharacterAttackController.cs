@@ -27,9 +27,9 @@ public class CharacterAttackController : MonoBehaviour
 
     public void OnTriggerEnter(Collider other)
     {
-        if (_characterFeature.isEnemy && other.CompareTag("Ally"))
+        if (_characterFeature.isEnemy && (other.CompareTag("Ally") || other.CompareTag("AllyBase")))
             activeOpponents.Add(other.gameObject);
-        else if (!_characterFeature.isEnemy && other.CompareTag("Enemy"))
+        else if (!_characterFeature.isEnemy && (other.CompareTag("Enemy") || other.CompareTag("EnemyBase")))
             activeOpponents.Add(other.gameObject);
     }
 

@@ -1,4 +1,5 @@
 using System.Collections;
+using Enums;
 using UnityEngine;
 
 public class SpawnManager : MonoBehaviour
@@ -24,12 +25,30 @@ public class SpawnManager : MonoBehaviour
         }
     }
 
-    public void InstantiateAlly()
+    public void InstantiateStickCharacter()
     {
-        float randomZPos = Random.Range(-1, 2);
+        float randomZPos = Random.Range(-2, 2);
         var spawnPos = new Vector3(playerBase.transform.position.x, playerBase.transform.position.y,
             playerBase.transform.position.z + randomZPos);
-        var ally = Instantiate(warriors[0], spawnPos, warriors[0].transform.rotation);
+        var ally = Instantiate(warriors[(int)CharacterType.StickCharacter], spawnPos, warriors[0].transform.rotation);
+        ally.tag = "Ally";
+    }
+
+    public void InstantiateSpearCharacter()
+    {
+        float randomZPos = Random.Range(-2, 2);
+        var spawnPos = new Vector3(playerBase.transform.position.x, playerBase.transform.position.y,
+            playerBase.transform.position.z + randomZPos);
+        var ally = Instantiate(warriors[(int)CharacterType.SpearCharacter], spawnPos, warriors[0].transform.rotation);
+        ally.tag = "Ally";
+    }
+
+    public void InstantiateStoneCharacter()
+    {
+        float randomZPos = Random.Range(-2, 2);
+        var spawnPos = new Vector3(playerBase.transform.position.x, playerBase.transform.position.y,
+            playerBase.transform.position.z + randomZPos);
+        var ally = Instantiate(warriors[(int)CharacterType.StoneCharacter], spawnPos, warriors[0].transform.rotation);
         ally.tag = "Ally";
     }
 
@@ -38,7 +57,7 @@ public class SpawnManager : MonoBehaviour
         float randomZPos = Random.Range(-1, 2);
         var spawnPos = new Vector3(enemyBase.transform.position.x, enemyBase.transform.position.y,
             enemyBase.transform.position.z + randomZPos);
-        var enemy = Instantiate(warriors[0], spawnPos, warriors[0].transform.rotation);
+        var enemy = Instantiate(warriors[(int)CharacterType.StickCharacter], spawnPos, warriors[0].transform.rotation);
         enemy.tag = "Enemy";
     }
 

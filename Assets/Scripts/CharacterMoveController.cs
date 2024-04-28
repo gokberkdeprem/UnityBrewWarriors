@@ -25,7 +25,6 @@ public class CharacterMoveController : MonoBehaviour
             if (_characterFeature.isEnemy)
             {
                 var activeAllies = GameObject.FindGameObjectsWithTag("Ally");
-
                 if (activeAllies.Length > 0)
                 {
                     var activeAllyTransform = activeAllies.First().transform;

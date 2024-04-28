@@ -12,6 +12,7 @@ GameObject:
   - component: {fileID: 8366545462857000029}
   - component: {fileID: 4215240645347357393}
   - component: {fileID: 3963700222430929771}
+  - component: {fileID: 3296235087909521279}
   m_Layer: 0
   m_Name: Stick
   m_TagString: Untagged
@@ -105,6 +106,33 @@ BoxCollider:
   serializedVersion: 3
   m_Size: {x: 1, y: 1, z: 1}
   m_Center: {x: 0, y: 0, z: 0}
+--- !u!54 &3296235087909521279
+Rigidbody:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2284959367049684103}
+  serializedVersion: 4
+  m_Mass: 1
+  m_Drag: 0
+  m_AngularDrag: 0.05
+  m_CenterOfMass: {x: 0, y: 0, z: 0}
+  m_InertiaTensor: {x: 1, y: 1, z: 1}
+  m_InertiaRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_IncludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_ExcludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_ImplicitCom: 1
+  m_ImplicitTensor: 1
+  m_UseGravity: 1
+  m_IsKinematic: 1
+  m_Interpolate: 0
+  m_Constraints: 14
+  m_CollisionDetection: 0
 --- !u!1 &5494407953999993999
 GameObject:
   m_ObjectHideFlags: 0
@@ -232,6 +260,7 @@ MonoBehaviour:
     m_PersistentCalls:
       m_Calls: []
   healthBarSlider: {fileID: 2718509905690394435}
+  mainCamera: {fileID: 0}
 --- !u!54 &-7199363744625450887
 Rigidbody:
   m_ObjectHideFlags: 0
@@ -497,7 +526,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 6652131420422263776, guid: 8bac20785672344dda099529eb741938, type: 3}
       propertyPath: m_Name
-      value: HealthBar
+      value: Canvas
       objectReference: {fileID: 0}
     - target: {fileID: 7859158552100951144, guid: 8bac20785672344dda099529eb741938, type: 3}
       propertyPath: m_Name
