@@ -11,6 +11,10 @@ TagManager:
   - EnemyBase
   - AllyBaseFront
   - EnemyBaseFront
+  - SpawnManager
+  - SpearCharacter
+  - StickCharacter
+  - StoneCharacter
   layers:
   - Default
   - TransparentFX

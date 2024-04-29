@@ -4,33 +4,28 @@ using UnityEngine;
 
 public class CharacterAttackController : MonoBehaviour
 {
-    [SerializeField] private List<GameObject> activeOpponents = new();
+    private List<GameObject> _activeAllies;
+    private List<GameObject> _activeEnemies;
     private float _attackRate;
     private bool _canAttack = true;
     private CharacterFeature _characterFeature;
-    private CharacterMoveController _characterMoveController;
+    private SpawnManager _spawnManager;
+    private GameObject _spawnManagerGameObject;
 
     // Start is called before the first frame update
     private void Start()
     {
         _characterFeature = gameObject.GetComponent<CharacterFeature>();
-        _characterMoveController = gameObject.GetComponent<CharacterMoveController>();
         _attackRate = _characterFeature.attackRate;
+        _spawnManagerGameObject = GameObject.FindWithTag("SpawnManager");
+        _spawnManager = _spawnManagerGameObject.GetComponent<SpawnManager>();
+        _activeEnemies = _spawnManager.activeEnemies;
+        _activeAllies = _spawnManager.activeAllies;
     }
 
     // Update is called once per frame
     private void Update()
     {
-        if (activeOpponents.Count <= 0)
-            _characterMoveController.canMove = true;
-    }
-
-    public void OnTriggerEnter(Collider other)
-    {
-        if (_characterFeature.isEnemy && (other.CompareTag("Ally") || other.CompareTag("AllyBase")))
-            activeOpponents.Add(other.gameObject);
-        else if (!_characterFeature.isEnemy && (other.CompareTag("Enemy") || other.CompareTag("EnemyBase")))
-            activeOpponents.Add(other.gameObject);
     }
 
     public void OnTriggerStay(Collider other)
@@ -41,7 +36,13 @@ public class CharacterAttackController : MonoBehaviour
             Attack(other);
     }
 
+
     private void Attack(Collider other)
+    {
+        CloseAttack(other);
+    }
+
+    private void CloseAttack(Collider other)
     {
         if (other.CompareTag("Enemy") || other.CompareTag("Ally"))
         {
@@ -69,7 +70,9 @@ public class CharacterAttackController : MonoBehaviour
 
     private void RemoveFromActiveOpponents(GameObject go)
     {
-        activeOpponents.Remove(go);
+        var isEnemy = go.GetComponent<CharacterFeature>().isEnemy;
+        if (isEnemy) _activeEnemies.Remove(go);
+        else _activeAllies.Remove(go);
     }
 
     private IEnumerator AttackCoolDown()
@@ -78,4 +81,48 @@ public class CharacterAttackController : MonoBehaviour
         yield return new WaitForSeconds(_attackRate);
         _canAttack = true;
     }
+
+    // private void LongAttack()
+    // {
+    //     if (_canAttack && _characterFeature.characterType == CharacterType.StoneCharacter &&
+    //         _characterFeature.canAttack)
+    //     {
+    //         if (_characterFeature.isEnemy)
+    //         {
+    //             if (_characterFeature.closestAlly.CompareTag("Ally"))
+    //             {
+    //                 _characterFeature.closestAlly.GetComponent<CharacterFeature>().currentHealth -= 1;
+    //                 _characterFeature.closestAlly.GetComponent<CharacterFeature>().UpdateHealthBar();
+    //                 _characterFeature.closestAlly.GetComponent<CharacterFeature>().onCharacterDeath
+    //                     .AddListener(x => _characterFeature.canAttack = false);
+    //             }
+    //             else
+    //             {
+    //                 _characterFeature.closestAlly.GetComponent<BaseFeature>().currentHealth -= 1;
+    //                 _characterFeature.closestAlly.GetComponent<BaseFeature>().UpdateHealthBar();
+    //                 _characterFeature.closestAlly.GetComponent<BaseFeature>().onBaseDeath
+    //                     .AddListener(x => _characterFeature.canAttack = false);
+    //             }
+    //         }
+    //         else if (!_characterFeature.isEnemy)
+    //         {
+    //             if (_characterFeature.closestEnemy.CompareTag("Enemy"))
+    //             {
+    //                 _characterFeature.closestEnemy.GetComponent<CharacterFeature>().currentHealth -= 1;
+    //                 _characterFeature.closestEnemy.GetComponent<CharacterFeature>().UpdateHealthBar();
+    //                 _characterFeature.closestEnemy.GetComponent<CharacterFeature>().onCharacterDeath
+    //                     .AddListener(x => _characterFeature.canAttack = false);
+    //             }
+    //             else
+    //             {
+    //                 _characterFeature.closestEnemy.GetComponent<BaseFeature>().currentHealth -= 1;
+    //                 _characterFeature.closestEnemy.GetComponent<BaseFeature>().UpdateHealthBar();
+    //                 _characterFeature.closestEnemy.GetComponent<BaseFeature>().onBaseDeath
+    //                     .AddListener(x => _characterFeature.canAttack = false);
+    //             }
+    //         }
+    //
+    //         StartCoroutine(AttackCoolDown());
+    //     }
+    // }
 }
