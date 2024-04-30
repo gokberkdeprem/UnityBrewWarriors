@@ -95,11 +95,10 @@ MonoBehaviour:
       m_Calls: []
   healthBarSlider: {fileID: 5346674225699343177}
   mainCamera: {fileID: 0}
-  characterType: 0
-  closestAlly: {fileID: 0}
-  closestEnemy: {fileID: 0}
-  attackRange: 3
-  canAttack: 1
+  characterType: 2
+  spawnRate: 5
+  spawnPrice: 5
+  rewardPrice: 5
 --- !u!114 &3345187759501340902
 MonoBehaviour:
   m_ObjectHideFlags: 0

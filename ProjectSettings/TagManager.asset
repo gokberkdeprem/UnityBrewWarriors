@@ -15,6 +15,7 @@ TagManager:
   - SpearCharacter
   - StickCharacter
   - StoneCharacter
+  - ShopManager
   layers:
   - Default
   - TransparentFX

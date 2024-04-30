@@ -15,6 +15,10 @@ public class CharacterFeature : MonoBehaviour
     [SerializeField] private Slider healthBarSlider;
     [SerializeField] private Camera mainCamera;
     [SerializeField] public CharacterType characterType;
+    [SerializeField] public float spawnRate;
+    [SerializeField] public int spawnPrice;
+    [SerializeField] public int rewardPrice;
+
 
     // //StoneCharacter options
     // [SerializeField] public GameObject closestAlly;
@@ -28,11 +32,17 @@ public class CharacterFeature : MonoBehaviour
     // private SpawnManager _spawnManager;
     // private GameObject _spawnManagerGameObject;
 
+    //ShopManager
+    private ShopManager _shopManager;
+    private GameObject _shopManagerGameObject;
+
     private void Start()
     {
         isEnemy = gameObject.CompareTag("Enemy");
         mainCamera = Camera.main;
         currentHealth = maxHealth;
+        _shopManagerGameObject = GameObject.FindWithTag("ShopManager");
+        _shopManager = _shopManagerGameObject.GetComponent<ShopManager>();
         // _spawnManagerGameObject = GameObject.FindWithTag("SpawnManager");
         // _spawnManager = _spawnManagerGameObject.GetComponent<SpawnManager>();
         // _activeEnemies = _spawnManager.activeEnemies;
@@ -49,6 +59,8 @@ public class CharacterFeature : MonoBehaviour
         FixHealthBarRotation();
         if (currentHealth <= 0)
         {
+            if (isEnemy) _shopManager.EarnPlayerGold(rewardPrice);
+
             Destroy(gameObject);
             onCharacterDeath.Invoke(gameObject);
         }
