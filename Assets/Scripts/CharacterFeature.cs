@@ -15,9 +15,10 @@ public class CharacterFeature : MonoBehaviour
     [SerializeField] private Slider healthBarSlider;
     [SerializeField] private Camera mainCamera;
     [SerializeField] public CharacterType characterType;
-    [SerializeField] public float spawnRate;
+    [SerializeField] public float spawnDelay;
     [SerializeField] public int spawnPrice;
     [SerializeField] public int rewardPrice;
+    [SerializeField] public int purchasePrice;
 
 
     // //StoneCharacter options
@@ -59,7 +60,7 @@ public class CharacterFeature : MonoBehaviour
         FixHealthBarRotation();
         if (currentHealth <= 0)
         {
-            if (isEnemy) _shopManager.EarnPlayerGold(rewardPrice);
+            if (isEnemy) _shopManager.EarnGold(rewardPrice);
 
             Destroy(gameObject);
             onCharacterDeath.Invoke(gameObject);

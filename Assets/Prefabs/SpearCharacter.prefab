@@ -313,9 +313,10 @@ MonoBehaviour:
   healthBarSlider: {fileID: 8083407763829338651}
   mainCamera: {fileID: 0}
   characterType: 1
-  spawnRate: 3
+  spawnDelay: 4
   spawnPrice: 3
   rewardPrice: 3
+  purchasePrice: 10
 --- !u!54 &2295474971344423723
 Rigidbody:
   m_ObjectHideFlags: 0

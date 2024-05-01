@@ -86,7 +86,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   isEnemy: 0
   maxHealth: 10
-  power: 1
+  power: 3
   attackRate: 1
   currentHealth: 0
   speed: 1
@@ -96,9 +96,10 @@ MonoBehaviour:
   healthBarSlider: {fileID: 5346674225699343177}
   mainCamera: {fileID: 0}
   characterType: 2
-  spawnRate: 5
+  spawnDelay: 2
   spawnPrice: 5
   rewardPrice: 5
+  purchasePrice: 10
 --- !u!114 &3345187759501340902
 MonoBehaviour:
   m_ObjectHideFlags: 0

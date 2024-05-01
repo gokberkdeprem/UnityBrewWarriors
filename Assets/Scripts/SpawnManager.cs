@@ -40,12 +40,12 @@ public class SpawnManager : MonoBehaviour
 
     private void PayForInstantiate(GameObject go)
     {
-        _shopManager.PayPlayerGold(go.GetComponent<CharacterFeature>().spawnPrice);
+        _shopManager.PayGold(go.GetComponent<CharacterFeature>().spawnPrice);
     }
 
     public void InstantiateStickCharacter()
     {
-        if (_shopManager.CanPay(CharacterType.StickCharacter))
+        if (_shopManager.CanInstantiate(CharacterType.StickCharacter))
         {
             var ally = Instantiate(warriors[(int)CharacterType.StickCharacter], RandomAllyPosition(),
                 warriors[0].transform.rotation);
@@ -57,7 +57,7 @@ public class SpawnManager : MonoBehaviour
 
     public void InstantiateSpearCharacter()
     {
-        if (_shopManager.CanPay(CharacterType.SpearCharacter))
+        if (_shopManager.CanInstantiate(CharacterType.SpearCharacter))
         {
             var ally = Instantiate(warriors[(int)CharacterType.SpearCharacter], RandomAllyPosition(),
                 warriors[0].transform.rotation);
@@ -69,7 +69,7 @@ public class SpawnManager : MonoBehaviour
 
     public void InstantiateStoneCharacter()
     {
-        if (_shopManager.CanPay(CharacterType.StickCharacter))
+        if (_shopManager.CanInstantiate(CharacterType.StickCharacter))
         {
             var ally = Instantiate(warriors[(int)CharacterType.StoneCharacter], RandomAllyPosition(),
                 warriors[0].transform.rotation);
