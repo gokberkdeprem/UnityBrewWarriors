@@ -288,7 +288,10 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: e4588f9df12bd45a18f7734b11631f08, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  canMove: 1
+  _characterFeature: {fileID: 0}
+  _allyBase: {fileID: 0}
+  _enemyBase: {fileID: 0}
+  _spawnManager: {fileID: 0}
 --- !u!114 &-968111086781499987
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -306,7 +309,7 @@ MonoBehaviour:
   power: 5
   attackRate: 2
   currentHealth: 0
-  speed: 1
+  speed: 0.5
   onCharacterDeath:
     m_PersistentCalls:
       m_Calls: []

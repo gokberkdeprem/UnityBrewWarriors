@@ -1,43 +1,22 @@
 using System.Collections.Generic;
-using System.Linq;
 using Enums;
 using TMPro;
 using UnityEngine;
 
 public class ShopManager : MonoBehaviour
 {
-    [SerializeField] public int playerGold;
-    [SerializeField] private TMP_Text playerGoldUI;
-    [SerializeField] private bool showShop;
-    [SerializeField] private GameObject shopUI;
-    [SerializeField] private List<GameObject> warriorsGameObjects;
-    private readonly List<CharPriceModel> _charPriceModels = new();
+    public int playerGold;
+    public TMP_Text playerGoldUI;
+    public bool showShop;
+    public GameObject shopUI;
+    public List<GameObject> warriorsGameObjects;
+    public Dictionary<CharacterType, CharacterFeature> CharTypeToFeature = new();
 
-    // Start is called before the first frame update
     private void Start()
     {
         playerGoldUI.text = "GOLD: " + playerGold;
         shopUI.SetActive(showShop);
-        PopulateCharShopModel(warriorsGameObjects);
-    }
-
-    // Update is called once per frame
-    private void Update()
-    {
-    }
-
-    private void PopulateCharShopModel(List<GameObject> warriors)
-    {
-        foreach (var warrior in warriors)
-        {
-            var charFeature = warrior.GetComponent<CharacterFeature>();
-            _charPriceModels.Add(new CharPriceModel
-            {
-                CharacterType = charFeature.characterType,
-                SpawnPrice = charFeature.spawnPrice,
-                PurchasePrice = charFeature.purchasePrice
-            });
-        }
+        PopulateCharShopModel();
     }
 
     public void ToggleShopUI()
@@ -52,7 +31,7 @@ public class ShopManager : MonoBehaviour
         playerGoldUI.text = "GOLD: " + playerGold;
     }
 
-    public void PayGold(int payment)
+    private void PayGold(int payment)
     {
         playerGold -= payment;
         playerGoldUI.text = "GOLD: " + playerGold;
@@ -60,24 +39,31 @@ public class ShopManager : MonoBehaviour
 
     public bool CanInstantiate(CharacterType characterType)
     {
-        return playerGold >= _charPriceModels.First(x => x.CharacterType == characterType).SpawnPrice;
+        return playerGold >= CharTypeToFeature[characterType].spawnPrice;
+    }
+
+    public void PayForInstantiate(CharacterType characterType)
+    {
+        PayGold(CharTypeToFeature[characterType].spawnPrice);
     }
 
     public void PurchaseCharacter(CharacterType characterType)
     {
-        var price = _charPriceModels.First(x => x.CharacterType == characterType).PurchasePrice;
+        var price = CharTypeToFeature[characterType].purchasePrice;
         PayGold(price);
     }
 
     public bool CanPurchase(CharacterType characterType)
     {
-        return playerGold >= _charPriceModels.First(x => x.CharacterType == characterType).PurchasePrice;
+        return playerGold >= CharTypeToFeature[characterType].purchasePrice;
     }
 
-    private class CharPriceModel
+    private void PopulateCharShopModel()
     {
-        public CharacterType CharacterType;
-        public int PurchasePrice;
-        public int SpawnPrice;
+        foreach (var warrior in warriorsGameObjects)
+        {
+            var charFeature = warrior.GetComponent<CharacterFeature>();
+            CharTypeToFeature.Add(charFeature.characterType, charFeature);
+        }
     }
 }

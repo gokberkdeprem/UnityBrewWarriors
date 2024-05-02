@@ -237,7 +237,10 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: e4588f9df12bd45a18f7734b11631f08, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  canMove: 1
+  _characterFeature: {fileID: 0}
+  _allyBase: {fileID: 0}
+  _enemyBase: {fileID: 0}
+  _spawnManager: {fileID: 0}
 --- !u!114 &-4844096364914154669
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -255,7 +258,7 @@ MonoBehaviour:
   power: 1
   attackRate: 2
   currentHealth: 0
-  speed: 1
+  speed: 0.5
   onCharacterDeath:
     m_PersistentCalls:
       m_Calls: []
@@ -263,7 +266,7 @@ MonoBehaviour:
   mainCamera: {fileID: 0}
   characterType: 0
   spawnDelay: 5
-  spawnPrice: 1
+  spawnPrice: 10
   rewardPrice: 1
   purchasePrice: 10
 --- !u!54 &-7199363744625450887

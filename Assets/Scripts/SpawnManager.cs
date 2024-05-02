@@ -1,7 +1,9 @@
 using System.Collections;
 using System.Collections.Generic;
 using Enums;
+using TMPro;
 using UnityEngine;
+using UnityEngine.UI;
 
 public class SpawnManager : MonoBehaviour
 {
@@ -12,23 +14,21 @@ public class SpawnManager : MonoBehaviour
     public GameObject enemyBase;
     public float enemySpawnDelay;
     public bool canSpawnEnemy = true;
-    public List<GameObject> activeAllies = new();
-    public List<GameObject> activeEnemies = new();
 
-    //ShopManager
+    [SerializeField] private Button _spawnStickWarriorButton;
+    [SerializeField] private Button _spawnSpearWarriorButton;
+    [SerializeField] private Button _spawnStoneWarriorButton;
+
+    public readonly List<GameObject> activeAllies = new();
+    public readonly List<GameObject> activeEnemies = new();
+
     private ShopManager _shopManager;
-    private GameObject _shopManagerGameObject;
 
-    // Start is called before the first frame update
     private void Start()
     {
-        activeAllies.Add(allyBase);
-        activeEnemies.Add(enemyBase);
-        _shopManagerGameObject = GameObject.FindWithTag("ShopManager");
-        _shopManager = _shopManagerGameObject.GetComponent<ShopManager>();
+        Initialize();
     }
 
-    // Update is called once per frame
     private void Update()
     {
         if (canSpawnEnemy)
@@ -38,43 +38,59 @@ public class SpawnManager : MonoBehaviour
         }
     }
 
-    private void PayForInstantiate(GameObject go)
-    {
-        _shopManager.PayGold(go.GetComponent<CharacterFeature>().spawnPrice);
-    }
-
     public void InstantiateStickCharacter()
     {
-        if (_shopManager.CanInstantiate(CharacterType.StickCharacter))
-        {
-            var ally = Instantiate(warriors[(int)CharacterType.StickCharacter], RandomAllyPosition(),
-                warriors[0].transform.rotation);
-            activeAllies.Add(ally);
-            PayForInstantiate(ally);
-            ally.tag = "Ally";
-        }
+        InstantiateCharacter(CharacterType.StickCharacter);
     }
 
     public void InstantiateSpearCharacter()
     {
-        if (_shopManager.CanInstantiate(CharacterType.SpearCharacter))
-        {
-            var ally = Instantiate(warriors[(int)CharacterType.SpearCharacter], RandomAllyPosition(),
-                warriors[0].transform.rotation);
-            activeAllies.Add(ally);
-            PayForInstantiate(ally);
-            ally.tag = "Ally";
-        }
+        InstantiateCharacter(CharacterType.SpearCharacter);
     }
 
     public void InstantiateStoneCharacter()
     {
-        if (_shopManager.CanInstantiate(CharacterType.StickCharacter))
+        InstantiateCharacter(CharacterType.StoneCharacter);
+    }
+
+    private void Initialize()
+    {
+        activeAllies.Add(allyBase);
+        activeEnemies.Add(enemyBase);
+        _shopManager = GameObject.FindWithTag("ShopManager").GetComponent<ShopManager>();
+        InitializeSpawnButtons();
+        UpdateSpawnButtonText();
+    }
+
+    private void InitializeSpawnButtons()
+    {
+        _spawnStickWarriorButton.onClick.AddListener(InstantiateStickCharacter);
+        _spawnSpearWarriorButton.onClick.AddListener(InstantiateSpearCharacter);
+        _spawnStoneWarriorButton.onClick.AddListener(InstantiateStoneCharacter);
+    }
+
+    private void UpdateSpawnButtonText()
+    {
+        var stickSpawnPrice = warriors[0].GetComponent<CharacterFeature>().spawnPrice;
+        _spawnStickWarriorButton.GetComponentInChildren<TMP_Text>().text =
+            $"Spawn \nStick Warrior \n({stickSpawnPrice} Gold) ";
+
+        var spearSpawnPrice = warriors[1].GetComponent<CharacterFeature>().spawnPrice;
+        _spawnSpearWarriorButton.GetComponentInChildren<TMP_Text>().text =
+            $"Spawn \nSpear Warrior \n({spearSpawnPrice} Gold)";
+
+        var stoneSpawnPrice = warriors[2].GetComponent<CharacterFeature>().spawnPrice;
+        _spawnStoneWarriorButton.GetComponentInChildren<TMP_Text>().text =
+            $"Spawn \nStone Warrior \n({stoneSpawnPrice} Gold)";
+    }
+
+    private void InstantiateCharacter(CharacterType type)
+    {
+        if (_shopManager.CanInstantiate(type))
         {
-            var ally = Instantiate(warriors[(int)CharacterType.StoneCharacter], RandomAllyPosition(),
-                warriors[0].transform.rotation);
+            var ally = Instantiate(warriors[(int)type], RandomAllyPosition(), warriors[0].transform.rotation);
             activeAllies.Add(ally);
-            PayForInstantiate(ally);
+            _shopManager.PayForInstantiate(type);
             ally.tag = "Ally";
         }
     }

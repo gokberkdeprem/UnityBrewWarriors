@@ -6,66 +6,46 @@ using UnityEngine.UI;
 
 public class ShopButtonsController : MonoBehaviour
 {
-    [SerializeField] private GameObject shopManagerObject;
+    [SerializeField] private GameObject stickCharSpawnButton;
+    [SerializeField] private GameObject spearCharSpawnButton;
+    [SerializeField] private GameObject stoneCharSpawnButton;
 
     [SerializeField] private Button stickPurchaseButton;
     [SerializeField] private Button stickUpgradeButton;
-    [SerializeField] private Button sparePurchaseButton;
+    [SerializeField] private Button spearPurchaseButton;
     [SerializeField] private Button spareUpgradeButton;
     [SerializeField] private Button stonePurchaseButton;
     [SerializeField] private Button stoneUpgradeButton;
 
     [SerializeField] private GameObject insufficientBalanceAlertText;
 
-    public GameObject stickCharSpawnButton;
-    public GameObject spareCharSpawnButton;
-    public GameObject stoneCharSpawnButton;
-
-    public GameObject stickChar;
-    public GameObject spearChar;
-    public GameObject stoneChar;
-
     private ShopManager _shopManager;
-
-    private CharacterFeature _spearCharFeature;
-    private CharacterFeature _stickCharFeature;
-    private CharacterFeature _stoneCharFeature;
 
     private void Start()
     {
-        spareCharSpawnButton.SetActive(false);
+        Initialize();
+    }
+
+    private void Initialize()
+    {
+        stickCharSpawnButton.SetActive(true);
+        spearCharSpawnButton.SetActive(false);
         stoneCharSpawnButton.SetActive(false);
         insufficientBalanceAlertText.SetActive(false);
 
         stickPurchaseButton.onClick.AddListener(PurchaseStickChar);
         stickUpgradeButton.onClick.AddListener(UpgradeStickChar);
-        sparePurchaseButton.onClick.AddListener(PurchaseSpareChar);
+        spearPurchaseButton.onClick.AddListener(PurchaseSpareChar);
         spareUpgradeButton.onClick.AddListener(UpgradeSpareChar);
         stonePurchaseButton.onClick.AddListener(PurchaseStoneChar);
         stoneUpgradeButton.onClick.AddListener(UpgradeStoneChar);
-        _shopManager = shopManagerObject.GetComponent<ShopManager>();
-        InitializeShopButtonTexts();
-    }
 
-    private void InitializeShopButtonTexts()
-    {
+        _shopManager = GetComponent<ShopManager>();
     }
-
 
     private void PurchaseStickChar()
     {
-        if (_shopManager.CanPurchase(CharacterType.StickCharacter))
-        {
-            _shopManager.PurchaseCharacter(CharacterType.StickCharacter);
-            stickCharSpawnButton.SetActive(true);
-            stickPurchaseButton.GetComponentInChildren<TMP_Text>().text = "Purchased!";
-            stickPurchaseButton.GetComponent<Image>().color = Color.green;
-            stickPurchaseButton.interactable = false;
-        }
-        else
-        {
-            StartCoroutine(AlertPurchaseFail(stickPurchaseButton));
-        }
+        PurchaseCharacter(CharacterType.StickCharacter, stickCharSpawnButton, stickPurchaseButton);
     }
 
     private void UpgradeStickChar()
@@ -74,18 +54,7 @@ public class ShopButtonsController : MonoBehaviour
 
     private void PurchaseSpareChar()
     {
-        if (_shopManager.CanPurchase(CharacterType.SpearCharacter))
-        {
-            _shopManager.PurchaseCharacter(CharacterType.SpearCharacter);
-            spareCharSpawnButton.SetActive(true);
-            sparePurchaseButton.GetComponentInChildren<TMP_Text>().text = "Purchased!";
-            sparePurchaseButton.GetComponent<Image>().color = Color.green;
-            sparePurchaseButton.interactable = false;
-        }
-        else
-        {
-            StartCoroutine(AlertPurchaseFail(sparePurchaseButton));
-        }
+        PurchaseCharacter(CharacterType.SpearCharacter, spearCharSpawnButton, spearPurchaseButton);
     }
 
     private void UpgradeSpareChar()
@@ -94,24 +63,33 @@ public class ShopButtonsController : MonoBehaviour
 
     private void PurchaseStoneChar()
     {
-        if (_shopManager.CanPurchase(CharacterType.SpearCharacter))
-        {
-            _shopManager.PurchaseCharacter(CharacterType.SpearCharacter);
-            stoneCharSpawnButton.SetActive(true);
-            stonePurchaseButton.GetComponentInChildren<TMP_Text>().text = "Purchased!";
-            stonePurchaseButton.GetComponent<Image>().color = Color.green;
-            stonePurchaseButton.interactable = false;
-        }
-        else
-        {
-            StartCoroutine(AlertPurchaseFail(stonePurchaseButton));
-        }
+        PurchaseCharacter(CharacterType.StoneCharacter, stoneCharSpawnButton, stonePurchaseButton);
     }
 
     private void UpgradeStoneChar()
     {
     }
 
+    private void UpgradeCharacter(CharacterType type, Button upgradeButton)
+    {
+        // if (_shopManager.CanUpgrade(type)) _shopManager.UpgradeCharacter();
+    }
+
+    private void PurchaseCharacter(CharacterType type, GameObject spawnButton, Button purchaseButton)
+    {
+        if (_shopManager.CanPurchase(type))
+        {
+            _shopManager.PurchaseCharacter(type);
+            spawnButton.SetActive(true);
+            purchaseButton.GetComponentInChildren<TMP_Text>().text = "Purchased!";
+            purchaseButton.GetComponent<Image>().color = Color.green;
+            purchaseButton.interactable = false;
+        }
+        else
+        {
+            StartCoroutine(AlertPurchaseFail(purchaseButton));
+        }
+    }
 
     private IEnumerator AlertPurchaseFail(Button button)
     {

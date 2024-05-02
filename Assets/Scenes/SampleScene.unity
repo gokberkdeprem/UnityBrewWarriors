@@ -728,6 +728,17 @@ CanvasRenderer:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 397491876}
   m_CullTransparentMesh: 1
+--- !u!114 &534079424 stripped
+MonoBehaviour:
+  m_CorrespondingSourceObject: {fileID: 1194413849825902993, guid: 76cc7076a0baf4dce817fcfc136c90e4, type: 3}
+  m_PrefabInstance: {fileID: 820715745825576025}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 4e29b1a8efbd4b44bb3f3716e73f07ff, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1 &570376085
 GameObject:
   m_ObjectHideFlags: 0
@@ -1126,6 +1137,17 @@ RectTransform:
   m_AnchoredPosition: {x: 1.0499878, y: 0}
   m_SizeDelta: {x: 652.5, y: 129.9}
   m_Pivot: {x: 0.5, y: 0.5}
+--- !u!114 &789439027 stripped
+MonoBehaviour:
+  m_CorrespondingSourceObject: {fileID: 1194413849825902993, guid: 76cc7076a0baf4dce817fcfc136c90e4, type: 3}
+  m_PrefabInstance: {fileID: 1007086718}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 4e29b1a8efbd4b44bb3f3716e73f07ff, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1 &941272557
 GameObject:
   m_ObjectHideFlags: 0
@@ -1332,8 +1354,9 @@ MonoBehaviour:
   enemyBase: {fileID: 1199768886}
   enemySpawnDelay: 5
   canSpawnEnemy: 1
-  activeAllies: []
-  activeEnemies: []
+  _spawnStickWarriorButton: {fileID: 534079424}
+  _spawnSpearWarriorButton: {fileID: 789439027}
+  _spawnStoneWarriorButton: {fileID: 1431761638}
 --- !u!4 &982143751
 Transform:
   m_ObjectHideFlags: 0
@@ -1503,6 +1526,10 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 264568962674908705, guid: 76cc7076a0baf4dce817fcfc136c90e4, type: 3}
       propertyPath: m_LocalEulerAnglesHint.z
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 1194413849825902993, guid: 76cc7076a0baf4dce817fcfc136c90e4, type: 3}
+      propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.size
       value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 1194413849825902993, guid: 76cc7076a0baf4dce817fcfc136c90e4, type: 3}
@@ -2302,7 +2329,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!224 &1320694420
 RectTransform:
   m_ObjectHideFlags: 0
@@ -2600,11 +2627,22 @@ RectTransform:
   - {fileID: 570376086}
   m_Father: {fileID: 1668161616}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
-  m_AnchorMin: {x: 0.5, y: 0.5}
-  m_AnchorMax: {x: 0.5, y: 0.5}
-  m_AnchoredPosition: {x: -695.6, y: 531}
+  m_AnchorMin: {x: 0, y: 1}
+  m_AnchorMax: {x: 0, y: 1}
+  m_AnchoredPosition: {x: -159.04999, y: -42.9}
   m_SizeDelta: {x: 200, y: 50}
   m_Pivot: {x: 0.5, y: 0.5}
+--- !u!114 &1431761638 stripped
+MonoBehaviour:
+  m_CorrespondingSourceObject: {fileID: 1194413849825902993, guid: 76cc7076a0baf4dce817fcfc136c90e4, type: 3}
+  m_PrefabInstance: {fileID: 2090567170}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 4e29b1a8efbd4b44bb3f3716e73f07ff, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1 &1432978093
 GameObject:
   m_ObjectHideFlags: 0
@@ -2670,20 +2708,16 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 2330acfb1779a407abcef9700444c712, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  shopManagerObject: {fileID: 1432978093}
+  stickCharSpawnButton: {fileID: 2120580116}
+  spearCharSpawnButton: {fileID: 232682149}
+  stoneCharSpawnButton: {fileID: 1144350606}
   stickPurchaseButton: {fileID: 2133030974}
   stickUpgradeButton: {fileID: 608321408}
-  sparePurchaseButton: {fileID: 1528657653}
+  spearPurchaseButton: {fileID: 1528657653}
   spareUpgradeButton: {fileID: 80294759}
   stonePurchaseButton: {fileID: 1215980324}
   stoneUpgradeButton: {fileID: 1862211216}
   insufficientBalanceAlertText: {fileID: 1469979501}
-  stickCharSpawnButton: {fileID: 2120580116}
-  spareCharSpawnButton: {fileID: 232682149}
-  stoneCharSpawnButton: {fileID: 1144350606}
-  stickChar: {fileID: 5741134016424663254, guid: a6865fe95b6c14607a4c92c41a072bcb, type: 3}
-  spearChar: {fileID: 8432873630122266446, guid: ba1e1519196744f4c8f6eb55dadcb89b, type: 3}
-  stoneChar: {fileID: 8432873630122266446, guid: ba1e1519196744f4c8f6eb55dadcb89b, type: 3}
 --- !u!114 &1438427598 stripped
 MonoBehaviour:
   m_CorrespondingSourceObject: {fileID: 8124135359097245503, guid: 8bac20785672344dda099529eb741938, type: 3}
@@ -4201,6 +4235,10 @@ PrefabInstance:
       value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 1194413849825902993, guid: 76cc7076a0baf4dce817fcfc136c90e4, type: 3}
+      propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.size
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 1194413849825902993, guid: 76cc7076a0baf4dce817fcfc136c90e4, type: 3}
       propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[0].m_Target
       value: 
       objectReference: {fileID: 982143750}
@@ -4527,6 +4565,10 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 264568962674908705, guid: 76cc7076a0baf4dce817fcfc136c90e4, type: 3}
       propertyPath: m_LocalEulerAnglesHint.z
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 1194413849825902993, guid: 76cc7076a0baf4dce817fcfc136c90e4, type: 3}
+      propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.size
       value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 1194413849825902993, guid: 76cc7076a0baf4dce817fcfc136c90e4, type: 3}
