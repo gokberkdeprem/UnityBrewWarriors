@@ -9,14 +9,16 @@ public class ShopManager : MonoBehaviour
     public TMP_Text playerGoldUI;
     public bool showShop;
     public GameObject shopUI;
-    public List<GameObject> warriorsGameObjects;
-    public Dictionary<CharacterType, CharacterFeature> CharTypeToFeature = new();
+    private Dictionary<CharacterType, CharacterFeature> _characterFeatures;
+    private ShopHelper _shopHelper;
+
 
     private void Start()
     {
         playerGoldUI.text = "GOLD: " + playerGold;
         shopUI.SetActive(showShop);
-        PopulateCharShopModel();
+        _shopHelper = GetComponent<ShopHelper>();
+        _characterFeatures = _shopHelper.CharTypeToFeatureDict;
     }
 
     public void ToggleShopUI()
@@ -39,31 +41,36 @@ public class ShopManager : MonoBehaviour
 
     public bool CanInstantiate(CharacterType characterType)
     {
-        return playerGold >= CharTypeToFeature[characterType].spawnPrice;
+        return playerGold >= _characterFeatures[characterType].spawnPrice;
     }
 
     public void PayForInstantiate(CharacterType characterType)
     {
-        PayGold(CharTypeToFeature[characterType].spawnPrice);
+        PayGold(_characterFeatures[characterType].spawnPrice);
     }
 
     public void PurchaseCharacter(CharacterType characterType)
     {
-        var price = CharTypeToFeature[characterType].purchasePrice;
+        var price = _characterFeatures[characterType].purchasePrice;
         PayGold(price);
     }
 
     public bool CanPurchase(CharacterType characterType)
     {
-        return playerGold >= CharTypeToFeature[characterType].purchasePrice;
+        return playerGold >= _characterFeatures[characterType].purchasePrice;
     }
 
-    private void PopulateCharShopModel()
+
+    public bool CanUpgrade(CharacterType type)
     {
-        foreach (var warrior in warriorsGameObjects)
-        {
-            var charFeature = warrior.GetComponent<CharacterFeature>();
-            CharTypeToFeature.Add(charFeature.characterType, charFeature);
-        }
+        return playerGold >= _characterFeatures[type].upgradePrice;
+    }
+
+    public void UpgradeCharacter(CharacterType type)
+    {
+        var price = _characterFeatures[type].upgradePrice;
+        PayGold(price);
+        _characterFeatures[type].spawnRate -= 0.05f;
+        _characterFeatures[type].upgradePrice += 2;
     }
 }

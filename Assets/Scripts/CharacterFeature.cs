@@ -15,10 +15,11 @@ public class CharacterFeature : MonoBehaviour
     [SerializeField] private Slider healthBarSlider;
     [SerializeField] private Camera mainCamera;
     [SerializeField] public CharacterType characterType;
-    [SerializeField] public float spawnDelay;
+    [SerializeField] public float spawnRate;
     [SerializeField] public int spawnPrice;
     [SerializeField] public int rewardPrice;
     [SerializeField] public int purchasePrice;
+    [SerializeField] public int upgradePrice;
 
     //ShopManager
     private ShopManager _shopManager;
