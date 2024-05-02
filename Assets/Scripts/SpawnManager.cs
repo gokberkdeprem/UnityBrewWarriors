@@ -15,13 +15,14 @@ public class SpawnManager : MonoBehaviour
     public float enemySpawnDelay;
     public bool canSpawnEnemy = true;
 
-    [SerializeField] private Button _spawnStickWarriorButton;
-    [SerializeField] private Button _spawnSpearWarriorButton;
-    [SerializeField] private Button _spawnStoneWarriorButton;
+    [SerializeField] private Button spawnStickWarriorButton;
+    [SerializeField] private Button spawnSpearWarriorButton;
+    [SerializeField] private Button spawnStoneWarriorButton;
 
-    public readonly List<GameObject> activeAllies = new();
-    public readonly List<GameObject> activeEnemies = new();
+    public readonly List<GameObject> ActiveAllies = new();
+    public readonly List<GameObject> ActiveEnemies = new();
 
+    private GameManager _gameManager;
     private ShopManager _shopManager;
 
     private void Start()
@@ -31,11 +32,18 @@ public class SpawnManager : MonoBehaviour
 
     private void Update()
     {
-        if (canSpawnEnemy)
+        if (canSpawnEnemy && !_gameManager.GameOver)
         {
             InstantiateEnemy();
             StartCoroutine(SpawnCooldown());
         }
+    }
+
+    private void DisableSpawnButtons()
+    {
+        spawnStickWarriorButton.interactable = false;
+        spawnSpearWarriorButton.interactable = false;
+        spawnStoneWarriorButton.interactable = false;
     }
 
     public void InstantiateStickCharacter()
@@ -55,41 +63,43 @@ public class SpawnManager : MonoBehaviour
 
     private void Initialize()
     {
-        activeAllies.Add(allyBase);
-        activeEnemies.Add(enemyBase);
+        ActiveAllies.Add(allyBase);
+        ActiveEnemies.Add(enemyBase);
         _shopManager = GameObject.FindWithTag("ShopManager").GetComponent<ShopManager>();
+        _gameManager = GameObject.FindWithTag("GameManager").GetComponent<GameManager>();
         InitializeSpawnButtons();
         UpdateSpawnButtonText();
+        _gameManager.onGameOver.AddListener(x => DisableSpawnButtons());
     }
 
     private void InitializeSpawnButtons()
     {
-        _spawnStickWarriorButton.onClick.AddListener(InstantiateStickCharacter);
-        _spawnSpearWarriorButton.onClick.AddListener(InstantiateSpearCharacter);
-        _spawnStoneWarriorButton.onClick.AddListener(InstantiateStoneCharacter);
+        spawnStickWarriorButton.onClick.AddListener(InstantiateStickCharacter);
+        spawnSpearWarriorButton.onClick.AddListener(InstantiateSpearCharacter);
+        spawnStoneWarriorButton.onClick.AddListener(InstantiateStoneCharacter);
     }
 
     private void UpdateSpawnButtonText()
     {
         var stickSpawnPrice = warriors[0].GetComponent<CharacterFeature>().spawnPrice;
-        _spawnStickWarriorButton.GetComponentInChildren<TMP_Text>().text =
+        spawnStickWarriorButton.GetComponentInChildren<TMP_Text>().text =
             $"Spawn \nStick Warrior \n({stickSpawnPrice} Gold) ";
 
         var spearSpawnPrice = warriors[1].GetComponent<CharacterFeature>().spawnPrice;
-        _spawnSpearWarriorButton.GetComponentInChildren<TMP_Text>().text =
+        spawnSpearWarriorButton.GetComponentInChildren<TMP_Text>().text =
             $"Spawn \nSpear Warrior \n({spearSpawnPrice} Gold)";
 
         var stoneSpawnPrice = warriors[2].GetComponent<CharacterFeature>().spawnPrice;
-        _spawnStoneWarriorButton.GetComponentInChildren<TMP_Text>().text =
+        spawnStoneWarriorButton.GetComponentInChildren<TMP_Text>().text =
             $"Spawn \nStone Warrior \n({stoneSpawnPrice} Gold)";
     }
 
     private void InstantiateCharacter(CharacterType type)
     {
-        if (_shopManager.CanInstantiate(type))
+        if (_shopManager.CanInstantiate(type) && !_gameManager.GameOver)
         {
-            var ally = Instantiate(warriors[(int)type], RandomAllyPosition(), warriors[0].transform.rotation);
-            activeAllies.Add(ally);
+            var ally = Instantiate(warriors[(int)type], RandomAllyPosition(), allyBase.transform.rotation);
+            ActiveAllies.Add(ally);
             _shopManager.PayForInstantiate(type);
             ally.tag = "Ally";
         }
@@ -100,8 +110,8 @@ public class SpawnManager : MonoBehaviour
         float randomZPos = Random.Range(-1, 2);
         var spawnPos = new Vector3(enemyBaseFront.transform.position.x, enemyBaseFront.transform.position.y,
             enemyBaseFront.transform.position.z + randomZPos);
-        var enemy = Instantiate(warriors[Random.Range(0, 3)], spawnPos, warriors[0].transform.rotation);
-        activeEnemies.Add(enemy);
+        var enemy = Instantiate(warriors[Random.Range(0, 3)], spawnPos, enemyBase.transform.rotation);
+        ActiveEnemies.Add(enemy);
         enemy.tag = "Enemy";
     }
 

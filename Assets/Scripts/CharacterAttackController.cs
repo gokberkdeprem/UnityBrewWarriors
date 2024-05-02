@@ -9,6 +9,9 @@ public class CharacterAttackController : MonoBehaviour
     private float _attackRate;
     private bool _canAttack = true;
     private CharacterFeature _characterFeature;
+    private GameManager _gameManager;
+
+    private ShopHelper _shopHelper;
     private SpawnManager _spawnManager;
 
     private void Start()
@@ -43,13 +46,14 @@ public class CharacterAttackController : MonoBehaviour
         _characterFeature = GetComponent<CharacterFeature>();
         _attackRate = _characterFeature.attackRate;
         _spawnManager = GameObject.FindWithTag("SpawnManager").GetComponent<SpawnManager>();
-        _activeEnemies = _spawnManager.activeEnemies;
-        _activeAllies = _spawnManager.activeAllies;
+        _activeEnemies = _spawnManager.ActiveEnemies;
+        _activeAllies = _spawnManager.ActiveAllies;
+        _gameManager = GameObject.FindWithTag("GameManager").GetComponent<GameManager>();
     }
 
     private void Attack(Collider other)
     {
-        if (_canAttack)
+        if (_canAttack && !_gameManager.GameOver)
         {
             CloseAttack(other);
             StartCoroutine(AttackCooldown());

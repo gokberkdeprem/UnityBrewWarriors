@@ -13,11 +13,6 @@ public class ShopHelper : MonoBehaviour
         PopulateCharTypeToFeatureDict();
     }
 
-    // Update is called once per frame
-    private void Update()
-    {
-    }
-
     private void PopulateCharTypeToFeatureDict()
     {
         foreach (var warrior in warriorsGameObjects)

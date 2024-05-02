@@ -6,6 +6,8 @@ public class CharacterMoveController : MonoBehaviour
     [SerializeField] private GameObject _allyBase;
     [SerializeField] private GameObject _enemyBase;
     [SerializeField] private SpawnManager _spawnManager;
+    private GameManager _gameManager;
+    private ShopHelper _shopHelper;
 
     private bool CanMove { get; set; } = true;
 
@@ -16,7 +18,7 @@ public class CharacterMoveController : MonoBehaviour
 
     private void Update()
     {
-        if (CanMove)
+        if (CanMove && !_gameManager.GameOver)
         {
             UpdateRotation();
             Move();
@@ -41,25 +43,37 @@ public class CharacterMoveController : MonoBehaviour
         _enemyBase = GameObject.FindWithTag("EnemyBaseFront");
         _allyBase = GameObject.FindWithTag("AllyBaseFront");
         _spawnManager = GameObject.FindWithTag("SpawnManager").GetComponent<SpawnManager>();
+        _gameManager = GameObject.FindWithTag("GameManager").GetComponent<GameManager>();
     }
 
     private void UpdateRotation()
     {
         var target = _characterFeature.isEnemy ? FindClosestAlly() : FindClosestEnemy();
         if (target != null)
-            transform.LookAt(target.transform);
+        {
+            var targetDirection = target.transform.position - gameObject.transform.position;
+            var targetRotation = Quaternion.LookRotation(targetDirection);
+            transform.rotation = Quaternion.Slerp(transform.rotation, targetRotation,
+                Time.deltaTime * _characterFeature.speed * 2);
+        }
         else
-            transform.LookAt(_characterFeature.isEnemy ? _allyBase.transform : _enemyBase.transform);
+        {
+            target = _characterFeature.isEnemy ? _allyBase : _enemyBase;
+            var targetDirection = target.transform.position - gameObject.transform.position;
+            var targetRotation = Quaternion.LookRotation(targetDirection);
+            transform.rotation = Quaternion.Slerp(transform.rotation, targetRotation,
+                Time.deltaTime * _characterFeature.speed * 2);
+        }
     }
 
     private GameObject FindClosestAlly()
     {
-        return _spawnManager.activeAllies.Find(ally => ally.CompareTag("Ally"));
+        return _spawnManager.ActiveAllies.Find(ally => ally.CompareTag("Ally"));
     }
 
     private GameObject FindClosestEnemy()
     {
-        return _spawnManager.activeEnemies.Find(enemy => enemy.CompareTag("Enemy"));
+        return _spawnManager.ActiveEnemies.Find(enemy => enemy.CompareTag("Enemy"));
     }
 
     private void Move()

@@ -19,9 +19,8 @@ public class ShopButtonsController : MonoBehaviour
     [SerializeField] private Button stoneUpgradeButton;
 
     [SerializeField] private GameObject insufficientBalanceAlertText;
-
-    public List<GameObject> warriorsGameObjects;
     private Dictionary<CharacterType, CharacterFeature> _characterFeatures;
+    private GameManager _gameManager;
     private ShopHelper _shopHelper;
     private ShopManager _shopManager;
 
@@ -29,6 +28,7 @@ public class ShopButtonsController : MonoBehaviour
     {
         Initialize();
     }
+
 
     private void Initialize()
     {
@@ -40,6 +40,7 @@ public class ShopButtonsController : MonoBehaviour
         _shopManager = GetComponent<ShopManager>();
         _shopHelper = GetComponent<ShopHelper>();
         _characterFeatures = _shopHelper.CharTypeToFeatureDict;
+        _gameManager = GameObject.FindWithTag("GameManager").GetComponent<GameManager>();
 
         InitializeButtonsAndTexts();
     }
@@ -112,10 +113,6 @@ public class ShopButtonsController : MonoBehaviour
         {
             _shopManager.UpgradeCharacter(type);
             UpdateButtonText(type, upgradeButton, false);
-        }
-        else
-        {
-            StartCoroutine(AlertPurchaseFail(upgradeButton));
         }
     }
 

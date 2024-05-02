@@ -57,8 +57,8 @@ BoxCollider:
   m_ProvidesContacts: 0
   m_Enabled: 1
   serializedVersion: 3
-  m_Size: {x: 1, y: 1, z: 1}
-  m_Center: {x: 0, y: 0, z: 0}
+  m_Size: {x: 0.47, y: 0.72, z: 0.48}
+  m_Center: {x: 0.08531958, y: 0, z: 0.095226765}
 --- !u!114 &8029129119436104242
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -99,7 +99,7 @@ MonoBehaviour:
   healthBarSlider: {fileID: 5346674225699343177}
   mainCamera: {fileID: 0}
   characterType: 2
-  spawnRate: 1.0499802
+  spawnRate: 10
   spawnPrice: 5
   rewardPrice: 5
   purchasePrice: 10

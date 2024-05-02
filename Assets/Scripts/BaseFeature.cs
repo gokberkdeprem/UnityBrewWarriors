@@ -8,7 +8,7 @@ public class BaseFeature : MonoBehaviour
     public float currentHealth;
     public UnityEvent<GameObject> onBaseDeath;
     [SerializeField] private Slider healthBarSlider;
-    [SerializeField] private bool isEnemy;
+    [SerializeField] public bool isEnemy;
     private Cubifier _cubifier;
 
     private void Start()

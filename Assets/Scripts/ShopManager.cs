@@ -10,8 +10,8 @@ public class ShopManager : MonoBehaviour
     public bool showShop;
     public GameObject shopUI;
     private Dictionary<CharacterType, CharacterFeature> _characterFeatures;
+    private GameManager _gameManager;
     private ShopHelper _shopHelper;
-
 
     private void Start()
     {
@@ -19,6 +19,14 @@ public class ShopManager : MonoBehaviour
         shopUI.SetActive(showShop);
         _shopHelper = GetComponent<ShopHelper>();
         _characterFeatures = _shopHelper.CharTypeToFeatureDict;
+        _gameManager = GameObject.FindWithTag("GameManager").GetComponent<GameManager>();
+        _gameManager.onGameOver.AddListener(OnGameOver);
+    }
+
+    private void OnGameOver(BaseFeature baseFeature)
+    {
+        shopUI.SetActive(false);
+        EarnGold(baseFeature.isEnemy ? 100 : 50);
     }
 
     public void ToggleShopUI()
@@ -60,10 +68,10 @@ public class ShopManager : MonoBehaviour
         return playerGold >= _characterFeatures[characterType].purchasePrice;
     }
 
-
     public bool CanUpgrade(CharacterType type)
     {
-        return playerGold >= _characterFeatures[type].upgradePrice;
+        var isMaxed = _characterFeatures[type].spawnRate - 0.05f < 0;
+        return playerGold >= _characterFeatures[type].upgradePrice && !isMaxed;
     }
 
     public void UpgradeCharacter(CharacterType type)

@@ -258,18 +258,18 @@ MonoBehaviour:
   power: 1
   attackRate: 2
   currentHealth: 0
-  speed: 0.5
+  speed: 1
   onCharacterDeath:
     m_PersistentCalls:
       m_Calls: []
   healthBarSlider: {fileID: 2718509905690394435}
   mainCamera: {fileID: 0}
   characterType: 0
-  spawnRate: 5
+  spawnRate: 1
   spawnPrice: 10
   rewardPrice: 1
   purchasePrice: 10
-  upgradePrice: 512
+  upgradePrice: 82
 --- !u!54 &-7199363744625450887
 Rigidbody:
   m_ObjectHideFlags: 0
