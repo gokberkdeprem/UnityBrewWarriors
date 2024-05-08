@@ -5,6 +5,7 @@ public class Cubifier : MonoBehaviour
     public GameObject targetCube;
     public Vector3 sectionCount;
     public Material subCubeMaterial;
+    private BaseFeature _baseFeature;
 
     private Vector3 _fillStartPosition;
     private Transform _parentTransform;
@@ -34,12 +35,17 @@ public class Cubifier : MonoBehaviour
             _subCube.GetComponent<MeshRenderer>().material = subCubeMaterial;
         }
 
-        Destroy(targetCube);
-        foreach (Transform subCuboid in _parentTransform) subCuboid.gameObject.AddComponent<Rigidbody>();
+        var direction = _baseFeature.isEnemy ? Vector3.right : Vector3.left;
+
+        targetCube.SetActive(false);
+        foreach (Transform subCuboid in _parentTransform)
+            subCuboid.gameObject.AddComponent<Rigidbody>()
+                .AddForce(direction * (Time.deltaTime * 1000), ForceMode.Impulse);
     }
 
     private void Initialize()
     {
+        _baseFeature = GetComponent<BaseFeature>();
         if (targetCube == null)
             targetCube = gameObject;
 

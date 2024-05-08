@@ -26,7 +26,7 @@ public class ShopManager : MonoBehaviour
     private void OnGameOver(BaseFeature baseFeature)
     {
         shopUI.SetActive(false);
-        EarnGold(baseFeature.isEnemy ? 100 : 50);
+        EarnGold(baseFeature.destroyPrice);
     }
 
     public void ToggleShopUI()

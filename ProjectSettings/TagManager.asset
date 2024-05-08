@@ -16,6 +16,7 @@ TagManager:
   - StickCharacter
   - StoneCharacter
   - ShopManager
+  - GameManager
   layers:
   - Default
   - TransparentFX

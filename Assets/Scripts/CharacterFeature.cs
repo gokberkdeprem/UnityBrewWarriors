@@ -5,6 +5,9 @@ using UnityEngine.UI;
 
 public class CharacterFeature : MonoBehaviour
 {
+    private static readonly int DeathTrigger = Animator.StringToHash("DeathTrigger");
+    //Animator
+
     [SerializeField] public bool isEnemy;
     [SerializeField] public float maxHealth;
     [SerializeField] public float power;
@@ -20,6 +23,7 @@ public class CharacterFeature : MonoBehaviour
     [SerializeField] public int rewardPrice;
     [SerializeField] public int purchasePrice;
     [SerializeField] public int upgradePrice;
+    private Animator _animator;
 
     //ShopManager
     private ShopManager _shopManager;
@@ -27,6 +31,7 @@ public class CharacterFeature : MonoBehaviour
 
     private void Start()
     {
+        _animator = GetComponent<Animator>();
         isEnemy = gameObject.CompareTag("Enemy");
         mainCamera = Camera.main;
         currentHealth = maxHealth;
@@ -39,11 +44,16 @@ public class CharacterFeature : MonoBehaviour
         FixHealthBarRotation();
         if (currentHealth <= 0)
         {
-            if (isEnemy) _shopManager.EarnGold(rewardPrice);
-
             onCharacterDeath.Invoke(gameObject);
-            Destroy(gameObject);
+            speed = 0;
+            _animator.SetTrigger("DeathTrigger");
+            Destroy(gameObject, 2);
         }
+    }
+
+    private void OnDestroy()
+    {
+        if (isEnemy) _shopManager.EarnGold(rewardPrice);
     }
 
     private void FixHealthBarRotation()

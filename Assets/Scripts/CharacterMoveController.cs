@@ -2,10 +2,11 @@ using UnityEngine;
 
 public class CharacterMoveController : MonoBehaviour
 {
-    [SerializeField] private CharacterFeature _characterFeature;
-    [SerializeField] private GameObject _allyBase;
-    [SerializeField] private GameObject _enemyBase;
     [SerializeField] private SpawnManager _spawnManager;
+    private GameObject _allyBase;
+    private Animator _animator;
+    private CharacterFeature _characterFeature;
+    private GameObject _enemyBase;
     private GameManager _gameManager;
     private ShopHelper _shopHelper;
 
@@ -22,13 +23,18 @@ public class CharacterMoveController : MonoBehaviour
         {
             UpdateRotation();
             Move();
+            _animator.SetTrigger("WalkTrigger");
         }
     }
+
 
     private void OnTriggerEnter(Collider other)
     {
         if (other.CompareTag("Ally") || other.CompareTag("Enemy"))
-            other.GetComponent<CharacterFeature>().onCharacterDeath.AddListener(x => CanMove = true);
+            other.GetComponent<CharacterFeature>().onCharacterDeath.AddListener(x => { CanMove = true; });
+
+        if (other.CompareTag("AllyBase") || other.CompareTag("EnemyBase"))
+            other.GetComponent<BaseFeature>().onBaseDeath.AddListener(x => { _animator.speed = 0; });
     }
 
     private void OnTriggerStay(Collider other)
@@ -44,7 +50,9 @@ public class CharacterMoveController : MonoBehaviour
         _allyBase = GameObject.FindWithTag("AllyBaseFront");
         _spawnManager = GameObject.FindWithTag("SpawnManager").GetComponent<SpawnManager>();
         _gameManager = GameObject.FindWithTag("GameManager").GetComponent<GameManager>();
+        _animator = GetComponent<Animator>();
     }
+
 
     private void UpdateRotation()
     {

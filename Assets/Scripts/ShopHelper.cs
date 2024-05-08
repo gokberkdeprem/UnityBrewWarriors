@@ -8,7 +8,7 @@ public class ShopHelper : MonoBehaviour
     public readonly Dictionary<CharacterType, CharacterFeature> CharTypeToFeatureDict = new();
 
     // Start is called before the first frame update
-    private void Start()
+    private void Awake()
     {
         PopulateCharTypeToFeatureDict();
     }
