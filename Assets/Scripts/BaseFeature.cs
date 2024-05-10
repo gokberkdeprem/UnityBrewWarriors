@@ -6,6 +6,7 @@ public class BaseFeature : MonoBehaviour
 {
     public float maxHealth;
     public float currentHealth;
+    
     public UnityEvent<GameObject> onBaseDeath;
     [SerializeField] private Slider healthBarSlider;
     [SerializeField] public bool isEnemy;

@@ -5,7 +5,6 @@ using UnityEngine.UI;
 
 public class CharacterFeature : MonoBehaviour
 {
-    private static readonly int DeathTrigger = Animator.StringToHash("DeathTrigger");
     //Animator
 
     [SerializeField] public bool isEnemy;
@@ -14,15 +13,16 @@ public class CharacterFeature : MonoBehaviour
     [SerializeField] public float attackRate;
     [SerializeField] public float currentHealth;
     [SerializeField] public float speed;
-    [SerializeField] public UnityEvent<GameObject> onCharacterDeath;
-    [SerializeField] private Slider healthBarSlider;
-    [SerializeField] private Camera mainCamera;
     [SerializeField] public CharacterType characterType;
     [SerializeField] public float spawnRate;
     [SerializeField] public int spawnPrice;
     [SerializeField] public int rewardPrice;
     [SerializeField] public int purchasePrice;
     [SerializeField] public int upgradePrice;
+    
+    [SerializeField] public UnityEvent<GameObject> onCharacterDeath;
+    [SerializeField] private Slider healthBarSlider; 
+    [SerializeField] private Camera mainCamera;
     private Animator _animator;
 
     //ShopManager
