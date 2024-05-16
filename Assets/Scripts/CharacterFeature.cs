@@ -1,3 +1,4 @@
+using System.Runtime.Serialization;
 using Enums;
 using UnityEngine;
 using UnityEngine.Events;
@@ -64,5 +65,11 @@ public class CharacterFeature : MonoBehaviour
     public void UpdateHealthBar()
     {
         healthBarSlider.value = currentHealth / maxHealth;
+    }
+
+    public void GetDamage(float damage)
+    {
+        currentHealth -= damage;
+        UpdateHealthBar();
     }
 }

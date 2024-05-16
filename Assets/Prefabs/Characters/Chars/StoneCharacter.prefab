@@ -69,17 +69,17 @@ MonoBehaviour:
   attackRate: 1
   currentHealth: 1
   speed: 0.5
-  onCharacterDeath:
-    m_PersistentCalls:
-      m_Calls: []
-  healthBarSlider: {fileID: 1224648660571148186}
-  mainCamera: {fileID: 0}
-  characterType: 0
+  characterType: 2
   spawnRate: 3
   spawnPrice: 3
   rewardPrice: 2
   purchasePrice: 1
   upgradePrice: 3
+  onCharacterDeath:
+    m_PersistentCalls:
+      m_Calls: []
+  healthBarSlider: {fileID: 1224648660571148186}
+  mainCamera: {fileID: 0}
 --- !u!114 &-4642844518966588325
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -266,6 +266,10 @@ PrefabInstance:
       propertyPath: m_Name
       value: HealthBar
       objectReference: {fileID: 0}
+    - target: {fileID: 6652131420422263776, guid: 8bac20785672344dda099529eb741938, type: 3}
+      propertyPath: m_IsActive
+      value: 1
+      objectReference: {fileID: 0}
     - target: {fileID: 8097033429870715100, guid: 8bac20785672344dda099529eb741938, type: 3}
       propertyPath: m_AnchoredPosition.x
       value: -1.4049969
@@ -329,15 +333,15 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: -8679921383154817045, guid: edc8e5f2ae56341f489c818f003a6287, type: 3}
       propertyPath: m_LocalRotation.x
-      value: -0
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: -8679921383154817045, guid: edc8e5f2ae56341f489c818f003a6287, type: 3}
       propertyPath: m_LocalRotation.y
-      value: -0
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: -8679921383154817045, guid: edc8e5f2ae56341f489c818f003a6287, type: 3}
       propertyPath: m_LocalRotation.z
-      value: -0
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: -8679921383154817045, guid: edc8e5f2ae56341f489c818f003a6287, type: 3}
       propertyPath: m_LocalEulerAnglesHint.x

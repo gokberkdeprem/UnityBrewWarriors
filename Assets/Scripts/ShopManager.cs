@@ -15,7 +15,7 @@ public class ShopManager : MonoBehaviour
 
     private void Start()
     {
-        playerGoldUI.text = "GOLD: " + playerGold;
+        playerGoldUI.text = playerGold.ToString();
         shopUI.SetActive(showShop);
         _shopHelper = GetComponent<ShopHelper>();
         _characterFeatures = _shopHelper.CharTypeToFeatureDict;
@@ -26,7 +26,7 @@ public class ShopManager : MonoBehaviour
     private void OnGameOver(BaseFeature baseFeature)
     {
         shopUI.SetActive(false);
-        EarnGold(baseFeature.destroyPrice);
+        EarnGold(baseFeature.destroyReward);
     }
 
     public void ToggleShopUI()
@@ -38,13 +38,13 @@ public class ShopManager : MonoBehaviour
     public void EarnGold(int earning)
     {
         playerGold += earning;
-        playerGoldUI.text = "GOLD: " + playerGold;
+        playerGoldUI.text = playerGold.ToString();
     }
 
     private void PayGold(int payment)
     {
         playerGold -= payment;
-        playerGoldUI.text = "GOLD: " + playerGold;
+        playerGoldUI.text = playerGold.ToString();
     }
 
     public bool CanInstantiate(CharacterType characterType)

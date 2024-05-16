@@ -34,7 +34,7 @@ public class CharacterMoveController : MonoBehaviour
             other.GetComponent<CharacterFeature>().onCharacterDeath.AddListener(x => { CanMove = true; });
 
         if (other.CompareTag("AllyBase") || other.CompareTag("EnemyBase"))
-            other.GetComponent<BaseFeature>().onBaseDeath.AddListener(x => { _animator.speed = 0; });
+            other.GetComponent<BaseFeature>().onBaseDeath.AddListener(x => {});
     }
 
     private void OnTriggerStay(Collider other)
@@ -94,10 +94,4 @@ public class CharacterMoveController : MonoBehaviour
         return (_characterFeature.isEnemy && (other.CompareTag("Ally") || other.CompareTag("AllyBase")))
                || (!_characterFeature.isEnemy && (other.CompareTag("Enemy") || other.CompareTag("EnemyBase")));
     }
-
-    // private void OnCharacterDeath(GameObject character)
-    // {
-    //     CanMove = true;
-    //     character.GetComponent<CharacterFeature>().onCharacterDeath.RemoveListener();
-    // }
 }

@@ -50,10 +50,10 @@ public class ShopButtonsController : MonoBehaviour
         var feature = _characterFeatures[type];
 
         if (isPurchaseButton)
-            button.GetComponentInChildren<TMP_Text>().text = $"Purchase \n ({feature.purchasePrice:0.00} GOLD)";
+            button.GetComponentInChildren<TMP_Text>().text = $"{feature.purchasePrice:0.00}";
         else
             button.GetComponentInChildren<TMP_Text>().text =
-                $"Upgrade \n ({feature.spawnRate:0.00} seconds) \n ({feature.upgradePrice:0.00} GOLD)";
+                $"{feature.upgradePrice:0.00} ({feature.spawnRate:0.00} s)";
     }
 
     private void InitializeButtonsAndTexts()

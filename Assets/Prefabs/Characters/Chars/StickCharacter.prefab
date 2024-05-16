@@ -69,17 +69,17 @@ MonoBehaviour:
   attackRate: 1
   currentHealth: 1
   speed: 0.5
-  onCharacterDeath:
-    m_PersistentCalls:
-      m_Calls: []
-  healthBarSlider: {fileID: 8820077494528768640}
-  mainCamera: {fileID: 0}
   characterType: 0
   spawnRate: 3
   spawnPrice: 3
   rewardPrice: 2
   purchasePrice: 1
   upgradePrice: 3
+  onCharacterDeath:
+    m_PersistentCalls:
+      m_Calls: []
+  healthBarSlider: {fileID: 8820077494528768640}
+  mainCamera: {fileID: 0}
 --- !u!114 &-4332635815958938685
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -265,6 +265,10 @@ PrefabInstance:
     - target: {fileID: 6652131420422263776, guid: 8bac20785672344dda099529eb741938, type: 3}
       propertyPath: m_Name
       value: HealthBar
+      objectReference: {fileID: 0}
+    - target: {fileID: 6652131420422263776, guid: 8bac20785672344dda099529eb741938, type: 3}
+      propertyPath: m_IsActive
+      value: 1
       objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []

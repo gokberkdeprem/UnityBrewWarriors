@@ -11,7 +11,6 @@ public class GameManager : MonoBehaviour
     private BaseFeature _allyBaseFeature;
     private BaseFeature _enemyBaseFeature;
 
-
     public bool GameOver { get; private set; }
 
     // Start is called before the first frame update
@@ -40,12 +39,13 @@ public class GameManager : MonoBehaviour
         {
             victoryText.SetActive(true);
             victoryText.GetComponentInChildren<TMP_Text>().text =
-                $"Victory \n + {defeatedBaseFeature.destroyPrice} GOLD";
+                $"Victory \n + {defeatedBaseFeature.destroyReward} GOLD";
         }
         else
         {
             defeatText.SetActive(true);
-            defeatText.GetComponentInChildren<TMP_Text>().text = $"Defeat \n + {defeatedBaseFeature.destroyPrice} GOLD";
+            defeatText.GetComponentInChildren<TMP_Text>().text =
+                $"Defeat \n + {defeatedBaseFeature.destroyReward} GOLD";
         }
     }
 }

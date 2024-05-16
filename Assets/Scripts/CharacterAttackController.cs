@@ -68,15 +68,12 @@ public class CharacterAttackController : MonoBehaviour
         if (other.CompareTag("Enemy") || other.CompareTag("Ally"))
         {
             var opponentFeature = other.gameObject.GetComponent<CharacterFeature>();
-            opponentFeature.currentHealth -= _characterFeature.power;
-            opponentFeature.UpdateHealthBar();
+            opponentFeature.GetDamage(_characterFeature.power);
         }
         else
         {
             var opponentFeature = other.gameObject.GetComponent<BaseFeature>();
-
-            opponentFeature.currentHealth -= _characterFeature.power;
-            opponentFeature.UpdateHealthBar();
+            opponentFeature.GetDamage(_characterFeature.power);
         }
     }
 

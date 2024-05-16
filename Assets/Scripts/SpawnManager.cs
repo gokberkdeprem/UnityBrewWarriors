@@ -83,15 +83,15 @@ public class SpawnManager : MonoBehaviour
     {
         var stickSpawnPrice = warriors[0].GetComponent<CharacterFeature>().spawnPrice;
         spawnStickWarriorButton.GetComponentInChildren<TMP_Text>().text =
-            $"Spawn \nStick Warrior \n({stickSpawnPrice} Gold) ";
+            $"{stickSpawnPrice} Gold ";
 
         var spearSpawnPrice = warriors[1].GetComponent<CharacterFeature>().spawnPrice;
         spawnSpearWarriorButton.GetComponentInChildren<TMP_Text>().text =
-            $"Spawn \nSpear Warrior \n({spearSpawnPrice} Gold)";
+            $"{spearSpawnPrice} Gold";
 
         var stoneSpawnPrice = warriors[2].GetComponent<CharacterFeature>().spawnPrice;
         spawnStoneWarriorButton.GetComponentInChildren<TMP_Text>().text =
-            $"Spawn \nStone Warrior \n({stoneSpawnPrice} Gold)";
+            $"{stoneSpawnPrice} Gold";
     }
 
     private void InstantiateCharacter(CharacterType type)
