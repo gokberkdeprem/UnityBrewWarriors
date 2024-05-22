@@ -1378,7 +1378,6 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 257849834}
-  - component: {fileID: 257849835}
   m_Layer: 0
   m_Name: Mushroom_01 (6)
   m_TagString: Untagged
@@ -1402,29 +1401,6 @@ Transform:
   - {fileID: 643966400}
   m_Father: {fileID: 141892814}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!205 &257849835
-LODGroup:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 257849833}
-  serializedVersion: 2
-  m_LocalReferencePoint: {x: 0.008836374, y: 0.1702209, z: 0.003103435}
-  m_Size: 0.3406743
-  m_FadeMode: 0
-  m_AnimateCrossFading: 0
-  m_LastLODIsBillboard: 0
-  m_LODs:
-  - screenRelativeHeight: 0.051319983
-    fadeTransitionWidth: 0
-    renderers:
-    - renderer: {fileID: 0}
-  - screenRelativeHeight: 0.01
-    fadeTransitionWidth: 0
-    renderers:
-    - renderer: {fileID: 643966401}
-  m_Enabled: 1
 --- !u!1 &261131917
 GameObject:
   m_ObjectHideFlags: 0
@@ -2302,7 +2278,6 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 436228639}
-  - component: {fileID: 436228640}
   m_Layer: 0
   m_Name: Mushroom_01 (5)
   m_TagString: Untagged
@@ -2327,29 +2302,6 @@ Transform:
   - {fileID: 27478568}
   m_Father: {fileID: 141892814}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!205 &436228640
-LODGroup:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 436228638}
-  serializedVersion: 2
-  m_LocalReferencePoint: {x: 0.008836374, y: 0.1702209, z: 0.003103435}
-  m_Size: 0.3406743
-  m_FadeMode: 0
-  m_AnimateCrossFading: 0
-  m_LastLODIsBillboard: 0
-  m_LODs:
-  - screenRelativeHeight: 0.051319983
-    fadeTransitionWidth: 0
-    renderers:
-    - renderer: {fileID: 1719119962}
-  - screenRelativeHeight: 0.01
-    fadeTransitionWidth: 0
-    renderers:
-    - renderer: {fileID: 27478569}
-  m_Enabled: 1
 --- !u!1 &498278288
 GameObject:
   m_ObjectHideFlags: 0
@@ -3289,7 +3241,7 @@ Transform:
   m_GameObject: {fileID: 643966399}
   serializedVersion: 2
   m_LocalRotation: {x: 0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: -0, y: 0, z: 0}
+  m_LocalPosition: {x: -0, y: 0, z: -1.37}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
@@ -4407,7 +4359,7 @@ Transform:
   m_GameObject: {fileID: 853120741}
   serializedVersion: 2
   m_LocalRotation: {x: 0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: -0, y: 0, z: 0}
+  m_LocalPosition: {x: 2.28, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
@@ -5835,7 +5787,6 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 1094905599}
-  - component: {fileID: 1094905600}
   m_Layer: 0
   m_Name: Mushroom_01 (1)
   m_TagString: Untagged
@@ -5859,29 +5810,6 @@ Transform:
   - {fileID: 1909373018}
   m_Father: {fileID: 141892814}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!205 &1094905600
-LODGroup:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1094905598}
-  serializedVersion: 2
-  m_LocalReferencePoint: {x: 0.008836374, y: 0.1702209, z: 0.003103435}
-  m_Size: 0.3406743
-  m_FadeMode: 0
-  m_AnimateCrossFading: 0
-  m_LastLODIsBillboard: 0
-  m_LODs:
-  - screenRelativeHeight: 0.051319983
-    fadeTransitionWidth: 0
-    renderers:
-    - renderer: {fileID: 0}
-  - screenRelativeHeight: 0.01
-    fadeTransitionWidth: 0
-    renderers:
-    - renderer: {fileID: 1909373019}
-  m_Enabled: 1
 --- !u!1001 &1120901308
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -8026,7 +7954,6 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 1379890520}
-  - component: {fileID: 1379890521}
   m_Layer: 0
   m_Name: Mushroom_01 (3)
   m_TagString: Untagged
@@ -8054,29 +7981,6 @@ Transform:
   - {fileID: 1660740963}
   m_Father: {fileID: 141892814}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!205 &1379890521
-LODGroup:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1379890519}
-  serializedVersion: 2
-  m_LocalReferencePoint: {x: 0.008836374, y: 0.1702209, z: 0.003103435}
-  m_Size: 0.3406743
-  m_FadeMode: 0
-  m_AnimateCrossFading: 0
-  m_LastLODIsBillboard: 0
-  m_LODs:
-  - screenRelativeHeight: 0.051319983
-    fadeTransitionWidth: 0
-    renderers:
-    - renderer: {fileID: 1824845531}
-  - screenRelativeHeight: 0.01
-    fadeTransitionWidth: 0
-    renderers:
-    - renderer: {fileID: 1660740964}
-  m_Enabled: 1
 --- !u!1 &1382689276
 GameObject:
   m_ObjectHideFlags: 0
@@ -11175,7 +11079,6 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 1838920955}
-  - component: {fileID: 1838920956}
   m_Layer: 0
   m_Name: Mushroom_01 (2)
   m_TagString: Untagged
@@ -11199,29 +11102,6 @@ Transform:
   - {fileID: 853120742}
   m_Father: {fileID: 141892814}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!205 &1838920956
-LODGroup:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1838920954}
-  serializedVersion: 2
-  m_LocalReferencePoint: {x: 0.008836374, y: 0.1702209, z: 0.003103435}
-  m_Size: 0.3406743
-  m_FadeMode: 0
-  m_AnimateCrossFading: 0
-  m_LastLODIsBillboard: 0
-  m_LODs:
-  - screenRelativeHeight: 0.051319983
-    fadeTransitionWidth: 0
-    renderers:
-    - renderer: {fileID: 0}
-  - screenRelativeHeight: 0.01
-    fadeTransitionWidth: 0
-    renderers:
-    - renderer: {fileID: 853120743}
-  m_Enabled: 1
 --- !u!1 &1865925110
 GameObject:
   m_ObjectHideFlags: 0
@@ -11734,7 +11614,7 @@ Transform:
   m_GameObject: {fileID: 1909373017}
   serializedVersion: 2
   m_LocalRotation: {x: 0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: -0, y: 0, z: 0}
+  m_LocalPosition: {x: 3.84, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
@@ -12543,7 +12423,6 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 2062862465}
-  - component: {fileID: 2062862466}
   m_Layer: 0
   m_Name: Mushroom_01 (4)
   m_TagString: Untagged
@@ -12568,29 +12447,6 @@ Transform:
   - {fileID: 976463592}
   m_Father: {fileID: 141892814}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!205 &2062862466
-LODGroup:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 2062862464}
-  serializedVersion: 2
-  m_LocalReferencePoint: {x: 0.008836374, y: 0.1702209, z: 0.003103435}
-  m_Size: 0.3406743
-  m_FadeMode: 0
-  m_AnimateCrossFading: 0
-  m_LastLODIsBillboard: 0
-  m_LODs:
-  - screenRelativeHeight: 0.051319983
-    fadeTransitionWidth: 0
-    renderers:
-    - renderer: {fileID: 559555063}
-  - screenRelativeHeight: 0.01
-    fadeTransitionWidth: 0
-    renderers:
-    - renderer: {fileID: 976463593}
-  m_Enabled: 1
 --- !u!1001 &2090567170
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -14597,7 +14453,6 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 2034945173106117315}
-  - component: {fileID: 3217619440624058635}
   m_Layer: 0
   m_Name: Mushroom_01
   m_TagString: Untagged
@@ -15184,29 +15039,6 @@ Transform:
   m_Children: []
   m_Father: {fileID: 337134950468589905}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!205 &3217619440624058635
-LODGroup:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 2034945173106284259}
-  serializedVersion: 2
-  m_LocalReferencePoint: {x: 0.008836374, y: 0.1702209, z: 0.003103435}
-  m_Size: 0.3406743
-  m_FadeMode: 0
-  m_AnimateCrossFading: 0
-  m_LastLODIsBillboard: 0
-  m_LODs:
-  - screenRelativeHeight: 0.051319983
-    fadeTransitionWidth: 0
-    renderers:
-    - renderer: {fileID: 0}
-  - screenRelativeHeight: 0.01
-    fadeTransitionWidth: 0
-    renderers:
-    - renderer: {fileID: 532749070741793566}
-  m_Enabled: 1
 --- !u!4 &3222581419088398413
 Transform:
   m_ObjectHideFlags: 0

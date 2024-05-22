@@ -1,4 +1,3 @@
-using System.Runtime.Serialization;
 using Enums;
 using UnityEngine;
 using UnityEngine.Events;
@@ -20,9 +19,9 @@ public class CharacterFeature : MonoBehaviour
     [SerializeField] public int rewardPrice;
     [SerializeField] public int purchasePrice;
     [SerializeField] public int upgradePrice;
-    
+
     [SerializeField] public UnityEvent<GameObject> onCharacterDeath;
-    [SerializeField] private Slider healthBarSlider; 
+    [SerializeField] private Slider healthBarSlider;
     [SerializeField] private Camera mainCamera;
     private Animator _animator;
 
@@ -34,7 +33,6 @@ public class CharacterFeature : MonoBehaviour
     {
         _animator = GetComponent<Animator>();
         isEnemy = gameObject.CompareTag("Enemy");
-        mainCamera = Camera.main;
         currentHealth = maxHealth;
         _shopManagerGameObject = GameObject.FindWithTag("ShopManager");
         _shopManager = _shopManagerGameObject.GetComponent<ShopManager>();
@@ -42,14 +40,6 @@ public class CharacterFeature : MonoBehaviour
 
     private void Update()
     {
-        FixHealthBarRotation();
-        if (currentHealth <= 0)
-        {
-            onCharacterDeath.Invoke(gameObject);
-            speed = 0;
-            _animator.SetTrigger("DeathTrigger");
-            Destroy(gameObject, 2);
-        }
     }
 
     private void OnDestroy()
@@ -57,19 +47,24 @@ public class CharacterFeature : MonoBehaviour
         if (isEnemy) _shopManager.EarnGold(rewardPrice);
     }
 
-    private void FixHealthBarRotation()
-    {
-        healthBarSlider.transform.LookAt(mainCamera.transform);
-    }
-
-    public void UpdateHealthBar()
+    private void UpdateHealthBar()
     {
         healthBarSlider.value = currentHealth / maxHealth;
     }
 
     public void GetDamage(float damage)
     {
-        currentHealth -= damage;
+        if (currentHealth > 0)
+        {
+            currentHealth -= damage;
+        }
+        else
+        {
+            onCharacterDeath.Invoke(gameObject);
+            _animator.CrossFade("Death", 0, 0);
+            Destroy(gameObject, 2);
+        }
+
         UpdateHealthBar();
     }
 }

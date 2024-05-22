@@ -10,7 +10,7 @@ public class CharacterMoveController : MonoBehaviour
     private GameManager _gameManager;
     private ShopHelper _shopHelper;
 
-    private bool CanMove { get; set; } = true;
+    [SerializeField] private bool CanMove { get; set; } = true;
 
     private void Start()
     {
@@ -21,9 +21,9 @@ public class CharacterMoveController : MonoBehaviour
     {
         if (CanMove && !_gameManager.GameOver)
         {
+            _animator.CrossFade("Walk", 0, 0);
             UpdateRotation();
             Move();
-            _animator.SetTrigger("WalkTrigger");
         }
     }
 
@@ -34,7 +34,7 @@ public class CharacterMoveController : MonoBehaviour
             other.GetComponent<CharacterFeature>().onCharacterDeath.AddListener(x => { CanMove = true; });
 
         if (other.CompareTag("AllyBase") || other.CompareTag("EnemyBase"))
-            other.GetComponent<BaseFeature>().onBaseDeath.AddListener(x => {});
+            other.GetComponent<BaseFeature>().onBaseDeath.AddListener(x => { });
     }
 
     private void OnTriggerStay(Collider other)

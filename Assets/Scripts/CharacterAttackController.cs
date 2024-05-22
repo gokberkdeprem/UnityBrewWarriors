@@ -4,8 +4,8 @@ using UnityEngine;
 
 public class CharacterAttackController : MonoBehaviour
 {
-    private List<GameObject> _activeAllies;
-    private List<GameObject> _activeEnemies;
+    [SerializeField] private List<GameObject> _activeAllies;
+    [SerializeField] private List<GameObject> _activeEnemies;
     private Animator _animator;
     private float _attackRate;
     private bool _canAttack = true;
@@ -57,7 +57,6 @@ public class CharacterAttackController : MonoBehaviour
     {
         if (_canAttack && !_gameManager.GameOver)
         {
-            _animator.SetTrigger("AttackTrigger");
             CloseAttack(other);
             StartCoroutine(AttackCooldown());
         }
@@ -68,11 +67,14 @@ public class CharacterAttackController : MonoBehaviour
         if (other.CompareTag("Enemy") || other.CompareTag("Ally"))
         {
             var opponentFeature = other.gameObject.GetComponent<CharacterFeature>();
+            if (opponentFeature.currentHealth > 0)
+                _animator.CrossFade("Attack", 0, 0);
             opponentFeature.GetDamage(_characterFeature.power);
         }
         else
         {
             var opponentFeature = other.gameObject.GetComponent<BaseFeature>();
+            _animator.CrossFade("Attack", 0, 0);
             opponentFeature.GetDamage(_characterFeature.power);
         }
     }

@@ -17,23 +17,18 @@ public class BaseFeature : MonoBehaviour
         Initialize();
     }
 
-    private void Update()
-    {
-        
-    }
-
-    public void UpdateHealthBar()
+    private void UpdateHealthBar()
     {
         healthBarSlider.value = currentHealth / maxHealth;
     }
-    
+
     public void GetDamage(float damage)
     {
         currentHealth -= damage;
         UpdateHealthBar();
         if (currentHealth <= 0) onBaseDeath.Invoke(gameObject);
     }
-    
+
 
     private void Initialize()
     {
