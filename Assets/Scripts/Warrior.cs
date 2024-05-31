@@ -3,7 +3,7 @@ using UnityEngine;
 using UnityEngine.Events;
 using UnityEngine.UI;
 
-public class CharacterFeature : MonoBehaviour
+public class Warrior : MonoBehaviour
 {
     //Animator
 
@@ -38,10 +38,6 @@ public class CharacterFeature : MonoBehaviour
         _shopManager = _shopManagerGameObject.GetComponent<ShopManager>();
     }
 
-    private void Update()
-    {
-    }
-
     private void OnDestroy()
     {
         if (isEnemy) _shopManager.EarnGold(rewardPrice);
@@ -54,17 +50,14 @@ public class CharacterFeature : MonoBehaviour
 
     public void GetDamage(float damage)
     {
-        if (currentHealth > 0)
-        {
-            currentHealth -= damage;
-        }
-        else
+        currentHealth -= damage;
+        UpdateHealthBar();
+
+        if (currentHealth <= 0)
         {
             onCharacterDeath.Invoke(gameObject);
             _animator.CrossFade("Death", 0, 0);
-            Destroy(gameObject, 2);
+            Destroy(gameObject, 3);
         }
-
-        UpdateHealthBar();
     }
 }

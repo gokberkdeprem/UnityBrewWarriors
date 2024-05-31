@@ -9,7 +9,7 @@ public class ShopManager : MonoBehaviour
     public TMP_Text playerGoldUI;
     public bool showShop;
     public GameObject shopUI;
-    private Dictionary<CharacterType, CharacterFeature> _characterFeatures;
+    private Dictionary<CharacterType, Warrior> _characterFeatures;
     private GameManager _gameManager;
     private ShopHelper _shopHelper;
 

@@ -10,11 +10,11 @@ GameObject:
   m_Component:
   - component: {fileID: 8474859796455008548}
   - component: {fileID: 2214034583527473927}
-  - component: {fileID: -3229087981637249170}
   - component: {fileID: -4332635815958938685}
   - component: {fileID: -7292327271308959433}
   - component: {fileID: -7027695187225448549}
   - component: {fileID: 8724019979778864056}
+  - component: {fileID: 8865923174818903841}
   m_Layer: 0
   m_Name: StickCharacter
   m_TagString: Untagged
@@ -31,7 +31,7 @@ Transform:
   m_GameObject: {fileID: 1822212171853599498}
   serializedVersion: 2
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: -1.817, y: 0, z: 0}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children:
@@ -51,35 +51,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 4739bf42dfe5642e18f90d5261e43758, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
---- !u!114 &-3229087981637249170
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1822212171853599498}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 101bada4e168a4ca0ad5984c02855352, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  isEnemy: 0
-  maxHealth: 10
-  power: 2
-  attackRate: 1
-  currentHealth: 1
-  speed: 0.5
-  characterType: 0
-  spawnRate: 3
-  spawnPrice: 3
-  rewardPrice: 2
-  purchasePrice: 1
-  upgradePrice: 3
-  onCharacterDeath:
-    m_PersistentCalls:
-      m_Calls: []
-  healthBarSlider: {fileID: 8820077494528768640}
-  mainCamera: {fileID: 0}
+  _activeAllies: []
+  _activeEnemies: []
 --- !u!114 &-4332635815958938685
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -93,6 +66,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   _spawnManager: {fileID: 0}
+  _canMove: 1
 --- !u!65 &-7292327271308959433
 BoxCollider:
   m_ObjectHideFlags: 0
@@ -137,7 +111,7 @@ Rigidbody:
   m_ImplicitCom: 1
   m_ImplicitTensor: 1
   m_UseGravity: 0
-  m_IsKinematic: 0
+  m_IsKinematic: 1
   m_Interpolate: 0
   m_Constraints: 0
   m_CollisionDetection: 0
@@ -162,6 +136,35 @@ Animator:
   m_AllowConstantClipSamplingOptimization: 1
   m_KeepAnimatorStateOnDisable: 0
   m_WriteDefaultValuesOnDisable: 0
+--- !u!114 &8865923174818903841
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1822212171853599498}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: de9ca20212c934341a7981c0ed84dd04, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  isEnemy: 0
+  maxHealth: 10
+  power: 1
+  attackRate: 1
+  currentHealth: 0
+  speed: 0.5
+  characterType: 0
+  spawnRate: 1
+  spawnPrice: 1
+  rewardPrice: 1
+  purchasePrice: 1
+  upgradePrice: 1
+  onCharacterDeath:
+    m_PersistentCalls:
+      m_Calls: []
+  healthBarSlider: {fileID: 8820077494528768640}
+  mainCamera: {fileID: 0}
 --- !u!1001 &781814137782236607
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -244,11 +247,11 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 5013593795222189532, guid: 8bac20785672344dda099529eb741938, type: 3}
       propertyPath: m_AnchoredPosition.x
-      value: 0
+      value: -0.05
       objectReference: {fileID: 0}
     - target: {fileID: 5013593795222189532, guid: 8bac20785672344dda099529eb741938, type: 3}
       propertyPath: m_AnchoredPosition.y
-      value: 0.83
+      value: 0.8
       objectReference: {fileID: 0}
     - target: {fileID: 5013593795222189532, guid: 8bac20785672344dda099529eb741938, type: 3}
       propertyPath: m_LocalEulerAnglesHint.x

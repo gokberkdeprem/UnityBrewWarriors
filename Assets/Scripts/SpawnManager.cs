@@ -8,8 +8,8 @@ using UnityEngine.UI;
 public class SpawnManager : MonoBehaviour
 {
     public GameObject[] warriors;
-    public GameObject allyBaseFront;
-    public GameObject enemyBaseFront;
+    public GameObject allySpawnPoint;
+    public GameObject enemySpawnPoint;
     public GameObject allyBase;
     public GameObject enemyBase;
     public float enemySpawnDelay;
@@ -81,45 +81,50 @@ public class SpawnManager : MonoBehaviour
 
     private void UpdateSpawnButtonText()
     {
-        var stickSpawnPrice = warriors[0].GetComponent<CharacterFeature>().spawnPrice;
+        var stickSpawnPrice = warriors[0].GetComponent<Warrior>().spawnPrice;
         spawnStickWarriorButton.GetComponentInChildren<TMP_Text>().text =
-            $"{stickSpawnPrice} Gold ";
+            $"{stickSpawnPrice} ";
 
-        var spearSpawnPrice = warriors[1].GetComponent<CharacterFeature>().spawnPrice;
+        var spearSpawnPrice = warriors[1].GetComponent<Warrior>().spawnPrice;
         spawnSpearWarriorButton.GetComponentInChildren<TMP_Text>().text =
-            $"{spearSpawnPrice} Gold";
+            $"{spearSpawnPrice}";
 
-        var stoneSpawnPrice = warriors[2].GetComponent<CharacterFeature>().spawnPrice;
+        var stoneSpawnPrice = warriors[2].GetComponent<Warrior>().spawnPrice;
         spawnStoneWarriorButton.GetComponentInChildren<TMP_Text>().text =
-            $"{stoneSpawnPrice} Gold";
+            $"{stoneSpawnPrice}";
     }
 
     private void InstantiateCharacter(CharacterType type)
     {
         if (_shopManager.CanInstantiate(type) && !_gameManager.GameOver)
         {
-            var ally = Instantiate(warriors[(int)type], RandomAllyPosition(), allyBase.transform.rotation);
+            var ally = Instantiate(warriors[(int)type], RandomAllyPosition(), allySpawnPoint.transform.rotation);
             ActiveAllies.Add(ally);
             _shopManager.PayForInstantiate(type);
             ally.tag = "Ally";
+            ally.name = "Ally" + ally.name;
         }
     }
 
     private void InstantiateEnemy()
     {
-        float randomZPos = Random.Range(-1, 2);
-        var spawnPos = new Vector3(enemyBaseFront.transform.position.x, enemyBaseFront.transform.position.y,
-            enemyBaseFront.transform.position.z + randomZPos);
-        var enemy = Instantiate(warriors[Random.Range(0, 3)], spawnPos, enemyBase.transform.rotation);
+        var spawnPoint = enemySpawnPoint;
+        float randomSpawnLoc = Random.Range(-2, 2);
+
+        var spawnPos = new Vector3(spawnPoint.transform.position.x, spawnPoint.transform.position.y,
+            spawnPoint.transform.position.z + randomSpawnLoc);
+        var enemy = Instantiate(warriors[Random.Range(0, 3)], spawnPos, spawnPoint.transform.rotation);
         ActiveEnemies.Add(enemy);
         enemy.tag = "Enemy";
+        enemy.name = "Enemy" + enemy.name;
     }
 
     private Vector3 RandomAllyPosition()
     {
-        float randomZPos = Random.Range(-2, 2);
-        return new Vector3(allyBaseFront.transform.position.x, allyBaseFront.transform.position.y,
-            allyBaseFront.transform.position.z + randomZPos);
+        var spawnPoint = allySpawnPoint;
+        float randomSpawnLoc = Random.Range(-2, 2);
+        return new Vector3(spawnPoint.transform.position.x, spawnPoint.transform.position.y,
+            spawnPoint.transform.position.z + randomSpawnLoc);
     }
 
     private IEnumerator SpawnCooldown()

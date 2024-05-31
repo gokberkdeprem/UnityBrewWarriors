@@ -19,7 +19,7 @@ public class ShopButtonsController : MonoBehaviour
     [SerializeField] private Button stoneUpgradeButton;
 
     [SerializeField] private GameObject insufficientBalanceAlertText;
-    private Dictionary<CharacterType, CharacterFeature> _characterFeatures;
+    private Dictionary<CharacterType, Warrior> _characterFeatures;
     private GameManager _gameManager;
     private ShopHelper _shopHelper;
     private ShopManager _shopManager;

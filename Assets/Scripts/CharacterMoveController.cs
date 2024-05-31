@@ -3,14 +3,13 @@ using UnityEngine;
 public class CharacterMoveController : MonoBehaviour
 {
     [SerializeField] private SpawnManager _spawnManager;
+    [SerializeField] private bool _canMove = true;
     private GameObject _allyBase;
     private Animator _animator;
-    private CharacterFeature _characterFeature;
     private GameObject _enemyBase;
     private GameManager _gameManager;
     private ShopHelper _shopHelper;
-
-    [SerializeField] private bool CanMove { get; set; } = true;
+    private Warrior _warrior;
 
     private void Start()
     {
@@ -19,33 +18,35 @@ public class CharacterMoveController : MonoBehaviour
 
     private void Update()
     {
-        if (CanMove && !_gameManager.GameOver)
+        if (_canMove && !_gameManager.GameOver && _warrior.currentHealth > 0)
         {
             _animator.CrossFade("Walk", 0, 0);
             UpdateRotation();
             Move();
+        }
+        else if (_gameManager.GameOver)
+        {
+            _animator.CrossFade("Idle", 0.1f, 0);
         }
     }
 
 
     private void OnTriggerEnter(Collider other)
     {
+        if (ShouldStopMoving(other))
+            _canMove = false;
+
         if (other.CompareTag("Ally") || other.CompareTag("Enemy"))
-            other.GetComponent<CharacterFeature>().onCharacterDeath.AddListener(x => { CanMove = true; });
+            other.GetComponent<Warrior>().onCharacterDeath.AddListener(x => { _canMove = true; });
 
         if (other.CompareTag("AllyBase") || other.CompareTag("EnemyBase"))
             other.GetComponent<BaseFeature>().onBaseDeath.AddListener(x => { });
     }
 
-    private void OnTriggerStay(Collider other)
-    {
-        if (ShouldStopMoving(other))
-            CanMove = false;
-    }
 
     private void Initialize()
     {
-        _characterFeature = GetComponent<CharacterFeature>();
+        _warrior = GetComponent<Warrior>();
         _enemyBase = GameObject.FindWithTag("EnemyBaseFront");
         _allyBase = GameObject.FindWithTag("AllyBaseFront");
         _spawnManager = GameObject.FindWithTag("SpawnManager").GetComponent<SpawnManager>();
@@ -56,21 +57,21 @@ public class CharacterMoveController : MonoBehaviour
 
     private void UpdateRotation()
     {
-        var target = _characterFeature.isEnemy ? FindClosestAlly() : FindClosestEnemy();
+        var target = _warrior.isEnemy ? FindClosestAlly() : FindClosestEnemy();
         if (target != null)
         {
             var targetDirection = target.transform.position - gameObject.transform.position;
             var targetRotation = Quaternion.LookRotation(targetDirection);
             transform.rotation = Quaternion.Slerp(transform.rotation, targetRotation,
-                Time.deltaTime * _characterFeature.speed * 2);
+                Time.deltaTime * _warrior.speed * 2);
         }
         else
         {
-            target = _characterFeature.isEnemy ? _allyBase : _enemyBase;
+            target = _warrior.isEnemy ? _allyBase : _enemyBase;
             var targetDirection = target.transform.position - gameObject.transform.position;
             var targetRotation = Quaternion.LookRotation(targetDirection);
             transform.rotation = Quaternion.Slerp(transform.rotation, targetRotation,
-                Time.deltaTime * _characterFeature.speed * 2);
+                Time.deltaTime * _warrior.speed * 2);
         }
     }
 
@@ -86,12 +87,12 @@ public class CharacterMoveController : MonoBehaviour
 
     private void Move()
     {
-        transform.position += transform.forward * (_characterFeature.speed * Time.deltaTime);
+        transform.position += transform.forward * (_warrior.speed * Time.deltaTime);
     }
 
     private bool ShouldStopMoving(Collider other)
     {
-        return (_characterFeature.isEnemy && (other.CompareTag("Ally") || other.CompareTag("AllyBase")))
-               || (!_characterFeature.isEnemy && (other.CompareTag("Enemy") || other.CompareTag("EnemyBase")));
+        return (_warrior.isEnemy && (other.CompareTag("Ally") || other.CompareTag("AllyBase")))
+               || (!_warrior.isEnemy && (other.CompareTag("Enemy") || other.CompareTag("EnemyBase")));
     }
 }

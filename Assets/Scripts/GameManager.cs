@@ -8,10 +8,10 @@ public class GameManager : MonoBehaviour
 
     [SerializeField] private GameObject victoryText;
     [SerializeField] private GameObject defeatText;
+
+    [SerializeField] public bool GameOver;
     private BaseFeature _allyBaseFeature;
     private BaseFeature _enemyBaseFeature;
-
-    public bool GameOver { get; private set; }
 
     // Start is called before the first frame update
     private void Start()

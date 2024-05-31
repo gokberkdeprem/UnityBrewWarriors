@@ -10,11 +10,11 @@ GameObject:
   m_Component:
   - component: {fileID: 2278316269281972957}
   - component: {fileID: 6315616181324600195}
-  - component: {fileID: 1916563879177256817}
   - component: {fileID: -7641131869591789541}
   - component: {fileID: 8537282839660175326}
   - component: {fileID: 2470478381418805287}
   - component: {fileID: 1568264379370529770}
+  - component: {fileID: 1199161418076595395}
   m_Layer: 0
   m_Name: SpearCharacter
   m_TagString: Untagged
@@ -51,35 +51,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 4739bf42dfe5642e18f90d5261e43758, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
---- !u!114 &1916563879177256817
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 6296938075417757254}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 101bada4e168a4ca0ad5984c02855352, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  isEnemy: 0
-  maxHealth: 10
-  power: 2
-  attackRate: 1
-  currentHealth: 1
-  speed: 0.5
-  characterType: 1
-  spawnRate: 3
-  spawnPrice: 3
-  rewardPrice: 2
-  purchasePrice: 1
-  upgradePrice: 3
-  onCharacterDeath:
-    m_PersistentCalls:
-      m_Calls: []
-  healthBarSlider: {fileID: 4347788094240482016}
-  mainCamera: {fileID: 0}
+  _activeAllies: []
+  _activeEnemies: []
 --- !u!114 &-7641131869591789541
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -93,6 +66,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   _spawnManager: {fileID: 0}
+  _canMove: 1
 --- !u!65 &8537282839660175326
 BoxCollider:
   m_ObjectHideFlags: 0
@@ -137,7 +111,7 @@ Rigidbody:
   m_ImplicitCom: 1
   m_ImplicitTensor: 1
   m_UseGravity: 0
-  m_IsKinematic: 0
+  m_IsKinematic: 1
   m_Interpolate: 0
   m_Constraints: 0
   m_CollisionDetection: 0
@@ -162,6 +136,35 @@ Animator:
   m_AllowConstantClipSamplingOptimization: 1
   m_KeepAnimatorStateOnDisable: 0
   m_WriteDefaultValuesOnDisable: 0
+--- !u!114 &1199161418076595395
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 6296938075417757254}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: de9ca20212c934341a7981c0ed84dd04, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  isEnemy: 0
+  maxHealth: 10
+  power: 1
+  attackRate: 1
+  currentHealth: 0
+  speed: 0.5
+  characterType: 1
+  spawnRate: 0.5
+  spawnPrice: 1
+  rewardPrice: 1
+  purchasePrice: 1
+  upgradePrice: 1
+  onCharacterDeath:
+    m_PersistentCalls:
+      m_Calls: []
+  healthBarSlider: {fileID: 4347788094240482016}
+  mainCamera: {fileID: 0}
 --- !u!1001 &5541899435900857823
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -244,7 +247,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 5013593795222189532, guid: 8bac20785672344dda099529eb741938, type: 3}
       propertyPath: m_AnchoredPosition.x
-      value: 0
+      value: -0.04
       objectReference: {fileID: 0}
     - target: {fileID: 5013593795222189532, guid: 8bac20785672344dda099529eb741938, type: 3}
       propertyPath: m_AnchoredPosition.y

@@ -226,7 +226,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: ffc59fe66311945efa49a0ac377efa49, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _useCameraPlaneInstead: 0
+  _useCameraPlaneInstead: 1
 --- !u!1 &7129178036347861632
 GameObject:
   m_ObjectHideFlags: 0

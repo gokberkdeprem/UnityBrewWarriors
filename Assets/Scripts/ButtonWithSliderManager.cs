@@ -7,16 +7,16 @@ public class ButtonWithSliderManager : MonoBehaviour
     [SerializeField] private GameObject warrior;
     [SerializeField] private Slider spawnSlider;
     [SerializeField] private Button spawnButton;
-    private CharacterFeature _characterFeature;
     private GameManager _gameManager;
 
     private ShopHelper _shopHelper;
     private ShopManager _shopManager;
     private GameObject _shopManagerGameObject;
+    private Warrior _warrior;
 
     private void Start()
     {
-        _characterFeature = warrior.GetComponent<CharacterFeature>();
+        _warrior = warrior.GetComponent<Warrior>();
         spawnSlider.value = 0f;
         spawnButton.onClick.AddListener(StartLoading);
         _shopManagerGameObject = GameObject.Find("ShopManager");
@@ -26,13 +26,13 @@ public class ButtonWithSliderManager : MonoBehaviour
 
     private void StartLoading()
     {
-        if (_shopManager.CanInstantiate(_characterFeature.characterType) && !_gameManager.GameOver)
+        if (_shopManager.CanInstantiate(_warrior.characterType) && !_gameManager.GameOver)
             StartCoroutine(LoadingCoroutine());
     }
 
     private IEnumerator LoadingCoroutine()
     {
-        var loadingSpeed = _characterFeature.spawnRate;
+        var loadingSpeed = _warrior.spawnRate;
         spawnButton.interactable = false;
 
         var progress = 1f;
