@@ -4,48 +4,48 @@ using UnityEngine.Events;
 
 public class GameManager : MonoBehaviour
 {
-    public UnityEvent<BaseFeature> onGameOver;
+    public UnityEvent<Castle> onGameOver;
 
     [SerializeField] private GameObject victoryText;
     [SerializeField] private GameObject defeatText;
 
     [SerializeField] public bool GameOver;
-    private BaseFeature _allyBaseFeature;
-    private BaseFeature _enemyBaseFeature;
+    private Castle _allyCastle;
+    private Castle _enemyCastle;
 
     // Start is called before the first frame update
     private void Start()
     {
-        _allyBaseFeature = GameObject.FindWithTag("AllyBase").GetComponent<BaseFeature>();
-        _enemyBaseFeature = GameObject.FindWithTag("EnemyBase").GetComponent<BaseFeature>();
+        _allyCastle = GameObject.FindWithTag("AllyBase").GetComponent<Castle>();
+        _enemyCastle = GameObject.FindWithTag("EnemyBase").GetComponent<Castle>();
 
-        _enemyBaseFeature.onBaseDeath.AddListener(x =>
+        _enemyCastle.onDestroy.AddListener(x =>
         {
             GameOver = true;
-            onGameOver.Invoke(_enemyBaseFeature);
-            ShowEndGameComponents(_enemyBaseFeature);
+            onGameOver.Invoke(_enemyCastle);
+            ShowEndGameComponents(_enemyCastle);
         });
-        _allyBaseFeature.onBaseDeath.AddListener(x =>
+        _allyCastle.onDestroy.AddListener(x =>
         {
             GameOver = true;
-            onGameOver.Invoke(_allyBaseFeature);
-            ShowEndGameComponents(_allyBaseFeature);
+            onGameOver.Invoke(_allyCastle);
+            ShowEndGameComponents(_allyCastle);
         });
     }
 
-    private void ShowEndGameComponents(BaseFeature defeatedBaseFeature)
+    private void ShowEndGameComponents(Castle defeatedCastle)
     {
-        if (defeatedBaseFeature.isEnemy)
+        if (defeatedCastle.isEnemy)
         {
             victoryText.SetActive(true);
             victoryText.GetComponentInChildren<TMP_Text>().text =
-                $"Victory \n + {defeatedBaseFeature.destroyReward} GOLD";
+                $"Victory \n + {defeatedCastle.destroyReward} GOLD";
         }
         else
         {
             defeatText.SetActive(true);
             defeatText.GetComponentInChildren<TMP_Text>().text =
-                $"Defeat \n + {defeatedBaseFeature.destroyReward} GOLD";
+                $"Defeat \n + {defeatedCastle.destroyReward} GOLD";
         }
     }
 }

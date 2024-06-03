@@ -1,6 +1,6 @@
 using UnityEngine;
 
-public class CharacterMoveController : MonoBehaviour
+public class WarriorMoveController : MonoBehaviour
 {
     [SerializeField] private SpawnManager _spawnManager;
     [SerializeField] private bool _canMove = true;
@@ -8,12 +8,18 @@ public class CharacterMoveController : MonoBehaviour
     private Animator _animator;
     private GameObject _enemyBase;
     private GameManager _gameManager;
+    private bool _moreWarriorsAround;
     private ShopHelper _shopHelper;
     private Warrior _warrior;
 
     private void Start()
     {
-        Initialize();
+        _warrior = GetComponent<Warrior>();
+        _enemyBase = GameObject.FindWithTag("EnemyBaseFront");
+        _allyBase = GameObject.FindWithTag("AllyBaseFront");
+        _spawnManager = GameObject.FindWithTag("SpawnManager").GetComponent<SpawnManager>();
+        _gameManager = GameObject.FindWithTag("GameManager").GetComponent<GameManager>();
+        _animator = GetComponent<Animator>();
     }
 
     private void Update()
@@ -30,40 +36,37 @@ public class CharacterMoveController : MonoBehaviour
         }
     }
 
-
     private void OnTriggerEnter(Collider other)
     {
         if (ShouldStopMoving(other))
             _canMove = false;
 
         if (other.CompareTag("Ally") || other.CompareTag("Enemy"))
-            other.GetComponent<Warrior>().onCharacterDeath.AddListener(x => { _canMove = true; });
+            other.GetComponent<Warrior>().onDestroy.AddListener(x => _canMove = true);
 
         if (other.CompareTag("AllyBase") || other.CompareTag("EnemyBase"))
-            other.GetComponent<BaseFeature>().onBaseDeath.AddListener(x => { });
+            other.GetComponent<Castle>().onDestroy.AddListener(x => { });
     }
 
-
-    private void Initialize()
+    private void OnTriggerStay(Collider other)
     {
-        _warrior = GetComponent<Warrior>();
-        _enemyBase = GameObject.FindWithTag("EnemyBaseFront");
-        _allyBase = GameObject.FindWithTag("AllyBaseFront");
-        _spawnManager = GameObject.FindWithTag("SpawnManager").GetComponent<SpawnManager>();
-        _gameManager = GameObject.FindWithTag("GameManager").GetComponent<GameManager>();
-        _animator = GetComponent<Animator>();
-    }
+        var isAllyLayer = other.gameObject.layer == LayerMask.NameToLayer("Ally");
+        var isEnemyLayer = other.gameObject.layer == LayerMask.NameToLayer("Enemy");
 
+        if ((_warrior.isEnemy && isAllyLayer) || (!_warrior.isEnemy && isEnemyLayer)) _canMove = false;
+    }
 
     private void UpdateRotation()
     {
-        var target = _warrior.isEnemy ? FindClosestAlly() : FindClosestEnemy();
+        var target = _warrior.Target;
+
         if (target != null)
         {
-            var targetDirection = target.transform.position - gameObject.transform.position;
-            var targetRotation = Quaternion.LookRotation(targetDirection);
-            transform.rotation = Quaternion.Slerp(transform.rotation, targetRotation,
-                Time.deltaTime * _warrior.speed * 2);
+            var lookPos = target.gameObject.transform.position;
+            lookPos.y = transform.position.y; // Lock the Y-axis
+            var rotation = Quaternion.LookRotation(lookPos - transform.position);
+            var damping = 5f; // Adjust as needed
+            transform.rotation = Quaternion.Slerp(transform.rotation, rotation, Time.deltaTime * damping);
         }
         else
         {
@@ -73,16 +76,6 @@ public class CharacterMoveController : MonoBehaviour
             transform.rotation = Quaternion.Slerp(transform.rotation, targetRotation,
                 Time.deltaTime * _warrior.speed * 2);
         }
-    }
-
-    private GameObject FindClosestAlly()
-    {
-        return _spawnManager.ActiveAllies.Find(ally => ally.CompareTag("Ally"));
-    }
-
-    private GameObject FindClosestEnemy()
-    {
-        return _spawnManager.ActiveEnemies.Find(enemy => enemy.CompareTag("Enemy"));
     }
 
     private void Move()

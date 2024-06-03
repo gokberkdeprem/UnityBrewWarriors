@@ -1,6 +1,6 @@
 namespace Enums
 {
-    public enum CharacterType
+    public enum WarriorType
     {
         StickCharacter,
         SpearCharacter,

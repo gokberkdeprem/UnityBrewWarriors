@@ -1,63 +1,73 @@
+using System.Linq;
 using Enums;
 using UnityEngine;
-using UnityEngine.Events;
-using UnityEngine.UI;
 
-public class Warrior : MonoBehaviour
+public class Warrior : BattleEntity
 {
-    //Animator
-
-    [SerializeField] public bool isEnemy;
-    [SerializeField] public float maxHealth;
     [SerializeField] public float power;
     [SerializeField] public float attackRate;
-    [SerializeField] public float currentHealth;
     [SerializeField] public float speed;
-    [SerializeField] public CharacterType characterType;
     [SerializeField] public float spawnRate;
     [SerializeField] public int spawnPrice;
-    [SerializeField] public int rewardPrice;
     [SerializeField] public int purchasePrice;
     [SerializeField] public int upgradePrice;
-
-    [SerializeField] public UnityEvent<GameObject> onCharacterDeath;
-    [SerializeField] private Slider healthBarSlider;
-    [SerializeField] private Camera mainCamera;
+    public GameObject Target;
+    public BattleEntity TargetBattleEntity;
     private Animator _animator;
+    private SpawnManager _spawnManager;
+    private GameObject _spawnManagerGameObject;
 
-    //ShopManager
-    private ShopManager _shopManager;
-    private GameObject _shopManagerGameObject;
-
-    private void Start()
+    protected override void Start()
     {
+        base.Start();
         _animator = GetComponent<Animator>();
-        isEnemy = gameObject.CompareTag("Enemy");
-        currentHealth = maxHealth;
-        _shopManagerGameObject = GameObject.FindWithTag("ShopManager");
-        _shopManager = _shopManagerGameObject.GetComponent<ShopManager>();
+        SelectTarget();
+        _spawnManagerGameObject = GameObject.FindWithTag("SpawnManager");
+        _spawnManager = _spawnManagerGameObject.GetComponent<SpawnManager>();
+        _spawnManager.OnWarriorSpawn.AddListener(SelectTarget);
     }
 
-    private void OnDestroy()
+    private void OnTriggerEnter(Collider other)
     {
-        if (isEnemy) _shopManager.EarnGold(rewardPrice);
+        var isAllyLayer = other.gameObject.layer == LayerMask.NameToLayer("Ally");
+        var isEnemyLayer = other.gameObject.layer == LayerMask.NameToLayer("Enemy");
+
+        if ((isEnemy && isAllyLayer) || (!isEnemy && isEnemyLayer)) SelectTarget(other.gameObject);
     }
 
-    private void UpdateHealthBar()
-    {
-        healthBarSlider.value = currentHealth / maxHealth;
-    }
-
-    public void GetDamage(float damage)
+    public override void GetDamage(float damage)
     {
         currentHealth -= damage;
         UpdateHealthBar();
 
         if (currentHealth <= 0)
         {
-            onCharacterDeath.Invoke(gameObject);
+            onDestroy.Invoke(gameObject);
+            GetComponent<Collider>().enabled = false;
             _animator.CrossFade("Death", 0, 0);
             Destroy(gameObject, 3);
+        }
+    }
+
+    public void SelectTarget(GameObject target = null)
+    {
+        if (target != null)
+        {
+            Target = target;
+            TargetBattleEntity = target.GetComponent<BattleEntity>();
+        }
+        else
+        {
+            var targetWarriors = isEnemy ? SpawnManager.ActiveAllies : SpawnManager.ActiveEnemies;
+            var anyWarrior = targetWarriors.Any(warrior =>
+                warrior.GetComponent<BattleEntity>().EntityType == EntityType.Warrior);
+
+            target = targetWarriors.First(warrior =>
+                warrior.GetComponent<BattleEntity>().EntityType ==
+                (anyWarrior ? EntityType.Warrior : EntityType.Castle));
+
+            Target = target;
+            TargetBattleEntity = target.GetComponent<BattleEntity>();
         }
     }
 }

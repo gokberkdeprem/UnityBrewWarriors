@@ -9,7 +9,7 @@ public class ShopManager : MonoBehaviour
     public TMP_Text playerGoldUI;
     public bool showShop;
     public GameObject shopUI;
-    private Dictionary<CharacterType, Warrior> _characterFeatures;
+    private Dictionary<WarriorType, Warrior> _characterFeatures;
     private GameManager _gameManager;
     private ShopHelper _shopHelper;
 
@@ -23,10 +23,10 @@ public class ShopManager : MonoBehaviour
         _gameManager.onGameOver.AddListener(OnGameOver);
     }
 
-    private void OnGameOver(BaseFeature baseFeature)
+    private void OnGameOver(Castle castle)
     {
         shopUI.SetActive(false);
-        EarnGold(baseFeature.destroyReward);
+        EarnGold(castle.destroyReward);
     }
 
     public void ToggleShopUI()
@@ -47,34 +47,34 @@ public class ShopManager : MonoBehaviour
         playerGoldUI.text = playerGold.ToString();
     }
 
-    public bool CanInstantiate(CharacterType characterType)
+    public bool CanInstantiate(WarriorType warriorType)
     {
-        return playerGold >= _characterFeatures[characterType].spawnPrice;
+        return playerGold >= _characterFeatures[warriorType].spawnPrice;
     }
 
-    public void PayForInstantiate(CharacterType characterType)
+    public void PayForInstantiate(WarriorType warriorType)
     {
-        PayGold(_characterFeatures[characterType].spawnPrice);
+        PayGold(_characterFeatures[warriorType].spawnPrice);
     }
 
-    public void PurchaseCharacter(CharacterType characterType)
+    public void PurchaseCharacter(WarriorType warriorType)
     {
-        var price = _characterFeatures[characterType].purchasePrice;
+        var price = _characterFeatures[warriorType].purchasePrice;
         PayGold(price);
     }
 
-    public bool CanPurchase(CharacterType characterType)
+    public bool CanPurchase(WarriorType warriorType)
     {
-        return playerGold >= _characterFeatures[characterType].purchasePrice;
+        return playerGold >= _characterFeatures[warriorType].purchasePrice;
     }
 
-    public bool CanUpgrade(CharacterType type)
+    public bool CanUpgrade(WarriorType type)
     {
         var isMaxed = _characterFeatures[type].spawnRate - 0.05f < 0;
         return playerGold >= _characterFeatures[type].upgradePrice && !isMaxed;
     }
 
-    public void UpgradeCharacter(CharacterType type)
+    public void UpgradeCharacter(WarriorType type)
     {
         var price = _characterFeatures[type].upgradePrice;
         PayGold(price);

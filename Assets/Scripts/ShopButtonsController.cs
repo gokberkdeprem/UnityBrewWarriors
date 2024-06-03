@@ -19,7 +19,7 @@ public class ShopButtonsController : MonoBehaviour
     [SerializeField] private Button stoneUpgradeButton;
 
     [SerializeField] private GameObject insufficientBalanceAlertText;
-    private Dictionary<CharacterType, Warrior> _characterFeatures;
+    private Dictionary<WarriorType, Warrior> _characterFeatures;
     private GameManager _gameManager;
     private ShopHelper _shopHelper;
     private ShopManager _shopManager;
@@ -45,7 +45,7 @@ public class ShopButtonsController : MonoBehaviour
         InitializeButtonsAndTexts();
     }
 
-    private void UpdateButtonText(CharacterType type, Button button, bool isPurchaseButton)
+    private void UpdateButtonText(WarriorType type, Button button, bool isPurchaseButton)
     {
         var feature = _characterFeatures[type];
 
@@ -59,55 +59,55 @@ public class ShopButtonsController : MonoBehaviour
     private void InitializeButtonsAndTexts()
     {
         stickPurchaseButton.onClick.AddListener(PurchaseStickChar);
-        UpdateButtonText(CharacterType.StickCharacter, stickPurchaseButton, true);
+        UpdateButtonText(WarriorType.StickCharacter, stickPurchaseButton, true);
 
         stickUpgradeButton.onClick.AddListener(UpgradeStickChar);
-        UpdateButtonText(CharacterType.StickCharacter, stickUpgradeButton, false);
+        UpdateButtonText(WarriorType.StickCharacter, stickUpgradeButton, false);
 
         spearPurchaseButton.onClick.AddListener(PurchaseSpareChar);
-        UpdateButtonText(CharacterType.SpearCharacter, spearPurchaseButton, true);
+        UpdateButtonText(WarriorType.SpearCharacter, spearPurchaseButton, true);
 
         spearUpgradeButton.onClick.AddListener(UpgradeSpareChar);
-        UpdateButtonText(CharacterType.SpearCharacter, spearUpgradeButton, false);
+        UpdateButtonText(WarriorType.SpearCharacter, spearUpgradeButton, false);
 
         stonePurchaseButton.onClick.AddListener(PurchaseStoneChar);
-        UpdateButtonText(CharacterType.StoneCharacter, stonePurchaseButton, true);
+        UpdateButtonText(WarriorType.StoneCharacter, stonePurchaseButton, true);
 
         stoneUpgradeButton.onClick.AddListener(UpgradeStoneChar);
-        UpdateButtonText(CharacterType.StoneCharacter, stoneUpgradeButton, false);
+        UpdateButtonText(WarriorType.StoneCharacter, stoneUpgradeButton, false);
     }
 
     private void PurchaseStickChar()
     {
-        PurchaseCharacter(CharacterType.StickCharacter, stickCharSpawnButton, stickPurchaseButton, stickUpgradeButton);
+        PurchaseCharacter(WarriorType.StickCharacter, stickCharSpawnButton, stickPurchaseButton, stickUpgradeButton);
     }
 
     private void UpgradeStickChar()
     {
-        UpgradeCharacter(CharacterType.StickCharacter, stickUpgradeButton);
+        UpgradeCharacter(WarriorType.StickCharacter, stickUpgradeButton);
     }
 
     private void PurchaseSpareChar()
     {
-        PurchaseCharacter(CharacterType.SpearCharacter, spearCharSpawnButton, spearPurchaseButton, spearUpgradeButton);
+        PurchaseCharacter(WarriorType.SpearCharacter, spearCharSpawnButton, spearPurchaseButton, spearUpgradeButton);
     }
 
     private void UpgradeSpareChar()
     {
-        UpgradeCharacter(CharacterType.SpearCharacter, spearUpgradeButton);
+        UpgradeCharacter(WarriorType.SpearCharacter, spearUpgradeButton);
     }
 
     private void PurchaseStoneChar()
     {
-        PurchaseCharacter(CharacterType.StoneCharacter, stoneCharSpawnButton, stonePurchaseButton, stoneUpgradeButton);
+        PurchaseCharacter(WarriorType.StoneCharacter, stoneCharSpawnButton, stonePurchaseButton, stoneUpgradeButton);
     }
 
     private void UpgradeStoneChar()
     {
-        UpgradeCharacter(CharacterType.StoneCharacter, stoneUpgradeButton);
+        UpgradeCharacter(WarriorType.StoneCharacter, stoneUpgradeButton);
     }
 
-    private void UpgradeCharacter(CharacterType type, Button upgradeButton)
+    private void UpgradeCharacter(WarriorType type, Button upgradeButton)
     {
         if (_shopManager.CanUpgrade(type))
         {
@@ -116,7 +116,7 @@ public class ShopButtonsController : MonoBehaviour
         }
     }
 
-    private void PurchaseCharacter(CharacterType type, GameObject spawnButton, Button purchaseButton,
+    private void PurchaseCharacter(WarriorType type, GameObject spawnButton, Button purchaseButton,
         Button upgradeButton)
     {
         if (_shopManager.CanPurchase(type))

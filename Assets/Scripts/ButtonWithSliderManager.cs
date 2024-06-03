@@ -26,7 +26,7 @@ public class ButtonWithSliderManager : MonoBehaviour
 
     private void StartLoading()
     {
-        if (_shopManager.CanInstantiate(_warrior.characterType) && !_gameManager.GameOver)
+        if (_shopManager.CanInstantiate(_warrior.warriorType) && !_gameManager.GameOver)
             StartCoroutine(LoadingCoroutine());
     }
 

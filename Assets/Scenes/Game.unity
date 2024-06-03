@@ -7799,12 +7799,14 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   maxHealth: 10
   currentHealth: 0
-  onBaseDeath:
+  onDestroy:
     m_PersistentCalls:
       m_Calls: []
   healthBarSlider: {fileID: 584440980}
   isEnemy: 0
   destroyReward: 50
+  CharacterType: 0
+  EntityType: 1
 --- !u!65 &546431750
 BoxCollider:
   m_ObjectHideFlags: 0
@@ -19237,12 +19239,14 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   maxHealth: 10
   currentHealth: 0
-  onBaseDeath:
+  onDestroy:
     m_PersistentCalls:
       m_Calls: []
   healthBarSlider: {fileID: 1438427598}
-  isEnemy: 0
+  isEnemy: 1
   destroyReward: 100
+  CharacterType: 0
+  EntityType: 1
 --- !u!65 &1382689280
 BoxCollider:
   m_ObjectHideFlags: 0
