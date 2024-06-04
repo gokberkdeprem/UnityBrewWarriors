@@ -1,11 +1,15 @@
 using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
 
 public class WarriorAttackController : MonoBehaviour
 {
-    [SerializeField] private List<GameObject> _activeAllies;
-    [SerializeField] private List<GameObject> _activeEnemies;
+    [SerializeField] private ParticleSystem _hitParticle;
+    [SerializeField] private Transform _particleTransform;
+
+    [SerializeField] private AudioSource _hitAudio;
+
+    // [SerializeField] private List<GameObject> _activeAllies;
+    // [SerializeField] private List<GameObject> _activeEnemies;
     private Animator _animator;
     private float _attackRate;
     private bool _canAttack = true;
@@ -21,16 +25,9 @@ public class WarriorAttackController : MonoBehaviour
         _warrior = GetComponent<Warrior>();
         _attackRate = _warrior.attackRate;
         _spawnManager = GameObject.FindWithTag("SpawnManager").GetComponent<SpawnManager>();
-        _activeEnemies = _spawnManager.ActiveEnemies;
-        _activeAllies = _spawnManager.ActiveAllies;
         _gameManager = GameObject.FindWithTag("GameManager").GetComponent<GameManager>();
+        _hitAudio = GetComponent<AudioSource>();
         _animator = GetComponent<Animator>();
-    }
-
-    private void OnTriggerEnter(Collider other)
-    {
-        var opponentFeature = other.gameObject.GetComponent<Warrior>();
-        if (opponentFeature) opponentFeature.onDestroy.AddListener(RemoveFromActiveOpponents);
     }
 
     public void OnTriggerStay(Collider other)
@@ -58,16 +55,6 @@ public class WarriorAttackController : MonoBehaviour
         _animator.CrossFadeInFixedTime("Attack", 0.5f, 0, 0);
     }
 
-    private void RemoveFromActiveOpponents(GameObject opponent)
-    {
-        if (_warrior.isEnemy)
-            _activeAllies.Remove(opponent);
-        else
-            _activeEnemies.Remove(opponent);
-
-        _warrior.SelectTarget();
-    }
-
     private IEnumerator AttackCooldown()
     {
         _canAttack = false;
@@ -77,6 +64,9 @@ public class WarriorAttackController : MonoBehaviour
 
     public void Damage()
     {
+        Instantiate(_hitParticle, _particleTransform);
+        _hitAudio.pitch = Random.Range(0.9f, 1.1f);
+        _hitAudio.Play();
         _warrior?.TargetBattleEntity?.GetDamage(_warrior.power);
     }
 }

@@ -39,13 +39,13 @@ public class GameManager : MonoBehaviour
         {
             victoryText.SetActive(true);
             victoryText.GetComponentInChildren<TMP_Text>().text =
-                $"Victory \n + {defeatedCastle.destroyReward} GOLD";
+                $"Victory \n {defeatedCastle.destroyReward}";
         }
         else
         {
             defeatText.SetActive(true);
             defeatText.GetComponentInChildren<TMP_Text>().text =
-                $"Defeat \n + {defeatedCastle.destroyReward} GOLD";
+                $"Defeat \n {defeatedCastle.destroyReward}";
         }
     }
 }

@@ -18,14 +18,16 @@ public abstract class BattleEntity : MonoBehaviour
     private GameObject _shopManagerGameObject;
     protected SpawnManager SpawnManager;
 
+
     protected virtual void Start()
     {
-        isEnemy = gameObject.CompareTag("Enemy");
+        isEnemy = gameObject.layer == LayerMask.NameToLayer("Enemy");
         currentHealth = maxHealth;
         _shopManagerGameObject = GameObject.FindWithTag("ShopManager");
         _shopManager = _shopManagerGameObject.GetComponent<ShopManager>();
         var spawnManagerGameObject = GameObject.FindWithTag("SpawnManager");
         SpawnManager = spawnManagerGameObject.GetComponent<SpawnManager>();
+        UpdateHealthBar();
     }
 
     protected void UpdateHealthBar()

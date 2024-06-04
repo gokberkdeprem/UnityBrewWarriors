@@ -1,51 +1,44 @@
+using System.Collections;
 using UnityEngine;
+using UnityEngine.AI;
 
 public class WarriorMoveController : MonoBehaviour
 {
     [SerializeField] private SpawnManager _spawnManager;
-    [SerializeField] private bool _canMove = true;
-    private GameObject _allyBase;
+
+    // [SerializeField] private bool _canMove = true;
+    [SerializeField] private NavMeshAgent _agent;
     private Animator _animator;
-    private GameObject _enemyBase;
     private GameManager _gameManager;
     private bool _moreWarriorsAround;
     private ShopHelper _shopHelper;
     private Warrior _warrior;
+    [SerializeField] private float navmeshUpdateInterval = 2; 
+    [SerializeField] private double _pathRecalculationTolerance = 1.0f;
+    private Vector3 _lastTargetPosition;
 
     private void Start()
     {
         _warrior = GetComponent<Warrior>();
-        _enemyBase = GameObject.FindWithTag("EnemyBaseFront");
-        _allyBase = GameObject.FindWithTag("AllyBaseFront");
         _spawnManager = GameObject.FindWithTag("SpawnManager").GetComponent<SpawnManager>();
         _gameManager = GameObject.FindWithTag("GameManager").GetComponent<GameManager>();
         _animator = GetComponent<Animator>();
-    }
-
-    private void Update()
-    {
-        if (_canMove && !_gameManager.GameOver && _warrior.currentHealth > 0)
-        {
-            _animator.CrossFade("Walk", 0, 0);
-            UpdateRotation();
-            Move();
-        }
-        else if (_gameManager.GameOver)
-        {
-            _animator.CrossFade("Idle", 0.1f, 0);
-        }
+        _gameManager.onGameOver.AddListener(x => OnGameOver());
+        StartCoroutine(LateStart());
     }
 
     private void OnTriggerEnter(Collider other)
     {
-        if (ShouldStopMoving(other))
-            _canMove = false;
+        if (ShouldStopMoving(other)) _agent.speed = 0;
 
-        if (other.CompareTag("Ally") || other.CompareTag("Enemy"))
-            other.GetComponent<Warrior>().onDestroy.AddListener(x => _canMove = true);
+        var isAllyLayer = other.gameObject.layer == LayerMask.NameToLayer("Ally");
+        var isEnemyLayer = other.gameObject.layer == LayerMask.NameToLayer("Enemy");
 
-        if (other.CompareTag("AllyBase") || other.CompareTag("EnemyBase"))
-            other.GetComponent<Castle>().onDestroy.AddListener(x => { });
+        if ((_warrior.isEnemy && isAllyLayer) || (!_warrior.isEnemy && isEnemyLayer))
+            other.GetComponent<BattleEntity>().onDestroy.AddListener(x =>
+            {
+                if (!AnyOpponentAround()) Move();
+            });
     }
 
     private void OnTriggerStay(Collider other)
@@ -53,34 +46,40 @@ public class WarriorMoveController : MonoBehaviour
         var isAllyLayer = other.gameObject.layer == LayerMask.NameToLayer("Ally");
         var isEnemyLayer = other.gameObject.layer == LayerMask.NameToLayer("Enemy");
 
-        if ((_warrior.isEnemy && isAllyLayer) || (!_warrior.isEnemy && isEnemyLayer)) _canMove = false;
+        if ((_warrior.isEnemy && isAllyLayer) || (!_warrior.isEnemy && isEnemyLayer)) _agent.speed = 0;
     }
 
-    private void UpdateRotation()
+    private void OnGameOver()
     {
-        var target = _warrior.Target;
-
-        if (target != null)
-        {
-            var lookPos = target.gameObject.transform.position;
-            lookPos.y = transform.position.y; // Lock the Y-axis
-            var rotation = Quaternion.LookRotation(lookPos - transform.position);
-            var damping = 5f; // Adjust as needed
-            transform.rotation = Quaternion.Slerp(transform.rotation, rotation, Time.deltaTime * damping);
-        }
-        else
-        {
-            target = _warrior.isEnemy ? _allyBase : _enemyBase;
-            var targetDirection = target.transform.position - gameObject.transform.position;
-            var targetRotation = Quaternion.LookRotation(targetDirection);
-            transform.rotation = Quaternion.Slerp(transform.rotation, targetRotation,
-                Time.deltaTime * _warrior.speed * 2);
-        }
+        _agent.speed = 0;
+        _animator.CrossFade("Idle", 0.1f, 0);
     }
 
     private void Move()
     {
-        transform.position += transform.forward * (_warrior.speed * Time.deltaTime);
+        if (!_gameManager.GameOver && _warrior.currentHealth > 0)
+        {
+            _agent.speed = _warrior.speed;
+            _animator.CrossFadeInFixedTime("Walk", 0.1f, 0);
+        }
+    }
+
+    private bool AnyOpponentAround()
+    {
+        Collider[] results = { };
+        var layer = _warrior.isEnemy ? "Ally" : "Enemy";
+        var opponentCount =
+            Physics.OverlapSphereNonAlloc(transform.position, 0.1f, results, LayerMask.NameToLayer(layer));
+
+        if (opponentCount > 0)
+            _warrior.SelectTarget(results[0].gameObject);
+        else
+            _warrior.SelectTarget();
+
+        if (opponentCount > 0)
+            return true;
+
+        return false;
     }
 
     private bool ShouldStopMoving(Collider other)
@@ -88,4 +87,48 @@ public class WarriorMoveController : MonoBehaviour
         return (_warrior.isEnemy && (other.CompareTag("Ally") || other.CompareTag("AllyBase")))
                || (!_warrior.isEnemy && (other.CompareTag("Enemy") || other.CompareTag("EnemyBase")));
     }
+
+    private IEnumerator LateStart()
+    {
+        yield return new WaitForSeconds(1);
+        StartCoroutine(UpdateDestination());
+        Move();
+    }
+    
+    IEnumerator UpdateDestination()
+    {
+        
+        // while (true)
+        // {
+        //     if(_gameManager.GameOver)
+        //         break;
+        //     
+        //     if (_agent.enabled && gameObject && _warrior.Target)
+        //     {
+        //         _agent.SetDestination(_warrior.Target.transform.position);
+        //     }
+        //     yield return new WaitForSeconds(navmeshUpdateInterval);
+        // }
+        
+        while (true)
+        {
+            var target = _warrior.Target.transform;
+            if(_gameManager.GameOver)
+                break;
+            
+            if (_agent.enabled && gameObject && _warrior.Target)
+            {
+                if (Vector3.Distance(target.position, _lastTargetPosition) > _pathRecalculationTolerance)
+                {
+                    _agent.SetDestination(target.position);
+                    _lastTargetPosition = target.position;
+                }
+            }
+            yield return new WaitForSeconds(navmeshUpdateInterval);
+        }
+        
+        
+        
+    }
+    
 }

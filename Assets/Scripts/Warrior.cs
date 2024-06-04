@@ -1,6 +1,7 @@
 using System.Linq;
 using Enums;
 using UnityEngine;
+using UnityEngine.AI;
 
 public class Warrior : BattleEntity
 {
@@ -11,20 +12,23 @@ public class Warrior : BattleEntity
     [SerializeField] public int spawnPrice;
     [SerializeField] public int purchasePrice;
     [SerializeField] public int upgradePrice;
+    [SerializeField] private GameObject healthBar;
+    [SerializeField] private ParticleSystem _deathParticle;
     public GameObject Target;
     public BattleEntity TargetBattleEntity;
     private Animator _animator;
     private SpawnManager _spawnManager;
     private GameObject _spawnManagerGameObject;
 
+
     protected override void Start()
     {
         base.Start();
         _animator = GetComponent<Animator>();
-        SelectTarget();
         _spawnManagerGameObject = GameObject.FindWithTag("SpawnManager");
         _spawnManager = _spawnManagerGameObject.GetComponent<SpawnManager>();
-        _spawnManager.OnWarriorSpawn.AddListener(SelectTarget);
+        _spawnManager.OnWarriorSpawn.AddListener(x=> SelectTarget());
+        SelectTarget();
     }
 
     private void OnTriggerEnter(Collider other)
@@ -38,23 +42,35 @@ public class Warrior : BattleEntity
     public override void GetDamage(float damage)
     {
         currentHealth -= damage;
+
         UpdateHealthBar();
 
-        if (currentHealth <= 0)
+        if (currentHealth == 0)
         {
+            if (isEnemy)
+                _spawnManager.ActiveEnemies.Remove(gameObject);
+            else
+                _spawnManager.ActiveAllies.Remove(gameObject);
+
             onDestroy.Invoke(gameObject);
+            gameObject.layer = LayerMask.NameToLayer("Default");
+            healthBar.SetActive(false);
             GetComponent<Collider>().enabled = false;
-            _animator.CrossFade("Death", 0, 0);
-            Destroy(gameObject, 3);
+            GetComponent<NavMeshAgent>().enabled = false;
+            GetComponent<Rigidbody>().isKinematic = true;
+            _animator.CrossFadeInFixedTime("Death", 0.1f, 0);
+            Instantiate(_deathParticle, gameObject.transform.position, _deathParticle.transform.rotation);
+            Destroy(gameObject, 1);
         }
     }
 
-    public void SelectTarget(GameObject target = null)
+    public BattleEntity SelectTarget(GameObject target = null)
     {
         if (target != null)
         {
             Target = target;
             TargetBattleEntity = target.GetComponent<BattleEntity>();
+            return TargetBattleEntity;
         }
         else
         {
@@ -68,6 +84,16 @@ public class Warrior : BattleEntity
 
             Target = target;
             TargetBattleEntity = target.GetComponent<BattleEntity>();
+            
+            TargetBattleEntity.onDestroy.AddListener(x =>
+            {
+                while (SelectTarget().currentHealth <= 0)
+                {
+                    SelectTarget();
+                }
+                
+            });
+            return TargetBattleEntity;
         }
     }
 }
