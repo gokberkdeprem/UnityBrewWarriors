@@ -7,8 +7,6 @@ public class ShopManager : MonoBehaviour
 {
     public int playerGold;
     public TMP_Text playerGoldUI;
-    public bool showShop;
-    public GameObject shopUI;
     private Dictionary<WarriorType, Warrior> _characterFeatures;
     private GameManager _gameManager;
     private ShopHelper _shopHelper;
@@ -16,7 +14,6 @@ public class ShopManager : MonoBehaviour
     private void Start()
     {
         playerGoldUI.text = playerGold.ToString();
-        shopUI.SetActive(showShop);
         _shopHelper = GetComponent<ShopHelper>();
         _characterFeatures = _shopHelper.CharTypeToFeatureDict;
         _gameManager = GameObject.FindWithTag("GameManager").GetComponent<GameManager>();
@@ -25,14 +22,7 @@ public class ShopManager : MonoBehaviour
 
     private void OnGameOver(Castle castle)
     {
-        shopUI.SetActive(false);
         EarnGold(castle.destroyReward);
-    }
-
-    public void ToggleShopUI()
-    {
-        showShop = !showShop;
-        shopUI.SetActive(showShop);
     }
 
     public void EarnGold(int earning)

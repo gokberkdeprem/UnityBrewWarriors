@@ -2,7 +2,7 @@ using Cinemachine;
 using DG.Tweening;
 using UnityEngine;
 
-public class DollyCartMovement : MonoBehaviour
+public class DollyCartMovementTween : MonoBehaviour
 {
     public CinemachineDollyCart dollyCart;
     [SerializeField] private float _duration = 5f; // Duration for a full loop of the track
