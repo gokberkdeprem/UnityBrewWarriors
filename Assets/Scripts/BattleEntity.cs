@@ -14,6 +14,7 @@ public abstract class BattleEntity : MonoBehaviour
     [SerializeField] public int destroyReward;
     [SerializeField] public WarriorType warriorType;
     [SerializeField] public EntityType EntityType;
+    [SerializeField] protected GameManager GameManager;
     private ShopManager _shopManager;
     private GameObject _shopManagerGameObject;
     protected SpawnManager SpawnManager;
@@ -25,9 +26,10 @@ public abstract class BattleEntity : MonoBehaviour
         currentHealth = maxHealth;
         _shopManagerGameObject = GameObject.FindWithTag("ShopManager");
         _shopManager = _shopManagerGameObject.GetComponent<ShopManager>();
+        GameManager = GameObject.FindWithTag("GameManager").GetComponent<GameManager>();
         var spawnManagerGameObject = GameObject.FindWithTag("SpawnManager");
         SpawnManager = spawnManagerGameObject.GetComponent<SpawnManager>();
-        UpdateHealthBar();
+        // UpdateHealthBar();
     }
 
     protected void UpdateHealthBar()

@@ -27,7 +27,7 @@ public class Warrior : BattleEntity
         _animator = GetComponent<Animator>();
         _spawnManagerGameObject = GameObject.FindWithTag("SpawnManager");
         _spawnManager = _spawnManagerGameObject.GetComponent<SpawnManager>();
-        _spawnManager.OnWarriorSpawn.AddListener(x=> SelectTarget());
+        _spawnManager.OnWarriorSpawn.AddListener(x => SelectTarget());
         SelectTarget();
     }
 
@@ -60,40 +60,37 @@ public class Warrior : BattleEntity
             GetComponent<Rigidbody>().isKinematic = true;
             _animator.CrossFadeInFixedTime("Death", 0.1f, 0);
             Instantiate(_deathParticle, gameObject.transform.position, _deathParticle.transform.rotation);
-            Destroy(gameObject, 1);
+            Destroy(gameObject, 2);
         }
     }
 
     public BattleEntity SelectTarget(GameObject target = null)
     {
+        if (SpawnManager.ActiveAllies.Count == 0 || SpawnManager.ActiveEnemies.Count == 0)
+            return null;
+
         if (target != null)
         {
             Target = target;
             TargetBattleEntity = target.GetComponent<BattleEntity>();
             return TargetBattleEntity;
         }
-        else
+
+        var targetWarriors = isEnemy ? SpawnManager.ActiveAllies : SpawnManager.ActiveEnemies;
+        var anyWarrior = targetWarriors.Any(warrior =>
+            warrior.GetComponent<BattleEntity>().EntityType == EntityType.Warrior);
+
+        target = targetWarriors.First(warrior =>
+            warrior.GetComponent<BattleEntity>().EntityType ==
+            (anyWarrior ? EntityType.Warrior : EntityType.Castle));
+
+        Target = target;
+        TargetBattleEntity = target.GetComponent<BattleEntity>();
+
+        TargetBattleEntity.onDestroy.AddListener(x =>
         {
-            var targetWarriors = isEnemy ? SpawnManager.ActiveAllies : SpawnManager.ActiveEnemies;
-            var anyWarrior = targetWarriors.Any(warrior =>
-                warrior.GetComponent<BattleEntity>().EntityType == EntityType.Warrior);
-
-            target = targetWarriors.First(warrior =>
-                warrior.GetComponent<BattleEntity>().EntityType ==
-                (anyWarrior ? EntityType.Warrior : EntityType.Castle));
-
-            Target = target;
-            TargetBattleEntity = target.GetComponent<BattleEntity>();
-            
-            TargetBattleEntity.onDestroy.AddListener(x =>
-            {
-                while (SelectTarget().currentHealth <= 0)
-                {
-                    SelectTarget();
-                }
-                
-            });
-            return TargetBattleEntity;
-        }
+            while (SelectTarget().currentHealth <= 0 && !GameManager.GameOver) SelectTarget();
+        });
+        return TargetBattleEntity;
     }
 }

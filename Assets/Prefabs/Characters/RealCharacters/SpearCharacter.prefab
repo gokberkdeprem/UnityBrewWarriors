@@ -15,8 +15,8 @@ GameObject:
   - component: {fileID: 1199161418076595395}
   - component: {fileID: 2470478381418805287}
   - component: {fileID: 1568264379370529770}
-  - component: {fileID: 2066313557559263373}
   - component: {fileID: -1319575923447607733}
+  - component: {fileID: -2657779713203496481}
   m_Layer: 0
   m_Name: SpearCharacter
   m_TagString: Untagged
@@ -175,29 +175,6 @@ Animator:
   m_AllowConstantClipSamplingOptimization: 1
   m_KeepAnimatorStateOnDisable: 0
   m_WriteDefaultValuesOnDisable: 0
---- !u!136 &2066313557559263373
-CapsuleCollider:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 6296938075417757254}
-  m_Material: {fileID: 0}
-  m_IncludeLayers:
-    serializedVersion: 2
-    m_Bits: 0
-  m_ExcludeLayers:
-    serializedVersion: 2
-    m_Bits: 0
-  m_LayerOverridePriority: 0
-  m_IsTrigger: 1
-  m_ProvidesContacts: 0
-  m_Enabled: 1
-  serializedVersion: 2
-  m_Radius: 0.32
-  m_Height: 1
-  m_Direction: 1
-  m_Center: {x: 0, y: 0.33, z: 0}
 --- !u!82 &-1319575923447607733
 AudioSource:
   m_ObjectHideFlags: 0
@@ -294,6 +271,27 @@ AudioSource:
     m_PreInfinity: 2
     m_PostInfinity: 2
     m_RotationOrder: 4
+--- !u!135 &-2657779713203496481
+SphereCollider:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 6296938075417757254}
+  m_Material: {fileID: 0}
+  m_IncludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_ExcludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_LayerOverridePriority: 0
+  m_IsTrigger: 1
+  m_ProvidesContacts: 0
+  m_Enabled: 1
+  serializedVersion: 3
+  m_Radius: 0.4
+  m_Center: {x: 0, y: 0.21, z: 0}
 --- !u!1 &6579229267837029595
 GameObject:
   m_ObjectHideFlags: 0
@@ -717,12 +715,12 @@ NavMeshObstacle:
   m_GameObject: {fileID: 4853586575595619484}
   m_Enabled: 1
   serializedVersion: 3
-  m_Shape: 1
-  m_Extents: {x: 0.765, y: 0.68, z: 0.5}
+  m_Shape: 0
+  m_Extents: {x: 0.5, y: 1, z: 0.5}
   m_MoveThreshold: 0.1
   m_Carve: 0
   m_CarveOnlyStationary: 1
-  m_Center: {x: 0, y: 0.82, z: 0}
+  m_Center: {x: 0, y: 0.72, z: 0}
   m_TimeToStationary: 0.5
 --- !u!4 &5192852590140530214 stripped
 Transform:
