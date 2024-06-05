@@ -43,11 +43,11 @@ public class SpawnManager : MonoBehaviour
 
     private void Update()
     {
-        if (_canSpawnEnemy && !_gameManager.GameOver)
-        {
-            InstantiateEnemy();
-            StartCoroutine(SpawnCooldown());
-        }
+        // if (_canSpawnEnemy && !_gameManager.GameOver)
+        // {
+        //     InstantiateEnemy();
+        //     StartCoroutine(SpawnCooldown());
+        // }
     }
 
     private void DisableSpawnButtons()
@@ -109,14 +109,14 @@ public class SpawnManager : MonoBehaviour
         }
     }
 
-    private void InstantiateEnemy()
+    public void InstantiateEnemy(WarriorType warrior)
     {
         var spawnPoint = _enemySpawnPoint;
         float randomSpawnLoc = Random.Range(-2, 2);
 
         var spawnPos = new Vector3(spawnPoint.transform.position.x, spawnPoint.transform.position.y,
             spawnPoint.transform.position.z + randomSpawnLoc);
-        var enemy = Instantiate(_warriors[Random.Range(0, 3)], spawnPos, spawnPoint.transform.rotation);
+        var enemy = Instantiate(_warriors[(int)warrior], spawnPos, spawnPoint.transform.rotation);
         ActiveEnemies.Add(enemy);
         OnWarriorSpawn.Invoke(null);
         enemy.tag = "Enemy";

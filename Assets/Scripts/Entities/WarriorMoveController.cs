@@ -12,7 +12,7 @@ public class WarriorMoveController : MonoBehaviour
     private GameManager _gameManager;
     private Vector3 _lastTargetPosition;
     private bool _moreWarriorsAround;
-    private ShopHelper _shopHelper;
+    private Helper _helper;
     private Warrior _warrior;
 
     private void Start()
@@ -111,8 +111,10 @@ public class WarriorMoveController : MonoBehaviour
 
     private bool ShouldStopMoving(Collider other)
     {
-        return (_warrior.isEnemy && (other.CompareTag("Ally") || other.CompareTag("AllyBase")))
-               || (!_warrior.isEnemy && (other.CompareTag("Enemy") || other.CompareTag("EnemyBase")));
+        var isAllyLayer = other.gameObject.layer == LayerMask.NameToLayer("Ally");
+        var isEnemyLayer = other.gameObject.layer == LayerMask.NameToLayer("Enemy");
+        
+        return (_warrior.isEnemy && isAllyLayer) || (!_warrior.isEnemy && isEnemyLayer);
     }
 
     private IEnumerator LateStart()

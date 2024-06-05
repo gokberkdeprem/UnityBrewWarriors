@@ -15,7 +15,7 @@ public class WarriorAttackController : MonoBehaviour
     private bool _canAttack = true;
     private GameManager _gameManager;
 
-    private ShopHelper _shopHelper;
+    private Helper _helper;
     private SpawnManager _spawnManager;
     private BattleEntity _target;
     private Warrior _warrior;

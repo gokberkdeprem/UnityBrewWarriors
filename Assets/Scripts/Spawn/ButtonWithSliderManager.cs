@@ -9,7 +9,7 @@ public class ButtonWithSliderManager : MonoBehaviour
     [SerializeField] private Button spawnButton;
     private GameManager _gameManager;
 
-    private ShopHelper _shopHelper;
+    private Helper _helper;
     private ShopManager _shopManager;
     private GameObject _shopManagerGameObject;
     private Warrior _warrior;

@@ -21,7 +21,7 @@ public class ShopButtonsController : MonoBehaviour
     [SerializeField] private GameObject insufficientBalanceAlertText;
     private Dictionary<WarriorType, Warrior> _characterFeatures;
     private GameManager _gameManager;
-    private ShopHelper _shopHelper;
+    private Helper _helper;
     private ShopManager _shopManager;
 
     private void Start()
@@ -38,8 +38,8 @@ public class ShopButtonsController : MonoBehaviour
         insufficientBalanceAlertText.SetActive(false);
 
         _shopManager = GetComponent<ShopManager>();
-        _shopHelper = GetComponent<ShopHelper>();
-        _characterFeatures = _shopHelper.CharTypeToFeatureDict;
+        _helper = GetComponent<Helper>();
+        _characterFeatures = _helper.CharTypeToFeatureDict;
         _gameManager = GameObject.FindWithTag("GameManager").GetComponent<GameManager>();
 
         InitializeButtonsAndTexts();

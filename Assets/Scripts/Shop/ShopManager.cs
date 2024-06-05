@@ -9,13 +9,13 @@ public class ShopManager : MonoBehaviour
     public TMP_Text playerGoldUI;
     private Dictionary<WarriorType, Warrior> _characterFeatures;
     private GameManager _gameManager;
-    private ShopHelper _shopHelper;
+    private Helper _helper;
 
     private void Start()
     {
         playerGoldUI.text = playerGold.ToString();
-        _shopHelper = GetComponent<ShopHelper>();
-        _characterFeatures = _shopHelper.CharTypeToFeatureDict;
+        _helper = GetComponent<Helper>();
+        _characterFeatures = _helper.CharTypeToFeatureDict;
         _gameManager = GameObject.FindWithTag("GameManager").GetComponent<GameManager>();
         _gameManager.onGameOver.AddListener(OnGameOver);
     }

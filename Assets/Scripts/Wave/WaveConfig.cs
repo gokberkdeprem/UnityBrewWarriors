@@ -1,18 +1,15 @@
-using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class WaveConfig : MonoBehaviour
+namespace Wave
 {
-    // Start is called before the first frame update
-    void Start()
+    [CreateAssetMenu(fileName = "NewWave", menuName = "Game/WaveConfig")]
+    public class WaveConfig : ScriptableObject
     {
-        
-    }
-
-    // Update is called once per frame
-    void Update()
-    {
-        
+        public int waveId;
+        public string waveName;
+        public List<TroopConfig> troops;
+        public int enemyCount;
+        public float spawnInterval;
     }
 }
