@@ -7,11 +7,17 @@ public class HealthbarTween : MonoBehaviour
     public Slider healthSlider;
     [SerializeField] private float _fillDuration = 3f;
     [SerializeField] private float _rotationDuration = 1;
-
     public Vector3 targetRotation = new(0f, 0f, 0f);
-    private float _startHealth = 1;
+    [SerializeField] private GameManager _gameManagerObject;
+    private GameManager _gameManager;
 
     private void Start()
+    {
+        _gameManager = _gameManagerObject.GetComponent<GameManager>();
+        _gameManager.OnGameStart.AddListener(StartTween);
+    }
+
+    private void StartTween()
     {
         healthSlider.value = 0;
         transform.eulerAngles = new Vector3(90, transform.eulerAngles.x, transform.eulerAngles.z);

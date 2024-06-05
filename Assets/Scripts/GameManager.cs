@@ -1,10 +1,13 @@
 using TMPro;
 using UnityEngine;
 using UnityEngine.Events;
+using UnityEngine.UI;
 
 public class GameManager : MonoBehaviour
 {
     public UnityEvent<Castle> onGameOver;
+    public UnityEvent OnGameStart;
+    [SerializeField] private GameObject _startButton;
 
     [SerializeField] private GameObject victoryText;
     [SerializeField] private GameObject defeatText;
@@ -16,6 +19,7 @@ public class GameManager : MonoBehaviour
     // Start is called before the first frame update
     private void Start()
     {
+        _startButton.GetComponentInChildren<Button>().onClick.AddListener(StartGame);
         _allyCastle = GameObject.FindWithTag("AllyBase").GetComponent<Castle>();
         _enemyCastle = GameObject.FindWithTag("EnemyBase").GetComponent<Castle>();
 
@@ -47,5 +51,11 @@ public class GameManager : MonoBehaviour
             defeatText.GetComponentInChildren<TMP_Text>().text =
                 $"Defeat \n {defeatedCastle.destroyReward}";
         }
+    }
+
+    private void StartGame()
+    {
+        OnGameStart.Invoke();
+        _startButton.SetActive(false);
     }
 }
