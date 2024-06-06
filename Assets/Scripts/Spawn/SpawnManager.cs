@@ -1,4 +1,3 @@
-using System.Collections;
 using System.Collections.Generic;
 using Enums;
 using TMPro;
@@ -14,8 +13,6 @@ public class SpawnManager : MonoBehaviour
     [SerializeField] private GameObject _enemySpawnPoint;
     [SerializeField] private GameObject _allyBase;
     [SerializeField] private GameObject _enemyBase;
-    [SerializeField] private float _enemySpawnDelay;
-    [SerializeField] private bool _canSpawnEnemy = true;
 
     [SerializeField] private Button spawnStickWarriorButton;
     [SerializeField] private Button spawnSpearWarriorButton;
@@ -39,15 +36,6 @@ public class SpawnManager : MonoBehaviour
         InitializeSpawnButtons();
         UpdateSpawnButtonText();
         _gameManager.onGameOver.AddListener(x => DisableSpawnButtons());
-    }
-
-    private void Update()
-    {
-        // if (_canSpawnEnemy && !_gameManager.GameOver)
-        // {
-        //     InstantiateEnemy();
-        //     StartCoroutine(SpawnCooldown());
-        // }
     }
 
     private void DisableSpawnButtons()
@@ -130,12 +118,5 @@ public class SpawnManager : MonoBehaviour
         float randomSpawnLoc = Random.Range(-2, 2);
         return new Vector3(spawnPoint.transform.position.x, spawnPoint.transform.position.y,
             spawnPoint.transform.position.z + randomSpawnLoc);
-    }
-
-    private IEnumerator SpawnCooldown()
-    {
-        _canSpawnEnemy = false;
-        yield return new WaitForSeconds(_enemySpawnDelay);
-        _canSpawnEnemy = true;
     }
 }

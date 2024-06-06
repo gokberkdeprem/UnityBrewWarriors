@@ -37,7 +37,7 @@ public abstract class BattleEntity : MonoBehaviour
         healthBarSlider.value = currentHealth / maxHealth;
     }
 
-    public virtual void GetDamage(float damage)
+    public virtual void GetDamage(float damage, GameObject attacker = null)
     {
         currentHealth -= damage;
         UpdateHealthBar();

@@ -8,11 +8,12 @@ public class WarriorMoveController : MonoBehaviour
     [SerializeField] private NavMeshAgent _agent;
     [SerializeField] private float navmeshUpdateInterval = 1;
     [SerializeField] private double _pathRecalculationTolerance = 1.0f;
+    [SerializeField] private float _walkAnimationMultiplier;
     private Animator _animator;
     private GameManager _gameManager;
+    private Helper _helper;
     private Vector3 _lastTargetPosition;
     private bool _moreWarriorsAround;
-    private Helper _helper;
     private Warrior _warrior;
 
     private void Start()
@@ -23,6 +24,11 @@ public class WarriorMoveController : MonoBehaviour
         _animator = GetComponent<Animator>();
         _gameManager.onGameOver.AddListener(x => OnGameOver());
         StartCoroutine(LateStart());
+    }
+
+    // TODO: Will be deleted
+    private void Update()
+    {
     }
 
     private void OnTriggerEnter(Collider other)
@@ -38,7 +44,7 @@ public class WarriorMoveController : MonoBehaviour
             {
                 if (!AnyOpponentAround()) Move();
             });
-
+            _warrior.SelectTarget(other.gameObject);
             StartCoroutine(RotateTowardsTarget());
         }
     }
@@ -48,22 +54,18 @@ public class WarriorMoveController : MonoBehaviour
         var isAllyLayer = other.gameObject.layer == LayerMask.NameToLayer("Ally");
         var isEnemyLayer = other.gameObject.layer == LayerMask.NameToLayer("Enemy");
 
-        if ((_warrior.isEnemy && isAllyLayer) || (!_warrior.isEnemy && isEnemyLayer))
-        {
-            _agent.speed = 0;
-            _warrior.SelectTarget(other.gameObject);
-        }
+        if ((_warrior.isEnemy && isAllyLayer) || (!_warrior.isEnemy && isEnemyLayer)) _agent.speed = 0;
     }
 
     private IEnumerator RotateTowardsTarget()
     {
-        var rotationSpeed = _warrior.speed;
+        var rotationSpeed = _warrior.speed * 100;
         var target = _warrior.Target;
-        var rotationDuration = 3;
+        var rotationDuration = 2;
         while (rotationDuration > 0)
             if (target && _warrior.TargetBattleEntity.currentHealth > 0)
             {
-                var targetDirection = target.transform.position - transform.position;
+                var targetDirection = (target.transform.position - transform.position).normalized;
                 var targetRotation = Quaternion.LookRotation(targetDirection);
                 transform.rotation =
                     Quaternion.Slerp(transform.rotation, targetRotation, rotationSpeed * Time.deltaTime);
@@ -111,16 +113,19 @@ public class WarriorMoveController : MonoBehaviour
 
     private bool ShouldStopMoving(Collider other)
     {
-        var isAllyLayer = other.gameObject.layer == LayerMask.NameToLayer("Ally");
-        var isEnemyLayer = other.gameObject.layer == LayerMask.NameToLayer("Enemy");
-        
-        return (_warrior.isEnemy && isAllyLayer) || (!_warrior.isEnemy && isEnemyLayer);
+        // var isAllyLayer = other.gameObject.layer == LayerMask.NameToLayer("Ally");
+        // var isEnemyLayer = other.gameObject.layer == LayerMask.NameToLayer("Enemy");
+        //
+        // return (_warrior.isEnemy && isAllyLayer) || (!_warrior.isEnemy && isEnemyLayer);
+
+        return _warrior.Target == other.gameObject;
     }
 
     private IEnumerator LateStart()
     {
         yield return new WaitForSeconds(1);
         StartCoroutine(UpdateDestination());
+        SetWalkAnimationSpeed();
         Move();
     }
 
@@ -140,8 +145,8 @@ public class WarriorMoveController : MonoBehaviour
 
         while (true)
         {
-            var target = _warrior.Target.transform;
-            if (_gameManager.GameOver)
+            var target = _warrior?.Target?.transform;
+            if (_gameManager.GameOver && !target)
                 break;
 
             if (_agent.enabled && gameObject && _warrior.Target)
@@ -153,5 +158,10 @@ public class WarriorMoveController : MonoBehaviour
 
             yield return new WaitForSeconds(navmeshUpdateInterval);
         }
+    }
+
+    private void SetWalkAnimationSpeed()
+    {
+        _animator.SetFloat("AnimMultiplier", _walkAnimationMultiplier * _warrior.speed);
     }
 }

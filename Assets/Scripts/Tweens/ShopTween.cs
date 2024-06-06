@@ -23,7 +23,7 @@ public class ShopTween : MonoBehaviour
         visiblePosition = shopPanel.anchoredPosition;
         hiddenPosition = new Vector2(shopPanel.anchoredPosition.x, -(Screen.height + shopPanel.rect.height * 2));
         shopPanel.anchoredPosition = hiddenPosition;
-        shopUI.SetActive(true);
+        shopUI.SetActive(false);
         shopToggleButton.onClick.AddListener(ToggleShopUI);
         shopCloseButton.onClick.AddListener(ToggleShopUI);
     }
@@ -45,11 +45,17 @@ public class ShopTween : MonoBehaviour
     
     private void ShowShop()
     {
+        shopUI.SetActive(true);
         shopPanel.DOAnchorPos(visiblePosition, animationDuration).SetEase(Ease.OutBack);
     }
 
     private void HideShop()
     {
-        shopPanel.DOAnchorPos(hiddenPosition, animationDuration).SetEase(Ease.InBack);
+        shopPanel.DOAnchorPos(hiddenPosition, animationDuration).SetEase(Ease.InBack).OnComplete(Hide);
+
+        void Hide()
+        {
+            shopUI.SetActive(false);
+        }
     }
 }

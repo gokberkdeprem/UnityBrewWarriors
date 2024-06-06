@@ -33,7 +33,7 @@ Transform:
   m_GameObject: {fileID: 6296938075417757254}
   serializedVersion: 2
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalPosition: {x: 0, y: -0.048, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children:
@@ -94,6 +94,7 @@ MonoBehaviour:
   _agent: {fileID: 1128932572789763368}
   navmeshUpdateInterval: 2
   _pathRecalculationTolerance: 1
+  _walkAnimationMultiplier: 4
 --- !u!114 &1199161418076595395
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -116,9 +117,10 @@ MonoBehaviour:
   destroyReward: 0
   warriorType: 1
   EntityType: 0
+  GameManager: {fileID: 0}
   power: 1
   attackRate: 1
-  speed: 0.3
+  speed: 0.15
   spawnRate: 0.5
   spawnPrice: 1
   purchasePrice: 1
@@ -291,7 +293,7 @@ SphereCollider:
   m_Enabled: 1
   serializedVersion: 3
   m_Radius: 0.4
-  m_Center: {x: 0, y: 0.21, z: 0}
+  m_Center: {x: 0, y: 0.34, z: 0}
 --- !u!1 &6579229267837029595
 GameObject:
   m_ObjectHideFlags: 0
@@ -716,7 +718,7 @@ NavMeshObstacle:
   m_Enabled: 1
   serializedVersion: 3
   m_Shape: 0
-  m_Extents: {x: 0.5, y: 1, z: 0.5}
+  m_Extents: {x: 0.61, y: 1, z: 0.61}
   m_MoveThreshold: 0.1
   m_Carve: 0
   m_CarveOnlyStationary: 1

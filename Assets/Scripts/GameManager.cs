@@ -8,6 +8,7 @@ public class GameManager : MonoBehaviour
     public UnityEvent<Castle> onGameOver;
     public UnityEvent OnGameStart;
     [SerializeField] private GameObject _startButton;
+    [SerializeField] private GameObject _exitButton;
 
     [SerializeField] private GameObject victoryText;
     [SerializeField] private GameObject defeatText;
@@ -19,6 +20,7 @@ public class GameManager : MonoBehaviour
     // Start is called before the first frame update
     private void Start()
     {
+        _startButton.SetActive(true);
         _startButton.GetComponentInChildren<Button>().onClick.AddListener(StartGame);
         _allyCastle = GameObject.FindWithTag("AllyBase").GetComponent<Castle>();
         _enemyCastle = GameObject.FindWithTag("EnemyBase").GetComponent<Castle>();
@@ -57,5 +59,6 @@ public class GameManager : MonoBehaviour
     {
         OnGameStart.Invoke();
         _startButton.SetActive(false);
+        _exitButton.SetActive(false);
     }
 }

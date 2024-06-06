@@ -31,16 +31,19 @@ public class Warrior : BattleEntity
         SelectTarget();
     }
 
-    private void OnTriggerEnter(Collider other)
-    {
-        var isAllyLayer = other.gameObject.layer == LayerMask.NameToLayer("Ally");
-        var isEnemyLayer = other.gameObject.layer == LayerMask.NameToLayer("Enemy");
+    // private void OnTriggerEnter(Collider other)
+    // {
+    //     var isAllyLayer = other.gameObject.layer == LayerMask.NameToLayer("Ally");
+    //     var isEnemyLayer = other.gameObject.layer == LayerMask.NameToLayer("Enemy");
+    //
+    //     if ((isEnemy && isAllyLayer) || (!isEnemy && isEnemyLayer)) SelectTarget(other.gameObject);
+    // }
 
-        if ((isEnemy && isAllyLayer) || (!isEnemy && isEnemyLayer)) SelectTarget(other.gameObject);
-    }
-
-    public override void GetDamage(float damage)
+    public override void GetDamage(float damage, GameObject attacker)
     {
+        if (Target != attacker)
+            SelectTarget(attacker);
+
         currentHealth -= damage;
 
         UpdateHealthBar();
@@ -57,6 +60,7 @@ public class Warrior : BattleEntity
             healthBar.SetActive(false);
             GetComponent<Collider>().enabled = false;
             GetComponent<NavMeshAgent>().enabled = false;
+            GetComponentInChildren<NavMeshObstacle>().enabled = false;
             GetComponent<Rigidbody>().isKinematic = true;
             _animator.CrossFadeInFixedTime("Death", 0.1f, 0);
             Instantiate(_deathParticle, gameObject.transform.position, _deathParticle.transform.rotation);

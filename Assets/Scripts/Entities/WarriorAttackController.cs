@@ -1,5 +1,6 @@
 using System.Collections;
 using UnityEngine;
+using Random = UnityEngine.Random;
 
 public class WarriorAttackController : MonoBehaviour
 {
@@ -32,14 +33,20 @@ public class WarriorAttackController : MonoBehaviour
 
     public void OnTriggerStay(Collider other)
     {
-        var isAllyLayer = other.gameObject.layer == LayerMask.NameToLayer("Ally");
-        var isEnemyLayer = other.gameObject.layer == LayerMask.NameToLayer("Enemy");
-
-        if (_warrior.isEnemy && isAllyLayer)
-            Attack();
-        else if (!_warrior.isEnemy && isEnemyLayer)
+        if (_warrior.Target == other.gameObject)
             Attack();
     }
+
+    // private void OnTriggerEnter(Collider other)
+    // {
+    //     var isAllyLayer = other.gameObject.layer == LayerMask.NameToLayer("Ally");
+    //     var isEnemyLayer = other.gameObject.layer == LayerMask.NameToLayer("Enemy");
+    //     
+    //     if (_warrior.isEnemy && isAllyLayer)
+    //         _warrior.SelectTarget();
+    //     else if (!_warrior.isEnemy && isEnemyLayer)
+    //         _warrior.SelectTarget();
+    // }
 
     private void Attack()
     {
@@ -67,6 +74,6 @@ public class WarriorAttackController : MonoBehaviour
         Instantiate(_hitParticle, _particleTransform);
         _hitAudio.pitch = Random.Range(0.9f, 1.1f);
         _hitAudio.Play();
-        _warrior?.TargetBattleEntity?.GetDamage(_warrior.power);
+        _warrior?.TargetBattleEntity?.GetDamage(_warrior.power, _warrior.gameObject);
     }
 }

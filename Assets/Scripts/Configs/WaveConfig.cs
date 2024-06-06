@@ -1,4 +1,5 @@
 using System.Collections.Generic;
+using Enums;
 using UnityEngine;
 
 namespace Wave
@@ -8,8 +9,7 @@ namespace Wave
     {
         public int waveId;
         public string waveName;
-        public List<TroopConfig> troops;
-        public int enemyCount;
-        public float spawnInterval;
+        public List<WarriorType> warriorTypes;
+        public float waveDelay;
     }
 }
