@@ -1,19 +1,15 @@
-using System;
 using System.Collections;
-using System.Collections.Generic;
 using DG.Tweening;
 using UnityEngine;
-using UnityEngine.Events;
-using UnityEngine.Serialization;
 
 public class SpawnButtonTween : MonoBehaviour
 {
     [SerializeField] private GameObject _gameManagerObject;
-    private GameManager _gameManager;
     [SerializeField] private GameObject _spawnButtonsGroup;
     [SerializeField] private float _rotationDuration = 1;
-    
-    
+    private GameManager _gameManager;
+
+
     private void Start()
     {
         _spawnButtonsGroup.SetActive(false);
@@ -38,8 +34,8 @@ public class SpawnButtonTween : MonoBehaviour
 
     private void EndTween()
     {
-         Vector3 targetRotation = new(-90f, 0f, 0f);
+        Debug.Log("SpawnButtonEndTweenTriggered");
+        Vector3 targetRotation = new(-90f, 0f, 0f);
         _spawnButtonsGroup.transform.DORotate(targetRotation, _rotationDuration).SetEase(Ease.OutSine);
     }
-    
 }

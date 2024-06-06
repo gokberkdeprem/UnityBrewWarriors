@@ -42,11 +42,12 @@ public class WarriorMoveController : MonoBehaviour
         {
             other.GetComponent<BattleEntity>().onDestroy.AddListener(x =>
             {
-                // if (!AnyOpponentAround())
                 Move();
             });
             _warrior.SelectTarget(other.gameObject);
-            StartCoroutine(RotateTowardsTarget());
+            
+            if (_warrior.currentHealth > 0)
+                StartCoroutine(RotateTowardsTarget());
         }
     }
 

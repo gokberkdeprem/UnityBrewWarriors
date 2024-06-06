@@ -1,17 +1,29 @@
+using System.Collections;
+using System.Collections.Generic;
 using TMPro;
 using UnityEngine;
 using UnityEngine.Events;
-using UnityEngine.Serialization;
 using UnityEngine.UI;
 
 public class GameManager : MonoBehaviour
 {
     public UnityEvent<Castle> OnGameOver;
     public UnityEvent OnGameStart;
+    public UnityEvent OnMainMenuButtonPressed;
     [SerializeField] private GameObject _startButton;
     [SerializeField] private GameObject _exitButton;
-
+    [SerializeField] private GameObject _mainMenuButton;
+    [SerializeField] private GameObject _giveUpButton;
+    [SerializeField] private AudioSource audioSource;
+    [SerializeField] private AudioClip _winAudio;
+    [SerializeField] private AudioClip _defeatAudio;
+    [SerializeField] private AudioClip _introAudio;
+    [SerializeField] private AudioClip _warStartAudio;
+    [SerializeField] private AudioClip _birdChirping;
+    
+    
     [SerializeField] private GameObject victoryText;
+
     [SerializeField] private GameObject defeatText;
 
     [SerializeField] public bool GameOver;
@@ -21,10 +33,36 @@ public class GameManager : MonoBehaviour
     // Start is called before the first frame update
     private void Start()
     {
+        audioSource = GetComponent<AudioSource>();
+        audioSource.clip = _introAudio;
+        audioSource.Play();
+        
         _allyCastle = GameObject.FindWithTag("AllyBase").GetComponent<Castle>();
         _enemyCastle = GameObject.FindWithTag("EnemyBase").GetComponent<Castle>();
+        _mainMenuButton.SetActive(false);
         _startButton.SetActive(true);
         _startButton.GetComponentInChildren<Button>().onClick.AddListener(StartGame);
+        _giveUpButton.GetComponentInChildren<Button>().onClick.AddListener(GiveUpButtonPressed);
+        _giveUpButton.SetActive(false);
+        _mainMenuButton.GetComponentInChildren<Button>().onClick.AddListener(MainMenuButtonPressed);
+    }
+
+    private void GiveUpButtonPressed()
+    {
+        audioSource.loop = false;
+        audioSource.Stop();
+        _giveUpButton.SetActive(false);
+        GameOver = true;
+        OnGameOver.Invoke(null);
+        OnMainMenuButtonPressed.Invoke();
+    }
+
+    private void MainMenuButtonPressed()
+    {
+        _mainMenuButton.SetActive(false);
+        victoryText.SetActive(false);
+        defeatText.SetActive(false);
+        OnMainMenuButtonPressed.Invoke();
     }
 
     private void ShowEndGameComponents(Castle defeatedCastle)
@@ -33,32 +71,55 @@ public class GameManager : MonoBehaviour
         {
             victoryText.SetActive(true);
             victoryText.GetComponentInChildren<TMP_Text>().text =
-                $"Victory \n {defeatedCastle.destroyReward}";
+                $"Victory";
         }
         else
         {
             defeatText.SetActive(true);
             defeatText.GetComponentInChildren<TMP_Text>().text =
-                $"Defeat \n {defeatedCastle.destroyReward}";
+                $"Defeat";
         }
     }
 
     private void StartGame()
     {
-        Debug.Log("GameStarted");
+        audioSource.Stop();
+        audioSource.clip = _warStartAudio;
+        audioSource.Play();
+        StartCoroutine(BirdChirping());
+        
+        _giveUpButton.SetActive(true);
         GameOver = false;
         _enemyCastle.onDestroy.AddListener(x =>
         {
             GameOver = true;
+            audioSource.loop = false;
+            audioSource.clip = _winAudio;
+            audioSource.Play();
+            _mainMenuButton.SetActive(true);
             OnGameOver.Invoke(_enemyCastle);
+            _giveUpButton.SetActive(false);
             ShowEndGameComponents(_enemyCastle);
         });
         _allyCastle.onDestroy.AddListener(x =>
         {
             GameOver = true;
+            audioSource.loop = false;
+            audioSource.clip = _defeatAudio;
+            audioSource.Play();
+            _mainMenuButton.SetActive(true);
             OnGameOver.Invoke(_allyCastle);
+            _giveUpButton.SetActive(false);
             ShowEndGameComponents(_allyCastle);
         });
         OnGameStart.Invoke();
+    }
+
+    private IEnumerator BirdChirping()
+    {
+        yield return new WaitForSeconds(2);
+        audioSource.clip = _birdChirping;
+        audioSource.loop = true;
+        audioSource.Play();
     }
 }

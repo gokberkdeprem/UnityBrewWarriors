@@ -13,7 +13,7 @@ public class DollyCartMovementTween : MonoBehaviour
     {
         _gameManager = _gameManagerObject.GetComponent<GameManager>();
         _gameManager.OnGameStart.AddListener(StartTween);
-        _gameManager.OnGameOver.AddListener(x=> EndTween());
+        _gameManager.OnMainMenuButtonPressed.AddListener(EndTween);
     }
 
     private void StartTween()
@@ -28,10 +28,9 @@ public class DollyCartMovementTween : MonoBehaviour
 
     private void EndTween()
     {
-        int initialPosition = 0;
+        var initialPosition = 0;
         // Tween the m_Position property
         DOTween.To(() => dollyCart.m_Position, x => dollyCart.m_Position = x, initialPosition, _duration)
             .SetEase(Ease.OutBack);
     }
-    
 }

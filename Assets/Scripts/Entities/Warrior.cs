@@ -28,7 +28,13 @@ public class Warrior : BattleEntity
         _spawnManagerGameObject = GameObject.FindWithTag("SpawnManager");
         _spawnManager = _spawnManagerGameObject.GetComponent<SpawnManager>();
         _spawnManager.OnWarriorSpawn.AddListener(x => SelectTarget());
+        _gameManager.OnGameOver.AddListener(x => OnGameOver());
         SelectTarget();
+    }
+
+    private void OnGameOver()
+    {
+        Destroy(gameObject);
     }
 
     // private void OnTriggerEnter(Collider other)
@@ -39,10 +45,10 @@ public class Warrior : BattleEntity
     //     if ((isEnemy && isAllyLayer) || (!isEnemy && isEnemyLayer)) SelectTarget(other.gameObject);
     // }
 
-    public override void GetDamage(float damage, GameObject attacker)
+    public override void GetDamage(float damage, GameObject attacker = null)
     {
-        if (Target != attacker)
-            SelectTarget(attacker);
+        // if (Target != attacker)
+        //     SelectTarget(attacker);
 
         currentHealth -= damage;
 
@@ -55,9 +61,10 @@ public class Warrior : BattleEntity
             else
                 _spawnManager.ActiveAllies.Remove(gameObject);
 
+            if (isEnemy) _shopManager.EarnGold(destroyReward);
             onDestroy.Invoke(gameObject);
-            gameObject.layer = LayerMask.NameToLayer("Default");
             healthBar.SetActive(false);
+            gameObject.layer = LayerMask.NameToLayer("Default");
             GetComponent<Collider>().enabled = false;
             GetComponent<NavMeshAgent>().enabled = false;
             GetComponentInChildren<NavMeshObstacle>().enabled = false;
@@ -93,11 +100,11 @@ public class Warrior : BattleEntity
 
         TargetBattleEntity.onDestroy.AddListener(x =>
         {
-            while (SelectTarget().currentHealth <= 0 && !GameManager.GameOver) SelectTarget();
+            while (SelectTarget().currentHealth <= 0 && !_gameManager.GameOver) SelectTarget();
         });
         return TargetBattleEntity;
     }
-    
+
     public bool AnyOpponentAround()
     {
         Collider[] results = { };

@@ -1,6 +1,7 @@
 using Enums;
 using UnityEngine;
 using UnityEngine.Events;
+using UnityEngine.Serialization;
 using UnityEngine.UI;
 
 public abstract class BattleEntity : MonoBehaviour
@@ -14,8 +15,11 @@ public abstract class BattleEntity : MonoBehaviour
     [SerializeField] public int destroyReward;
     [SerializeField] public WarriorType warriorType;
     [SerializeField] public EntityType EntityType;
-    [SerializeField] protected GameManager GameManager;
-    private ShopManager _shopManager;
+
+    [FormerlySerializedAs("GameManager")] [SerializeField]
+    protected GameManager _gameManager;
+
+    protected ShopManager _shopManager;
     private GameObject _shopManagerGameObject;
     protected SpawnManager SpawnManager;
 
@@ -26,7 +30,7 @@ public abstract class BattleEntity : MonoBehaviour
         currentHealth = maxHealth;
         _shopManagerGameObject = GameObject.FindWithTag("ShopManager");
         _shopManager = _shopManagerGameObject.GetComponent<ShopManager>();
-        GameManager = GameObject.FindWithTag("GameManager").GetComponent<GameManager>();
+        _gameManager = GameObject.FindWithTag("GameManager").GetComponent<GameManager>();
         var spawnManagerGameObject = GameObject.FindWithTag("SpawnManager");
         SpawnManager = spawnManagerGameObject.GetComponent<SpawnManager>();
         // UpdateHealthBar();
@@ -41,10 +45,6 @@ public abstract class BattleEntity : MonoBehaviour
     {
         currentHealth -= damage;
         UpdateHealthBar();
-        if (currentHealth <= 0)
-        {
-            onDestroy.Invoke(gameObject);
-            if (isEnemy) _shopManager.EarnGold(destroyReward);
-        }
+        if (currentHealth <= 0) onDestroy.Invoke(gameObject);
     }
 }

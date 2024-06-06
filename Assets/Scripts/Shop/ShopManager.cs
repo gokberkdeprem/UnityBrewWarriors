@@ -22,7 +22,8 @@ public class ShopManager : MonoBehaviour
 
     private void OnGameOver(Castle castle)
     {
-        EarnGold(castle.destroyReward);
+        if (castle)
+            EarnGold(castle.destroyReward);
     }
 
     public void EarnGold(int earning)

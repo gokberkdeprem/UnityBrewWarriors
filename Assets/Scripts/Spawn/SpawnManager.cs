@@ -29,22 +29,38 @@ public class SpawnManager : MonoBehaviour
 
     private void Start()
     {
-        ActiveAllies.Add(_allyBase);
-        ActiveEnemies.Add(_enemyBase);
         _gameManager = _gameManagerGameObject.GetComponent<GameManager>();
         _shopManager = _shopManagerGameObject.GetComponent<ShopManager>();
         InitializeSpawnButtons();
         UpdateSpawnButtonText();
-        _gameManager.OnGameStart.AddListener(EnableSpawnButtons);
+        _gameManager.OnGameStart.AddListener(OnGameStart);
         _gameManager.OnGameOver.AddListener(x => DisableSpawnButtons());
     }
-    
+
+
+    private void OnGameStart()
+    {
+        ActiveAllies.Clear();
+        ActiveEnemies.Clear();
+
+        ActiveAllies.Add(_allyBase);
+        ActiveEnemies.Add(_enemyBase);
+
+        EnableSpawnButtons();
+    }
+
+    private void OnGameOver()
+    {
+        DisableSpawnButtons();
+    }
+
     private void EnableSpawnButtons()
     {
         spawnStickWarriorButton.interactable = true;
         spawnSpearWarriorButton.interactable = true;
         spawnStoneWarriorButton.interactable = true;
     }
+
     private void DisableSpawnButtons()
     {
         spawnStickWarriorButton.interactable = false;

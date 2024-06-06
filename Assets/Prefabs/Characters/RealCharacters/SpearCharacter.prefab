@@ -114,10 +114,10 @@ MonoBehaviour:
       m_Calls: []
   healthBarSlider: {fileID: 4347788094240482016}
   isEnemy: 0
-  destroyReward: 0
+  destroyReward: 10
   warriorType: 1
   EntityType: 0
-  GameManager: {fileID: 0}
+  _gameManager: {fileID: 0}
   power: 1
   attackRate: 1
   speed: 0.33

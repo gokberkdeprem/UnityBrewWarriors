@@ -1,7 +1,6 @@
 using DG.Tweening;
 using TMPro;
 using UnityEngine;
-using UnityEngine.Serialization;
 
 namespace Tweens
 {
@@ -13,10 +12,10 @@ namespace Tweens
         public float menuButtonsAnimationDuration = 0.5f;
         [SerializeField] private GameObject menuButtons;
         [SerializeField] private RectTransform menuButtonRectTransform;
-        private Vector2 hiddenPosition;
-        private Vector2 visiblePosition;
         [SerializeField] private GameObject _gameManagerObject;
         private GameManager _gameManager;
+        private Vector2 hiddenPosition;
+        private Vector2 visiblePosition;
 
         private void Start()
         {
@@ -25,12 +24,11 @@ namespace Tweens
             hiddenPosition = new Vector2(menuButtonRectTransform.anchoredPosition.x,
                 -(Screen.height + menuButtonRectTransform.rect.height * 2));
             menuButtonRectTransform.anchoredPosition = hiddenPosition;
-            menuButtons.SetActive(false);
 
             _gameManager = _gameManagerObject.GetComponent<GameManager>();
             _gameManager.OnGameStart.AddListener(HideMenu);
-            _gameManager.OnGameOver.AddListener(x => ShowMenuButtons());
-            
+            _gameManager.OnMainMenuButtonPressed.AddListener(ShowMenuButtons);
+
             AnimateFontSize();
             ShowMenuButtons();
         }

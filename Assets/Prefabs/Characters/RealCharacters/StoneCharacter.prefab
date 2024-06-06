@@ -253,17 +253,17 @@ MonoBehaviour:
       m_Calls: []
   healthBarSlider: {fileID: 1224648660571148186}
   isEnemy: 0
-  destroyReward: 5
+  destroyReward: 10
   warriorType: 2
   EntityType: 0
-  GameManager: {fileID: 0}
+  _gameManager: {fileID: 0}
   power: 1
   attackRate: 1
   speed: 0.33
-  spawnRate: 1
+  spawnRate: 0.49999988
   spawnPrice: 1
   purchasePrice: 1
-  upgradePrice: 1
+  upgradePrice: 21
   healthBar: {fileID: 4328371762360554309}
   _deathParticle: {fileID: 198451450481698882, guid: 2d1c081bad34244ffb6152105b6d2149, type: 3}
   Target: {fileID: 0}

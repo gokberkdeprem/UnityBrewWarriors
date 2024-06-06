@@ -7,7 +7,7 @@ public class HealthbarTween : MonoBehaviour
     public Slider healthSlider;
     [SerializeField] private float _fillDuration = 3f;
     [SerializeField] private float _rotationDuration = 1;
-    
+
     [SerializeField] private GameManager _gameManagerObject;
     private GameManager _gameManager;
 
@@ -29,6 +29,7 @@ public class HealthbarTween : MonoBehaviour
 
     private void EndTween()
     {
+        Debug.Log("HealthbarendtweenTriggered");
         Vector3 targetRotation = new(0f, 90f, 0f);
         var rotationTween = transform.DORotate(targetRotation, _rotationDuration).SetEase(Ease.OutSine);
     }
