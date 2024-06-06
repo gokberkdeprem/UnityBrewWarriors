@@ -29,7 +29,6 @@ public class HealthbarTween : MonoBehaviour
 
     private void EndTween()
     {
-        Debug.Log("HealthbarendtweenTriggered");
         Vector3 targetRotation = new(0f, 90f, 0f);
         var rotationTween = transform.DORotate(targetRotation, _rotationDuration).SetEase(Ease.OutSine);
     }

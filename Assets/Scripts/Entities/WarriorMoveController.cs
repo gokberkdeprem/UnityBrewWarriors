@@ -26,11 +26,6 @@ public class WarriorMoveController : MonoBehaviour
         StartCoroutine(LateStart());
     }
 
-    // TODO: Will be deleted
-    private void Update()
-    {
-    }
-
     private void OnTriggerEnter(Collider other)
     {
         if (ShouldStopMoving(other)) _agent.speed = 0;
@@ -40,12 +35,9 @@ public class WarriorMoveController : MonoBehaviour
 
         if ((_warrior.isEnemy && isAllyLayer) || (!_warrior.isEnemy && isEnemyLayer))
         {
-            other.GetComponent<BattleEntity>().onDestroy.AddListener(x =>
-            {
-                Move();
-            });
+            other.GetComponent<BattleEntity>().onDestroy.AddListener(x => { Move(); });
             _warrior.SelectTarget(other.gameObject);
-            
+
             if (_warrior.currentHealth > 0)
                 StartCoroutine(RotateTowardsTarget());
         }
@@ -61,7 +53,7 @@ public class WarriorMoveController : MonoBehaviour
 
     private IEnumerator RotateTowardsTarget()
     {
-        var rotationSpeed = _warrior.speed * 100;
+        var rotationSpeed = _warrior.speed * 50;
         var target = _warrior.Target;
         var rotationDuration = 2;
         while (rotationDuration > 0)

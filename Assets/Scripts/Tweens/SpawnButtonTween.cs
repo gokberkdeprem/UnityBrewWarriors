@@ -34,7 +34,6 @@ public class SpawnButtonTween : MonoBehaviour
 
     private void EndTween()
     {
-        Debug.Log("SpawnButtonEndTweenTriggered");
         Vector3 targetRotation = new(-90f, 0f, 0f);
         _spawnButtonsGroup.transform.DORotate(targetRotation, _rotationDuration).SetEase(Ease.OutSine);
     }

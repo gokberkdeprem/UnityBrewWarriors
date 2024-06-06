@@ -1,6 +1,6 @@
 using System.Collections;
-using System.Collections.Generic;
 using TMPro;
+using UnityEditor;
 using UnityEngine;
 using UnityEngine.Events;
 using UnityEngine.UI;
@@ -20,8 +20,8 @@ public class GameManager : MonoBehaviour
     [SerializeField] private AudioClip _introAudio;
     [SerializeField] private AudioClip _warStartAudio;
     [SerializeField] private AudioClip _birdChirping;
-    
-    
+
+
     [SerializeField] private GameObject victoryText;
 
     [SerializeField] private GameObject defeatText;
@@ -36,15 +36,31 @@ public class GameManager : MonoBehaviour
         audioSource = GetComponent<AudioSource>();
         audioSource.clip = _introAudio;
         audioSource.Play();
-        
+
         _allyCastle = GameObject.FindWithTag("AllyBase").GetComponent<Castle>();
         _enemyCastle = GameObject.FindWithTag("EnemyBase").GetComponent<Castle>();
         _mainMenuButton.SetActive(false);
         _startButton.SetActive(true);
         _startButton.GetComponentInChildren<Button>().onClick.AddListener(StartGame);
         _giveUpButton.GetComponentInChildren<Button>().onClick.AddListener(GiveUpButtonPressed);
+        _exitButton.GetComponentInChildren<Button>().onClick.AddListener(Quit);
         _giveUpButton.SetActive(false);
         _mainMenuButton.GetComponentInChildren<Button>().onClick.AddListener(MainMenuButtonPressed);
+    }
+
+    private void Quit()
+    {
+        // If we are running in a standalone build of the game
+#if UNITY_STANDALONE
+        // Quit the application
+        Application.Quit();
+#endif
+
+        // If we are running in the editor
+#if UNITY_EDITOR
+        // Stop playing the scene
+        EditorApplication.isPlaying = false;
+#endif
     }
 
     private void GiveUpButtonPressed()
@@ -71,13 +87,13 @@ public class GameManager : MonoBehaviour
         {
             victoryText.SetActive(true);
             victoryText.GetComponentInChildren<TMP_Text>().text =
-                $"Victory";
+                "Victory";
         }
         else
         {
             defeatText.SetActive(true);
             defeatText.GetComponentInChildren<TMP_Text>().text =
-                $"Defeat";
+                "Defeat";
         }
     }
 
@@ -87,7 +103,7 @@ public class GameManager : MonoBehaviour
         audioSource.clip = _warStartAudio;
         audioSource.Play();
         StartCoroutine(BirdChirping());
-        
+
         _giveUpButton.SetActive(true);
         GameOver = false;
         _enemyCastle.onDestroy.AddListener(x =>

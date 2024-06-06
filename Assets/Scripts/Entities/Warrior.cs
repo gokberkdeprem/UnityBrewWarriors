@@ -28,13 +28,20 @@ public class Warrior : BattleEntity
         _spawnManagerGameObject = GameObject.FindWithTag("SpawnManager");
         _spawnManager = _spawnManagerGameObject.GetComponent<SpawnManager>();
         _spawnManager.OnWarriorSpawn.AddListener(x => SelectTarget());
-        _gameManager.OnGameOver.AddListener(x => OnGameOver());
+        _gameManager.OnMainMenuButtonPressed.AddListener(OnMainMenuPressed);
+        _gameManager.OnGameOver.AddListener(OnGameOver);
         SelectTarget();
     }
 
-    private void OnGameOver()
+    private void OnMainMenuPressed()
     {
         Destroy(gameObject);
+    }
+
+    private void OnGameOver(Castle castle)
+    {
+        if (castle.isEnemy != isEnemy)
+            _animator.CrossFadeInFixedTime("Dance", 0.1f, 0);
     }
 
     // private void OnTriggerEnter(Collider other)
