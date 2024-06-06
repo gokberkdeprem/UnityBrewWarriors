@@ -13,6 +13,7 @@ namespace Wave
         [SerializeField] private GameObject _waveInfoObject;
         [SerializeField] private TMP_Text _waveInfo;
         [SerializeField] private float waveDelay;
+        [SerializeField] private float startDelay = 5;
         private GameManager _gameManager;
         private SpawnManager _spawnManager;
         private List<WaveConfig> waves;
@@ -23,18 +24,17 @@ namespace Wave
             _gameManager = _gameManagerObject.GetComponent<GameManager>();
             _gameManager.OnGameStart.AddListener(StartWave);
             _waveInfoObject.SetActive(false);
-
-            waves = _level.Waves;
         }
 
         private void StartWave()
         {
+            waves = _level.Waves;
             StartCoroutine(StartDelay());
         }
 
         private IEnumerator StartDelay()
         {
-            yield return new WaitForSeconds(5);
+            yield return new WaitForSeconds(startDelay);
             StartCoroutine(InstantiateWave());
         }
 

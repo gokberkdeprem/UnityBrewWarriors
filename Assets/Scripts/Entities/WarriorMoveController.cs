@@ -22,7 +22,7 @@ public class WarriorMoveController : MonoBehaviour
         _spawnManager = GameObject.FindWithTag("SpawnManager").GetComponent<SpawnManager>();
         _gameManager = GameObject.FindWithTag("GameManager").GetComponent<GameManager>();
         _animator = GetComponent<Animator>();
-        _gameManager.onGameOver.AddListener(x => OnGameOver());
+        _gameManager.OnGameOver.AddListener(x => OnGameOver());
         StartCoroutine(LateStart());
     }
 
@@ -42,7 +42,8 @@ public class WarriorMoveController : MonoBehaviour
         {
             other.GetComponent<BattleEntity>().onDestroy.AddListener(x =>
             {
-                if (!AnyOpponentAround()) Move();
+                // if (!AnyOpponentAround())
+                Move();
             });
             _warrior.SelectTarget(other.gameObject);
             StartCoroutine(RotateTowardsTarget());
@@ -91,24 +92,6 @@ public class WarriorMoveController : MonoBehaviour
             _agent.speed = _warrior.speed;
             _animator.CrossFadeInFixedTime("Walk", 0.1f, 0);
         }
-    }
-
-    private bool AnyOpponentAround()
-    {
-        Collider[] results = { };
-        var layer = _warrior.isEnemy ? "Ally" : "Enemy";
-        var opponentCount =
-            Physics.OverlapSphereNonAlloc(transform.position, 0.1f, results, LayerMask.NameToLayer(layer));
-
-        if (opponentCount > 0)
-            _warrior.SelectTarget(results[0].gameObject);
-        else
-            _warrior.SelectTarget();
-
-        if (opponentCount > 0)
-            return true;
-
-        return false;
     }
 
     private bool ShouldStopMoving(Collider other)

@@ -120,7 +120,7 @@ MonoBehaviour:
   GameManager: {fileID: 0}
   power: 1
   attackRate: 1
-  speed: 0.15
+  speed: 0.33
   spawnRate: 0.5
   spawnPrice: 1
   purchasePrice: 1

@@ -97,4 +97,22 @@ public class Warrior : BattleEntity
         });
         return TargetBattleEntity;
     }
+    
+    public bool AnyOpponentAround()
+    {
+        Collider[] results = { };
+        var layer = isEnemy ? "Ally" : "Enemy";
+        var opponentCount =
+            Physics.OverlapSphereNonAlloc(transform.position, 0.1f, results, LayerMask.NameToLayer(layer));
+
+        if (opponentCount > 0)
+            SelectTarget(results[0].gameObject);
+        else
+            SelectTarget();
+
+        if (opponentCount > 0)
+            return true;
+
+        return false;
+    }
 }

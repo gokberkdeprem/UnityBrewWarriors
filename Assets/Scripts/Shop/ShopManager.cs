@@ -17,7 +17,7 @@ public class ShopManager : MonoBehaviour
         _helper = GetComponent<Helper>();
         _characterFeatures = _helper.CharTypeToFeatureDict;
         _gameManager = GameObject.FindWithTag("GameManager").GetComponent<GameManager>();
-        _gameManager.onGameOver.AddListener(OnGameOver);
+        _gameManager.OnGameOver.AddListener(OnGameOver);
     }
 
     private void OnGameOver(Castle castle)

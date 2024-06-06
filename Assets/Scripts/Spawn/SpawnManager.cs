@@ -35,9 +35,16 @@ public class SpawnManager : MonoBehaviour
         _shopManager = _shopManagerGameObject.GetComponent<ShopManager>();
         InitializeSpawnButtons();
         UpdateSpawnButtonText();
-        _gameManager.onGameOver.AddListener(x => DisableSpawnButtons());
+        _gameManager.OnGameStart.AddListener(EnableSpawnButtons);
+        _gameManager.OnGameOver.AddListener(x => DisableSpawnButtons());
     }
-
+    
+    private void EnableSpawnButtons()
+    {
+        spawnStickWarriorButton.interactable = true;
+        spawnSpearWarriorButton.interactable = true;
+        spawnStoneWarriorButton.interactable = true;
+    }
     private void DisableSpawnButtons()
     {
         spawnStickWarriorButton.interactable = false;

@@ -1,11 +1,12 @@
 using TMPro;
 using UnityEngine;
 using UnityEngine.Events;
+using UnityEngine.Serialization;
 using UnityEngine.UI;
 
 public class GameManager : MonoBehaviour
 {
-    public UnityEvent<Castle> onGameOver;
+    public UnityEvent<Castle> OnGameOver;
     public UnityEvent OnGameStart;
     [SerializeField] private GameObject _startButton;
     [SerializeField] private GameObject _exitButton;
@@ -20,23 +21,10 @@ public class GameManager : MonoBehaviour
     // Start is called before the first frame update
     private void Start()
     {
-        _startButton.SetActive(true);
-        _startButton.GetComponentInChildren<Button>().onClick.AddListener(StartGame);
         _allyCastle = GameObject.FindWithTag("AllyBase").GetComponent<Castle>();
         _enemyCastle = GameObject.FindWithTag("EnemyBase").GetComponent<Castle>();
-
-        _enemyCastle.onDestroy.AddListener(x =>
-        {
-            GameOver = true;
-            onGameOver.Invoke(_enemyCastle);
-            ShowEndGameComponents(_enemyCastle);
-        });
-        _allyCastle.onDestroy.AddListener(x =>
-        {
-            GameOver = true;
-            onGameOver.Invoke(_allyCastle);
-            ShowEndGameComponents(_allyCastle);
-        });
+        _startButton.SetActive(true);
+        _startButton.GetComponentInChildren<Button>().onClick.AddListener(StartGame);
     }
 
     private void ShowEndGameComponents(Castle defeatedCastle)
@@ -57,8 +45,20 @@ public class GameManager : MonoBehaviour
 
     private void StartGame()
     {
+        Debug.Log("GameStarted");
+        GameOver = false;
+        _enemyCastle.onDestroy.AddListener(x =>
+        {
+            GameOver = true;
+            OnGameOver.Invoke(_enemyCastle);
+            ShowEndGameComponents(_enemyCastle);
+        });
+        _allyCastle.onDestroy.AddListener(x =>
+        {
+            GameOver = true;
+            OnGameOver.Invoke(_allyCastle);
+            ShowEndGameComponents(_allyCastle);
+        });
         OnGameStart.Invoke();
-        _startButton.SetActive(false);
-        _exitButton.SetActive(false);
     }
 }
