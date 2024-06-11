@@ -58,8 +58,7 @@ public class ShopButtonsController : MonoBehaviour
 
     private void InitializeButtonsAndTexts()
     {
-        stickPurchaseButton.onClick.AddListener(PurchaseStickChar);
-        UpdateButtonText(WarriorType.StickCharacter, stickPurchaseButton, true);
+        PurchaseStickCharInit();
 
         stickUpgradeButton.onClick.AddListener(UpgradeStickChar);
         UpdateButtonText(WarriorType.StickCharacter, stickUpgradeButton, false);
@@ -77,9 +76,11 @@ public class ShopButtonsController : MonoBehaviour
         UpdateButtonText(WarriorType.StoneCharacter, stoneUpgradeButton, false);
     }
 
-    private void PurchaseStickChar()
+    private void PurchaseStickCharInit()
     {
-        PurchaseCharacter(WarriorType.StickCharacter, stickCharSpawnButton, stickPurchaseButton, stickUpgradeButton);
+        stickPurchaseButton.GetComponentInChildren<TMP_Text>().text = "Purchased!";
+        stickPurchaseButton.GetComponent<Image>().color = Color.green;
+        stickPurchaseButton.interactable = false;
     }
 
     private void UpgradeStickChar()

@@ -113,10 +113,10 @@ public class SpawnManager : MonoBehaviour
             var ally = Instantiate(_warriors[(int)type], RandomAllyPosition(), _allySpawnPoint.transform.rotation);
             ActiveAllies.Add(ally);
             _shopManager.PayForInstantiate(type);
-            OnWarriorSpawn.Invoke(null);
             ally.tag = "Ally";
             ally.layer = LayerMask.NameToLayer("Ally");
             ally.name = "Ally" + ally.name;
+            OnWarriorSpawn.Invoke(null);
         }
     }
 
@@ -129,10 +129,10 @@ public class SpawnManager : MonoBehaviour
             spawnPoint.transform.position.z + randomSpawnLoc);
         var enemy = Instantiate(_warriors[(int)warrior], spawnPos, spawnPoint.transform.rotation);
         ActiveEnemies.Add(enemy);
-        OnWarriorSpawn.Invoke(null);
         enemy.tag = "Enemy";
         enemy.layer = LayerMask.NameToLayer("Enemy");
         enemy.name = "Enemy" + enemy.name;
+        OnWarriorSpawn.Invoke(null);
     }
 
     private Vector3 RandomAllyPosition()

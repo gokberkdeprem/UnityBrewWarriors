@@ -10,7 +10,7 @@ public class GameManager : MonoBehaviour
     public UnityEvent<Castle> OnGameOver;
     public UnityEvent OnGameStart;
     public UnityEvent OnMainMenuButtonPressed;
-    [SerializeField] private GameObject _startButton;
+    [SerializeField] private GameObject _startButtonObject;
     [SerializeField] private GameObject _exitButton;
     [SerializeField] private GameObject _mainMenuButton;
     [SerializeField] private GameObject _giveUpButton;
@@ -29,6 +29,7 @@ public class GameManager : MonoBehaviour
     [SerializeField] public bool GameOver;
     private Castle _allyCastle;
     private Castle _enemyCastle;
+    private Button _startButton;
 
     // Start is called before the first frame update
     private void Start()
@@ -37,11 +38,13 @@ public class GameManager : MonoBehaviour
         audioSource.clip = _introAudio;
         audioSource.Play();
 
+
         _allyCastle = GameObject.FindWithTag("AllyBase").GetComponent<Castle>();
         _enemyCastle = GameObject.FindWithTag("EnemyBase").GetComponent<Castle>();
         _mainMenuButton.SetActive(false);
-        _startButton.SetActive(true);
-        _startButton.GetComponentInChildren<Button>().onClick.AddListener(StartGame);
+        _startButtonObject.SetActive(true);
+        _startButton = _startButtonObject.GetComponentInChildren<Button>();
+        _startButton.onClick.AddListener(StartGame);
         _giveUpButton.GetComponentInChildren<Button>().onClick.AddListener(GiveUpButtonPressed);
         _exitButton.GetComponentInChildren<Button>().onClick.AddListener(Quit);
         _giveUpButton.SetActive(false);
@@ -65,6 +68,7 @@ public class GameManager : MonoBehaviour
 
     private void GiveUpButtonPressed()
     {
+        _startButton.interactable = true;
         audioSource.loop = false;
         audioSource.Stop();
         _giveUpButton.SetActive(false);
@@ -75,6 +79,7 @@ public class GameManager : MonoBehaviour
 
     private void MainMenuButtonPressed()
     {
+        _startButton.interactable = true;
         _mainMenuButton.SetActive(false);
         victoryText.SetActive(false);
         defeatText.SetActive(false);
@@ -99,12 +104,12 @@ public class GameManager : MonoBehaviour
 
     private void StartGame()
     {
+        _startButtonObject.GetComponentInChildren<Button>().interactable = false;
         audioSource.Stop();
         audioSource.clip = _warStartAudio;
         audioSource.Play();
         StartCoroutine(BirdChirping());
 
-        _giveUpButton.SetActive(true);
         GameOver = false;
         _enemyCastle.onDestroy.AddListener(x =>
         {
@@ -137,5 +142,6 @@ public class GameManager : MonoBehaviour
         audioSource.clip = _birdChirping;
         audioSource.loop = true;
         audioSource.Play();
+        _giveUpButton.SetActive(true);
     }
 }

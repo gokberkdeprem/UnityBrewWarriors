@@ -1,3 +1,4 @@
+using DG.Tweening;
 using Enums;
 using UnityEngine;
 using UnityEngine.Events;
@@ -11,10 +12,12 @@ public abstract class BattleEntity : MonoBehaviour
 
     public UnityEvent<GameObject> onDestroy;
     [SerializeField] private Slider healthBarSlider;
+    [SerializeField] private Slider laggingHealthBar;
     [SerializeField] public bool isEnemy;
     [SerializeField] public int destroyReward;
     [SerializeField] public WarriorType warriorType;
     [SerializeField] public EntityType EntityType;
+    [SerializeField] private float lagDuration = 0.8f;
 
     [FormerlySerializedAs("GameManager")] [SerializeField]
     protected GameManager _gameManager;
@@ -38,7 +41,9 @@ public abstract class BattleEntity : MonoBehaviour
 
     protected void UpdateHealthBar()
     {
-        healthBarSlider.value = currentHealth / maxHealth;
+        var healthPercentage = currentHealth / maxHealth;
+        healthBarSlider.value = healthPercentage;
+        laggingHealthBar.DOValue(healthPercentage, lagDuration).SetEase(Ease.OutCubic);
     }
 
     public virtual void GetDamage(float damage, GameObject attacker = null)

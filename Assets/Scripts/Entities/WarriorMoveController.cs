@@ -35,21 +35,24 @@ public class WarriorMoveController : MonoBehaviour
 
         if ((_warrior.isEnemy && isAllyLayer) || (!_warrior.isEnemy && isEnemyLayer))
         {
-            other.GetComponent<BattleEntity>().onDestroy.AddListener(x => { Move(); });
-            _warrior.SelectTarget(other.gameObject);
+            other.GetComponent<BattleEntity>().onDestroy.AddListener(x =>
+            {
+                _warrior.SelectTarget(towardCastle: true);
+                Move();
+            });
 
             if (_warrior.currentHealth > 0)
                 StartCoroutine(RotateTowardsTarget());
         }
     }
-
-    private void OnTriggerStay(Collider other)
-    {
-        var isAllyLayer = other.gameObject.layer == LayerMask.NameToLayer("Ally");
-        var isEnemyLayer = other.gameObject.layer == LayerMask.NameToLayer("Enemy");
-
-        if ((_warrior.isEnemy && isAllyLayer) || (!_warrior.isEnemy && isEnemyLayer)) _agent.speed = 0;
-    }
+    //
+    // private void OnTriggerStay(Collider other)
+    // {
+    //     var isAllyLayer = other.gameObject.layer == LayerMask.NameToLayer("Ally");
+    //     var isEnemyLayer = other.gameObject.layer == LayerMask.NameToLayer("Enemy");
+    //
+    //     if ((_warrior.isEnemy && isAllyLayer) || (!_warrior.isEnemy && isEnemyLayer)) _agent.speed = 0;
+    // }
 
     private IEnumerator RotateTowardsTarget()
     {
@@ -89,12 +92,7 @@ public class WarriorMoveController : MonoBehaviour
 
     private bool ShouldStopMoving(Collider other)
     {
-        // var isAllyLayer = other.gameObject.layer == LayerMask.NameToLayer("Ally");
-        // var isEnemyLayer = other.gameObject.layer == LayerMask.NameToLayer("Enemy");
-        //
-        // return (_warrior.isEnemy && isAllyLayer) || (!_warrior.isEnemy && isEnemyLayer);
-
-        return _warrior.Target == other.gameObject;
+        return _warrior.Target == other.gameObject && other.gameObject.GetComponent<BattleEntity>().currentHealth > 0;
     }
 
     private IEnumerator LateStart()
@@ -107,23 +105,19 @@ public class WarriorMoveController : MonoBehaviour
 
     private IEnumerator UpdateDestination()
     {
-        // while (true)
-        // {
-        //     if(_gameManager.GameOver)
-        //         break;
-        //     
-        //     if (_agent.enabled && gameObject && _warrior.Target)
-        //     {
-        //         _agent.SetDestination(_warrior.Target.transform.position);
-        //     }
-        //     yield return new WaitForSeconds(navmeshUpdateInterval);
-        // }
-
+        Debug.Log("UpdateDestination");
         while (true)
         {
-            var target = _warrior?.Target?.transform;
-            if (_gameManager.GameOver && !target)
+            if (_gameManager.GameOver)
                 break;
+
+            if (!gameObject)
+                break;
+
+            if (!_warrior.Target)
+                _warrior.SelectTarget();
+
+            var target = _warrior?.Target?.transform;
 
             if (_agent.enabled && gameObject && _warrior.Target)
                 if (Vector3.Distance(target.position, _lastTargetPosition) > _pathRecalculationTolerance)

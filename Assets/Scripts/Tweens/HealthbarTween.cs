@@ -5,6 +5,7 @@ using UnityEngine.UI;
 public class HealthbarTween : MonoBehaviour
 {
     public Slider healthSlider;
+    [SerializeField] private GameObject laggingHealthbar;
     [SerializeField] private float _fillDuration = 3f;
     [SerializeField] private float _rotationDuration = 1;
 
@@ -13,6 +14,8 @@ public class HealthbarTween : MonoBehaviour
 
     private void Start()
     {
+        transform.eulerAngles = new Vector3(90, transform.eulerAngles.x, transform.eulerAngles.z);
+        laggingHealthbar.SetActive(false);
         _gameManager = _gameManagerObject.GetComponent<GameManager>();
         _gameManager.OnGameStart.AddListener(StartTween);
         _gameManager.OnGameOver.AddListener(x => EndTween());
@@ -30,11 +33,17 @@ public class HealthbarTween : MonoBehaviour
     private void EndTween()
     {
         Vector3 targetRotation = new(0f, 90f, 0f);
-        var rotationTween = transform.DORotate(targetRotation, _rotationDuration).SetEase(Ease.OutSine);
+        transform.DORotate(targetRotation, _rotationDuration).SetEase(Ease.OutSine);
+        laggingHealthbar.SetActive(false);
     }
 
     private void FillTween()
     {
-        healthSlider.DOValue(1, _fillDuration).SetEase(Ease.OutSine);
+        healthSlider.DOValue(1, _fillDuration).SetEase(Ease.OutSine).OnComplete(ActivateLaggingSlider);
+    }
+
+    private void ActivateLaggingSlider()
+    {
+        laggingHealthbar.SetActive(true);
     }
 }

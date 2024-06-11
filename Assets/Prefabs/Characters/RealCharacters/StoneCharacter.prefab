@@ -151,6 +151,7 @@ GameObject:
   - component: {fileID: -4776133617639702000}
   - component: {fileID: -5612507815650712924}
   - component: {fileID: -4642844518966588325}
+  - component: {fileID: -224235642999178845}
   - component: {fileID: 7470311129087313643}
   - component: {fileID: 3798419065902165857}
   - component: {fileID: 4095430990734591300}
@@ -234,6 +235,18 @@ MonoBehaviour:
   navmeshUpdateInterval: 2
   _pathRecalculationTolerance: 1
   _walkAnimationMultiplier: 4
+--- !u!114 &-224235642999178845
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 7035831064356941563}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 831d20053fae494cb05dfbab1478cc86, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!114 &7470311129087313643
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -252,18 +265,20 @@ MonoBehaviour:
     m_PersistentCalls:
       m_Calls: []
   healthBarSlider: {fileID: 1224648660571148186}
+  laggingHealthBar: {fileID: 6964794330220664145}
   isEnemy: 0
   destroyReward: 10
   warriorType: 2
   EntityType: 0
+  lagDuration: 0.8
   _gameManager: {fileID: 0}
-  power: 1
+  power: 3
   attackRate: 1
-  speed: 0.33
-  spawnRate: 0.49999988
-  spawnPrice: 1
-  purchasePrice: 1
-  upgradePrice: 21
+  speed: 0.29
+  spawnRate: 3.02
+  spawnPrice: 10
+  purchasePrice: 15
+  upgradePrice: 3
   healthBar: {fileID: 4328371762360554309}
   _deathParticle: {fileID: 198451450481698882, guid: 2d1c081bad34244ffb6152105b6d2149, type: 3}
   Target: {fileID: 0}
@@ -599,6 +614,17 @@ GameObject:
   m_CorrespondingSourceObject: {fileID: 6652131420422263776, guid: 8bac20785672344dda099529eb741938, type: 3}
   m_PrefabInstance: {fileID: 6935659318027927717}
   m_PrefabAsset: {fileID: 0}
+--- !u!114 &6964794330220664145 stripped
+MonoBehaviour:
+  m_CorrespondingSourceObject: {fileID: 65164678272898548, guid: 8bac20785672344dda099529eb741938, type: 3}
+  m_PrefabInstance: {fileID: 6935659318027927717}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 67db9e8f0e2ae9c40bc1e2b64352a6b4, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1001 &7209300024256497309
 PrefabInstance:
   m_ObjectHideFlags: 0

@@ -1,3 +1,4 @@
+using System.Collections;
 using System.Linq;
 using Enums;
 using UnityEngine;
@@ -17,9 +18,10 @@ public class Warrior : BattleEntity
     public GameObject Target;
     public BattleEntity TargetBattleEntity;
     private Animator _animator;
+    private bool _anyOpponnentAround;
+    private bool _canGetDamage = true;
     private SpawnManager _spawnManager;
     private GameObject _spawnManagerGameObject;
-
 
     protected override void Start()
     {
@@ -27,10 +29,31 @@ public class Warrior : BattleEntity
         _animator = GetComponent<Animator>();
         _spawnManagerGameObject = GameObject.FindWithTag("SpawnManager");
         _spawnManager = _spawnManagerGameObject.GetComponent<SpawnManager>();
-        _spawnManager.OnWarriorSpawn.AddListener(x => SelectTarget());
+        _spawnManager.OnWarriorSpawn.AddListener(x =>
+        {
+            if (gameObject && !AnyOpponentAround())
+                SelectTarget();
+        });
         _gameManager.OnMainMenuButtonPressed.AddListener(OnMainMenuPressed);
         _gameManager.OnGameOver.AddListener(OnGameOver);
+
         SelectTarget();
+        StartCoroutine(UpdateTargetWithIntervals());
+    }
+
+    private void OnTriggerEnter(Collider other)
+    {
+        if (!_anyOpponnentAround)
+        {
+            var isAllyLayer = other.gameObject.layer == LayerMask.NameToLayer("Ally");
+            var isEnemyLayer = other.gameObject.layer == LayerMask.NameToLayer("Enemy");
+
+            if ((isEnemy && isAllyLayer) || (!isEnemy && isEnemyLayer))
+            {
+                Debug.Log("OnTriggerEnterWarrior");
+                SelectTarget(other.gameObject);
+            }
+        }
     }
 
     private void OnMainMenuPressed()
@@ -40,29 +63,27 @@ public class Warrior : BattleEntity
 
     private void OnGameOver(Castle castle)
     {
-        if (castle.isEnemy != isEnemy)
-            _animator.CrossFadeInFixedTime("Dance", 0.1f, 0);
+        if (!castle)
+            return;
+
+        if (castle.isEnemy != isEnemy) StartCoroutine(AsyncDance());
     }
 
-    // private void OnTriggerEnter(Collider other)
-    // {
-    //     var isAllyLayer = other.gameObject.layer == LayerMask.NameToLayer("Ally");
-    //     var isEnemyLayer = other.gameObject.layer == LayerMask.NameToLayer("Enemy");
-    //
-    //     if ((isEnemy && isAllyLayer) || (!isEnemy && isEnemyLayer)) SelectTarget(other.gameObject);
-    // }
+    private IEnumerator AsyncDance()
+    {
+        yield return new WaitForSeconds(Random.Range(0, 2));
+        _animator.CrossFadeInFixedTime("Dance", 0.1f, 0);
+    }
 
     public override void GetDamage(float damage, GameObject attacker = null)
     {
-        // if (Target != attacker)
-        //     SelectTarget(attacker);
-
         currentHealth -= damage;
 
         UpdateHealthBar();
 
-        if (currentHealth == 0)
+        if (currentHealth <= 0 && _canGetDamage)
         {
+            _canGetDamage = false;
             if (isEnemy)
                 _spawnManager.ActiveEnemies.Remove(gameObject);
             else
@@ -72,61 +93,92 @@ public class Warrior : BattleEntity
             onDestroy.Invoke(gameObject);
             healthBar.SetActive(false);
             gameObject.layer = LayerMask.NameToLayer("Default");
-            GetComponent<Collider>().enabled = false;
+            GetComponent<SphereCollider>().enabled = false;
             GetComponent<NavMeshAgent>().enabled = false;
             GetComponentInChildren<NavMeshObstacle>().enabled = false;
-            GetComponent<Rigidbody>().isKinematic = true;
+            GetComponent<Rigidbody>().isKinematic = false;
+            GetComponent<Rigidbody>().constraints = RigidbodyConstraints.FreezeAll;
             _animator.CrossFadeInFixedTime("Death", 0.1f, 0);
             Instantiate(_deathParticle, gameObject.transform.position, _deathParticle.transform.rotation);
-            Destroy(gameObject, 2);
         }
     }
 
-    public BattleEntity SelectTarget(GameObject target = null)
-    {
-        if (SpawnManager.ActiveAllies.Count == 0 || SpawnManager.ActiveEnemies.Count == 0)
-            return null;
 
-        if (target != null)
+    private IEnumerator UpdateTargetWithIntervals()
+    {
+        while (gameObject)
         {
-            Target = target;
-            TargetBattleEntity = target.GetComponent<BattleEntity>();
-            return TargetBattleEntity;
+            SelectTarget();
+            AnyOpponentAround();
+            yield return new WaitForSeconds(3);
+        }
+    }
+
+    public void SelectTarget(GameObject target = null, GameObject discardTarget = null, bool towardCastle = false)
+    {
+        if (target)
+        {
+            SetTarget(target);
+            return;
         }
 
-        var targetWarriors = isEnemy ? SpawnManager.ActiveAllies : SpawnManager.ActiveEnemies;
-        var anyWarrior = targetWarriors.Any(warrior =>
+        var targetEntities = isEnemy ? SpawnManager.ActiveAllies : SpawnManager.ActiveEnemies;
+
+        if (towardCastle)
+        {
+            var castle = targetEntities.First(warrior =>
+                warrior.GetComponent<BattleEntity>().EntityType == EntityType.Castle);
+            SetTarget(castle);
+        }
+
+        var anyWarrior = targetEntities.Any(warrior =>
             warrior.GetComponent<BattleEntity>().EntityType == EntityType.Warrior);
 
-        target = targetWarriors.First(warrior =>
-            warrior.GetComponent<BattleEntity>().EntityType ==
-            (anyWarrior ? EntityType.Warrior : EntityType.Castle));
+        if (!Target && !anyWarrior)
+        {
+            target = targetEntities.First();
+            SetTarget(target);
+            return;
+        }
+
+        target = targetEntities
+            .FirstOrDefault(warrior =>
+            {
+                var battleEntity = warrior.GetComponent<BattleEntity>();
+
+                return battleEntity.EntityType == EntityType.Warrior && warrior != discardTarget &&
+                       battleEntity.currentHealth > 0;
+            });
+
+
+        SetTarget(target);
+
+        // Add a listener to select a new target when the current target is destroyed
+        TargetBattleEntity.onDestroy.AddListener(dT => { SelectTarget(discardTarget: dT); });
+    }
+
+    private void SetTarget(GameObject target)
+    {
+        if (!target) return;
 
         Target = target;
         TargetBattleEntity = target.GetComponent<BattleEntity>();
-
-        TargetBattleEntity.onDestroy.AddListener(x =>
-        {
-            while (SelectTarget().currentHealth <= 0 && !_gameManager.GameOver) SelectTarget();
-        });
-        return TargetBattleEntity;
     }
 
-    public bool AnyOpponentAround()
+    private bool AnyOpponentAround()
     {
-        Collider[] results = { };
+        Debug.Log("AnyOpponnentAround");
         var layer = isEnemy ? "Ally" : "Enemy";
-        var opponentCount =
-            Physics.OverlapSphereNonAlloc(transform.position, 0.1f, results, LayerMask.NameToLayer(layer));
+        var layerNo = LayerMask.GetMask(layer);
+        var hitColliders = Physics.OverlapSphere(transform.position, 1, layerNo);
 
-        if (opponentCount > 0)
-            SelectTarget(results[0].gameObject);
-        else
-            SelectTarget();
-
-        if (opponentCount > 0)
+        if (hitColliders.Length > 0)
+        {
+            _anyOpponnentAround = true;
             return true;
+        }
 
+        _anyOpponnentAround = false;
         return false;
     }
 }

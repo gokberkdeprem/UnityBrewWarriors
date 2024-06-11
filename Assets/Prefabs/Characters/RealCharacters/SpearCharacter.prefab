@@ -12,6 +12,7 @@ GameObject:
   - component: {fileID: 1128932572789763368}
   - component: {fileID: 6315616181324600195}
   - component: {fileID: -7641131869591789541}
+  - component: {fileID: 7272076795811562070}
   - component: {fileID: 1199161418076595395}
   - component: {fileID: 2470478381418805287}
   - component: {fileID: 1568264379370529770}
@@ -95,6 +96,18 @@ MonoBehaviour:
   navmeshUpdateInterval: 2
   _pathRecalculationTolerance: 1
   _walkAnimationMultiplier: 4
+--- !u!114 &7272076795811562070
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 6296938075417757254}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 831d20053fae494cb05dfbab1478cc86, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!114 &1199161418076595395
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -113,18 +126,20 @@ MonoBehaviour:
     m_PersistentCalls:
       m_Calls: []
   healthBarSlider: {fileID: 4347788094240482016}
+  laggingHealthBar: {fileID: 5480681465489733675}
   isEnemy: 0
   destroyReward: 10
   warriorType: 1
   EntityType: 0
+  lagDuration: 0.8
   _gameManager: {fileID: 0}
-  power: 1
+  power: 2
   attackRate: 1
-  speed: 0.33
-  spawnRate: 0.5
-  spawnPrice: 1
-  purchasePrice: 1
-  upgradePrice: 1
+  speed: 0.24
+  spawnRate: 4
+  spawnPrice: 5
+  purchasePrice: 8
+  upgradePrice: 2
   healthBar: {fileID: 1205230104321801791}
   _deathParticle: {fileID: 198451450481698882, guid: 2d1c081bad34244ffb6152105b6d2149, type: 3}
   Target: {fileID: 0}
@@ -341,16 +356,12 @@ PrefabInstance:
       propertyPath: m_AnchorMax.y
       value: 0
       objectReference: {fileID: 0}
-    - target: {fileID: 798054023567111205, guid: 8bac20785672344dda099529eb741938, type: 3}
-      propertyPath: m_SizeDelta.x
-      value: 36
-      objectReference: {fileID: 0}
-    - target: {fileID: 2387161806718327254, guid: 8bac20785672344dda099529eb741938, type: 3}
-      propertyPath: m_Layer
+    - target: {fileID: 3103042161167477166, guid: 8bac20785672344dda099529eb741938, type: 3}
+      propertyPath: m_AnchorMax.x
       value: 0
       objectReference: {fileID: 0}
-    - target: {fileID: 3898670731795239201, guid: 8bac20785672344dda099529eb741938, type: 3}
-      propertyPath: m_Layer
+    - target: {fileID: 3103042161167477166, guid: 8bac20785672344dda099529eb741938, type: 3}
+      propertyPath: m_AnchorMax.y
       value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 5013593795222189532, guid: 8bac20785672344dda099529eb741938, type: 3}
@@ -437,22 +448,6 @@ PrefabInstance:
       propertyPath: m_Name
       value: HealthBar
       objectReference: {fileID: 0}
-    - target: {fileID: 6652131420422263776, guid: 8bac20785672344dda099529eb741938, type: 3}
-      propertyPath: m_Layer
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 6652131420422263776, guid: 8bac20785672344dda099529eb741938, type: 3}
-      propertyPath: m_IsActive
-      value: 1
-      objectReference: {fileID: 0}
-    - target: {fileID: 7129178036347861632, guid: 8bac20785672344dda099529eb741938, type: 3}
-      propertyPath: m_Layer
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 7859158552100951144, guid: 8bac20785672344dda099529eb741938, type: 3}
-      propertyPath: m_Layer
-      value: 0
-      objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
@@ -471,6 +466,17 @@ GameObject:
 --- !u!114 &4347788094240482016 stripped
 MonoBehaviour:
   m_CorrespondingSourceObject: {fileID: 8124135359097245503, guid: 8bac20785672344dda099529eb741938, type: 3}
+  m_PrefabInstance: {fileID: 5541899435900857823}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 67db9e8f0e2ae9c40bc1e2b64352a6b4, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+--- !u!114 &5480681465489733675 stripped
+MonoBehaviour:
+  m_CorrespondingSourceObject: {fileID: 65164678272898548, guid: 8bac20785672344dda099529eb741938, type: 3}
   m_PrefabInstance: {fileID: 5541899435900857823}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 0}

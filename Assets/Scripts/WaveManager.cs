@@ -28,6 +28,7 @@ namespace Wave
 
         private void StartWave()
         {
+            StopAllCoroutines();
             waves = _level.Waves;
             StartCoroutine(StartDelay());
         }
@@ -36,14 +37,6 @@ namespace Wave
         {
             yield return new WaitForSeconds(startDelay);
             StartCoroutine(InstantiateWave());
-        }
-
-        private IEnumerator ShowWaveInfo(WaveConfig currenWave)
-        {
-            _waveInfoObject.SetActive(true);
-            _waveInfo.text = currenWave.waveName;
-            yield return new WaitForSeconds(3);
-            _waveInfoObject.SetActive(false);
         }
 
         private IEnumerator InstantiateWave()
@@ -58,6 +51,14 @@ namespace Wave
 
                 yield return new WaitForSeconds(waveDelay);
             }
+        }
+
+        private IEnumerator ShowWaveInfo(WaveConfig currenWave)
+        {
+            _waveInfoObject.SetActive(true);
+            _waveInfo.text = currenWave.waveName;
+            yield return new WaitForSeconds(3);
+            _waveInfoObject.SetActive(false);
         }
 
         private void SpawnWave(WaveConfig currentWave)
