@@ -1,4 +1,6 @@
 using System.Collections.Generic;
+using System.Collections.ObjectModel;
+using System.Collections.Specialized;
 using Enums;
 using TMPro;
 using UnityEngine;
@@ -22,8 +24,8 @@ public class SpawnManager : MonoBehaviour
     [SerializeField] private GameObject _shopManagerGameObject;
     public UnityEvent<GameObject> OnWarriorSpawn;
 
-    public readonly List<GameObject> ActiveAllies = new();
-    public readonly List<GameObject> ActiveEnemies = new();
+    public readonly ObservableCollection<GameObject> ActiveAllies = new();
+    public readonly ObservableCollection<GameObject> ActiveEnemies = new();
     private GameManager _gameManager;
     private ShopManager _shopManager;
 
@@ -34,7 +36,18 @@ public class SpawnManager : MonoBehaviour
         InitializeSpawnButtons();
         UpdateSpawnButtonText();
         _gameManager.OnGameStart.AddListener(OnGameStart);
-        _gameManager.OnGameOver.AddListener(x => DisableSpawnButtons());
+        _gameManager.OnGameOver.AddListener(x => OnGameOver());
+    }
+    
+    private void OnCollectionChanged(object sender, NotifyCollectionChangedEventArgs e)
+    {
+        // Check if the action affects the collection size
+        if (e.Action == NotifyCollectionChangedAction.Add || 
+            e.Action == NotifyCollectionChangedAction.Remove || 
+            e.Action == NotifyCollectionChangedAction.Reset)
+        {
+            OnWarriorSpawn.Invoke(null);
+        }
     }
 
 
@@ -42,6 +55,9 @@ public class SpawnManager : MonoBehaviour
     {
         ActiveAllies.Clear();
         ActiveEnemies.Clear();
+
+        ActiveEnemies.CollectionChanged += OnCollectionChanged;
+        ActiveAllies.CollectionChanged += OnCollectionChanged;
 
         ActiveAllies.Add(_allyBase);
         ActiveEnemies.Add(_enemyBase);
@@ -51,6 +67,8 @@ public class SpawnManager : MonoBehaviour
 
     private void OnGameOver()
     {
+        ActiveEnemies.CollectionChanged -= OnCollectionChanged;
+        ActiveAllies.CollectionChanged -= OnCollectionChanged;
         DisableSpawnButtons();
     }
 

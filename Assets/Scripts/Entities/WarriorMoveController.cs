@@ -92,7 +92,7 @@ public class WarriorMoveController : MonoBehaviour
 
     private bool ShouldStopMoving(Collider other)
     {
-        return _warrior.Target == other.gameObject && other.gameObject.GetComponent<BattleEntity>().currentHealth > 0;
+        return _warrior.Target == other.gameObject;
     }
 
     private IEnumerator LateStart()
@@ -105,7 +105,6 @@ public class WarriorMoveController : MonoBehaviour
 
     private IEnumerator UpdateDestination()
     {
-        Debug.Log("UpdateDestination");
         while (true)
         {
             if (_gameManager.GameOver)

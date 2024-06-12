@@ -34,9 +34,15 @@ public class WarriorAttackController : MonoBehaviour
 
     public void OnTriggerStay(Collider other)
     {
-        if (_warrior.Target == other.gameObject)
+        var isAllyLayer = other.gameObject.layer == LayerMask.NameToLayer("Ally");
+        var isEnemyLayer = other.gameObject.layer == LayerMask.NameToLayer("Enemy");
+
+        if ((_warrior.isEnemy && isAllyLayer) || (!_warrior.isEnemy && isEnemyLayer))
         {
-            Attack();
+            _warrior.SelectTarget(other.gameObject);
+            
+            if(_warrior.Target == other.gameObject)
+                Attack();
         }
     }
 
@@ -66,7 +72,7 @@ public class WarriorAttackController : MonoBehaviour
         Instantiate(_hitParticle, _particleTransform);
         _hitAudio.pitch = Random.Range(0.9f, 1.1f);
         _hitAudio.Play();
-        if (gameObject && _warrior.gameObject)
+        if (gameObject && _warrior.gameObject && _warrior.Target)
             _warrior?.TargetBattleEntity?.GetDamage(_warrior.power, _warrior.gameObject);
     }
 }

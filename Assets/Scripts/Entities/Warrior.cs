@@ -22,6 +22,7 @@ public class Warrior : BattleEntity
     private bool _canGetDamage = true;
     private SpawnManager _spawnManager;
     private GameObject _spawnManagerGameObject;
+    private int _selectTargetCount = 0;
 
     protected override void Start()
     {
@@ -38,7 +39,6 @@ public class Warrior : BattleEntity
         _gameManager.OnGameOver.AddListener(OnGameOver);
 
         SelectTarget();
-        StartCoroutine(UpdateTargetWithIntervals());
     }
 
     private void OnTriggerEnter(Collider other)
@@ -50,7 +50,6 @@ public class Warrior : BattleEntity
 
             if ((isEnemy && isAllyLayer) || (!isEnemy && isEnemyLayer))
             {
-                Debug.Log("OnTriggerEnterWarrior");
                 SelectTarget(other.gameObject);
             }
         }
@@ -104,18 +103,15 @@ public class Warrior : BattleEntity
     }
 
 
-    private IEnumerator UpdateTargetWithIntervals()
-    {
-        while (gameObject)
-        {
-            SelectTarget();
-            AnyOpponentAround();
-            yield return new WaitForSeconds(3);
-        }
-    }
-
     public void SelectTarget(GameObject target = null, GameObject discardTarget = null, bool towardCastle = false)
     {
+        _selectTargetCount += 1;
+        Debug.Log(_selectTargetCount);
+        
+        
+        if(_spawnManager.ActiveAllies.Count <= 0 && _spawnManager.ActiveEnemies.Count <= 0)
+            return;
+        
         if (target)
         {
             SetTarget(target);
@@ -167,7 +163,6 @@ public class Warrior : BattleEntity
 
     private bool AnyOpponentAround()
     {
-        Debug.Log("AnyOpponnentAround");
         var layer = isEnemy ? "Ally" : "Enemy";
         var layerNo = LayerMask.GetMask(layer);
         var hitColliders = Physics.OverlapSphere(transform.position, 1, layerNo);

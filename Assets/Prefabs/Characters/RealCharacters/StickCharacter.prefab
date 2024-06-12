@@ -133,7 +133,7 @@ MonoBehaviour:
   EntityType: 0
   lagDuration: 0.8
   _gameManager: {fileID: 0}
-  power: 2
+  power: 1
   attackRate: 1
   speed: 0.23
   spawnRate: 3

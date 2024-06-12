@@ -275,7 +275,7 @@ MonoBehaviour:
   power: 3
   attackRate: 1
   speed: 0.29
-  spawnRate: 3.02
+  spawnRate: 5
   spawnPrice: 10
   purchasePrice: 15
   upgradePrice: 3

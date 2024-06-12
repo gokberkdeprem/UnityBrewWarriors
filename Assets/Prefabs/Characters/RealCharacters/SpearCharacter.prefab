@@ -120,7 +120,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: de9ca20212c934341a7981c0ed84dd04, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  maxHealth: 10
+  maxHealth: 5
   currentHealth: 0
   onDestroy:
     m_PersistentCalls:
@@ -134,7 +134,7 @@ MonoBehaviour:
   lagDuration: 0.8
   _gameManager: {fileID: 0}
   power: 2
-  attackRate: 1
+  attackRate: 1.5
   speed: 0.24
   spawnRate: 4
   spawnPrice: 5
